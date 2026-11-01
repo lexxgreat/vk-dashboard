@@ -1,0 +1,318 @@
+/* VK Дашборд — статический сайт для GitHub Pages.
+   Оформление повторяет рабочую панель: светлая тема, сетка таблиц 1px,
+   красная подсветка при живых деньгах < 300 ₽. */
+
+:root {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --head-bg: #f5f6f8;
+  --hover-bg: #f3f4f6;
+  --red: #dc2626;
+  --red-row: rgba(254, 242, 242, 0.45);
+  --red-note-bg: #fef2f2;
+  --red-note-fg: #b91c1c;
+  --amber-bg: #fef3c7;
+  --amber-fg: #92400e;
+  --tile-bg: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- шапка ---------- */
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fg);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--hover-bg); }
+.btn:disabled { opacity: 0.6; cursor: default; }
+.btn .spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- сводка (details/summary) ---------- */
+
+.totals > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  border-radius: 6px;
+}
+.totals > summary::-webkit-details-marker { display: none; }
+.totals > summary:hover { background: var(--hover-bg); }
+.totals .chevron { transition: transform 0.15s; transform: rotate(-90deg); }
+.totals[open] .chevron { transform: none; }
+
+.tiles {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .tiles { grid-template-columns: repeat(8, 1fr); }
+}
+.tile { background: var(--tile-bg); padding: 12px; }
+.tile .label { font-size: 11px; color: var(--muted); line-height: 1.2; }
+.tile .value { margin-top: 4px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile.muted .value { color: var(--muted); font-weight: 500; }
+
+/* ---------- широкая таблица: показывается ВСЕГДА ---------- */
+
+.table-wrap {
+  overflow-x: auto;         /* на узких экранах таблица листается по горизонтали */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.grid-table {
+  width: 100%;
+  min-width: 1050px;        /* сумма ширин столбцов — таблица не сжимается */
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.grid-table th, .grid-table td { border: 1px solid var(--border); }
+
+.grid-table thead th {
+  background: var(--head-bg);
+  font-weight: 600;
+  padding: 10px 12px;
+  white-space: nowrap;
+  text-align: right;
+}
+.grid-table thead th:first-child { text-align: left; }
+.grid-table thead th.col-int { text-align: center; }
+
+.grid-table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.grid-table tbody td:first-child { text-align: left; white-space: normal; }
+.grid-table tbody td.cell-int { text-align: center; }
+
+.grid-table tbody tr { cursor: pointer; }
+.grid-table tbody tr:hover { background: var(--hover-bg); }
+.grid-table tbody tr.low-row { background: var(--red-row); }
+.grid-table tbody tr.low-row:hover { background: #fee2e2; }
+
+.cab-btn {
+  font: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+.cab-btn .cab-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+.cab-btn .cab-name .chev {
+  width: 14px; height: 14px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.cab-btn:hover .cab-name .chev { opacity: 1; }
+.cab-btn .cab-client { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); font-weight: 400; }
+
+td .money { font-weight: 600; }
+td .money-strong { font-weight: 700; }
+td .low {
+  color: var(--red);
+  font-weight: 700;
+  cursor: help;
+}
+td .low::before { content: "⚠ "; font-size: 12px; }
+td .na { color: var(--muted); }
+
+.loading { text-align: center !important; color: var(--muted); padding: 24px 12px !important; }
+
+/* подсказка про горизонтальную прокрутку — видна только на узких экранах */
+.scroll-hint {
+  display: none;
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+@media (max-width: 1023px) {
+  .scroll-hint { display: block; }
+}
+
+/* ---------- статусы ---------- */
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 400;
+  cursor: help;
+  white-space: nowrap;
+}
+.badge.b-nokey { background: var(--head-bg); color: var(--muted); }
+.badge.b-limit { background: var(--amber-bg); color: var(--amber-fg); }
+.badge.b-error { background: #fee2e2; color: var(--red); }
+
+/* ---------- модальное окно (карточка клиента) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 50;
+}
+.modal-overlay[hidden] { display: none; } /* атрибут hidden сильнее display:flex */
+.modal-card {
+  width: 100%;
+  max-width: 560px;
+  max-height: 100vh;
+  overflow-y: auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.modal-header h2 { font-size: 16px; font-weight: 600; margin: 0; }
+.modal-subtitle { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+.btn-close {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  border-radius: 6px;
+}
+.btn-close:hover { background: var(--hover-bg); color: var(--fg); }
+
+.modal-body { display: flex; flex-direction: column; gap: 24px; }
+
+.cab-block { display: flex; flex-direction: column; gap: 12px; }
+.cab-block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cab-block-head h3 { font-size: 14px; font-weight: 600; margin: 0; }
+.cab-block-head .meta { font-size: 12px; color: var(--muted); }
+
+.cab-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.cab-stats .tile { padding: 10px; }
+.cab-stats .tile .value { font-weight: 600; }
+.cab-stats .tile.muted .value { font-weight: 500; }
+
+.low-note {
+  background: var(--red-note-bg);
+  color: var(--red-note-fg);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.clicks-table-wrap { overflow-x: auto; }
+.clicks-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+.clicks-table th, .clicks-table td { border: 1px solid var(--border); }
+.clicks-table thead th { background: var(--head-bg); font-weight: 600; padding: 8px 12px; text-align: right; }
+.clicks-table thead th:first-child { text-align: left; }
+.clicks-table tbody td { padding: 6px 12px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.clicks-table tbody td:first-child { text-align: left; }
+.clicks-table tbody tr:hover { background: var(--hover-bg); }
+.clicks-table tr.total-row { background: var(--head-bg); font-weight: 500; }
+.clicks-table .today-note { margin-left: 8px; font-size: 11px; color: var(--muted); font-weight: 400; }
+.clicks-table .cpc-note { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+.no-data { font-size: 12px; color: var(--muted); margin: 0; }
+
+/* ---------- подвал ---------- */
+
+.footnote { font-size: 12px; color: var(--muted); margin: 0; }
+.footnote.muted { opacity: 0.75; }
