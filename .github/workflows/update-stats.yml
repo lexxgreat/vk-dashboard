@@ -1,0 +1,46 @@
+name: Обновление статистики VK
+
+# Каждые 30 минут собирает свежие данные из VK Рекламы и обновляет data.json.
+# Сайт на GitHub Pages перестраивается автоматически после каждого коммита.
+# Также можно запустить вручную: вкладка Actions → Run workflow.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрать репозиторий
+        uses: actions/checkout@v4
+
+      - name: Настроить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Собрать данные VK Рекламы
+        run: node scripts/fetch_and_export.mjs
+        env:
+          VK_TOKENS: ${{ secrets.VK_TOKENS }}
+
+      - name: Записать data.json в репозиторий
+        run: |
+          git config user.name "vk-dashboard-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "данные не изменились — коммит не нужен"
+          else
+            git commit -m "данные VK: $(TZ=Europe/Moscow date '+%d.%m %H:%M')"
+            git push
+          fi
