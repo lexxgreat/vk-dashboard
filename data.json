@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-01T15:56:36.138Z",
+  "generatedAt": "2026-11-01T16:45:37.900Z",
   "today": "2026-11-01",
   "yesterday": "2026-10-31",
   "dayBefore": "2026-10-30",
   "rows": [
     {
       "extId": 16019221,
-      "name": "Варвара Бякова",
+      "name": "Веселая Затея Ижевск",
       "clientName": "Варвара Бякова",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:21.104Z",
-      "balanceTotal": 2177.56,
+      "lastSyncAt": "2026-11-01T16:45:20.186Z",
+      "balanceTotal": 2164.41,
       "balanceReal": 1224.82,
-      "balanceBonus": 952.74,
+      "balanceBonus": 939.59,
       "spendYesterday": 600,
       "spendDayBefore": 575.09,
       "spendMonth": 16281.11,
@@ -66,15 +66,15 @@
         {
           "date": "2026-11-01",
           "clicks": 7,
-          "spend": 505.6,
-          "cpc": 72.22857142857143,
+          "spend": 519.89,
+          "cpc": 74.27,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 38,
-        "spend": 2477.99,
-        "cpc": 65.21026315789473
+        "spend": 2492.28,
+        "cpc": 65.58631578947367
       }
     },
     {
@@ -83,10 +83,10 @@
       "clientName": "Андрей Мельников",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:24.153Z",
-      "balanceTotal": 10427.57,
+      "lastSyncAt": "2026-11-01T16:45:23.126Z",
+      "balanceTotal": 10386.13,
       "balanceReal": 8196.72,
-      "balanceBonus": 2230.85,
+      "balanceBonus": 2189.41,
       "spendYesterday": 721.37,
       "spendDayBefore": 760.41,
       "spendMonth": 5427.47,
@@ -138,16 +138,16 @@
         },
         {
           "date": "2026-11-01",
-          "clicks": 12,
-          "spend": 534.2,
-          "cpc": 44.51666666666667,
+          "clicks": 13,
+          "spend": 576.35,
+          "cpc": 44.33461538461539,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 92,
-        "spend": 3971.82,
-        "cpc": 43.171956521739126
+        "clicks": 93,
+        "spend": 4013.97,
+        "cpc": 43.16096774193548
       }
     },
     {
@@ -156,10 +156,10 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:27.093Z",
-      "balanceTotal": 2431.71,
+      "lastSyncAt": "2026-11-01T16:45:26.194Z",
+      "balanceTotal": 2396.66,
       "balanceReal": 1605.38,
-      "balanceBonus": 950.83,
+      "balanceBonus": 915.78,
       "spendYesterday": 532.5,
       "spendDayBefore": 52.19,
       "spendMonth": 14228.35,
@@ -211,16 +211,16 @@
         },
         {
           "date": "2026-11-01",
-          "clicks": 8,
-          "spend": 378.29,
-          "cpc": 47.286249999999995,
+          "clicks": 9,
+          "spend": 410.22,
+          "cpc": 45.580000000000005,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 35,
-        "spend": 1861.41,
-        "cpc": 53.18314285714286
+        "clicks": 36,
+        "spend": 1893.34,
+        "cpc": 52.59277777777778
       }
     },
     {
@@ -229,10 +229,10 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:30.175Z",
-      "balanceTotal": 2050.82,
+      "lastSyncAt": "2026-11-01T16:45:29.199Z",
+      "balanceTotal": 2035.83,
       "balanceReal": 1206.05,
-      "balanceBonus": 1018.9,
+      "balanceBonus": 1003.91,
       "spendYesterday": 300,
       "spendDayBefore": 300,
       "spendMonth": 13117.29,
@@ -284,16 +284,16 @@
         },
         {
           "date": "2026-11-01",
-          "clicks": 8,
-          "spend": 216.8,
-          "cpc": 27.1,
+          "clicks": 9,
+          "spend": 232.33,
+          "cpc": 25.814444444444447,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 85,
-        "spend": 2014.99,
-        "cpc": 23.705764705882352
+        "clicks": 86,
+        "spend": 2030.52,
+        "cpc": 23.610697674418603
       }
     },
     {
@@ -371,9 +371,9 @@
       "clientName": "Праздник Сказка — Пантюшкина",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:33.139Z",
-      "balanceTotal": 9279.16,
-      "balanceReal": 9279.16,
+      "lastSyncAt": "2026-11-01T16:45:32.223Z",
+      "balanceTotal": 9250.09,
+      "balanceReal": 9250.09,
       "balanceBonus": 0,
       "spendYesterday": 700,
       "spendDayBefore": 664.67,
@@ -427,15 +427,15 @@
         {
           "date": "2026-11-01",
           "clicks": 13,
-          "spend": 500.68,
-          "cpc": 38.51384615384615,
+          "spend": 529.16,
+          "cpc": 40.70461538461538,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 48,
-        "spend": 2798.95,
-        "cpc": 58.31145833333333
+        "spend": 2827.43,
+        "cpc": 58.90479166666666
       }
     },
     {
@@ -444,7 +444,7 @@
       "clientName": "Геннадий Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-01T15:56:36.138Z",
+      "lastSyncAt": "2026-11-01T16:45:35.275Z",
       "balanceTotal": 799.97,
       "balanceReal": 0,
       "balanceBonus": 799.97,
@@ -509,6 +509,79 @@
         "clicks": 79,
         "spend": 1999.99,
         "cpc": 25.316329113924052
+      }
+    },
+    {
+      "extId": 17323149,
+      "name": "Марина Владимировна Киров",
+      "clientName": "Марина Владимировна — старый кабинет",
+      "status": "ok",
+      "statusNote": null,
+      "lastSyncAt": "2026-11-01T16:45:37.900Z",
+      "balanceTotal": -0.03,
+      "balanceReal": -0.03,
+      "balanceBonus": 0,
+      "spendYesterday": 0,
+      "spendDayBefore": 0,
+      "spendMonth": 7398.23,
+      "messagesYesterday": 0,
+      "messagesMonth": 207,
+      "campaignsCount": 19,
+      "clicks7": [
+        {
+          "date": "2026-10-26",
+          "clicks": 10,
+          "spend": 250,
+          "cpc": 25,
+          "isToday": false
+        },
+        {
+          "date": "2026-10-27",
+          "clicks": 20,
+          "spend": 374.1,
+          "cpc": 18.705000000000002,
+          "isToday": false
+        },
+        {
+          "date": "2026-10-28",
+          "clicks": 0,
+          "spend": 0,
+          "cpc": null,
+          "isToday": false
+        },
+        {
+          "date": "2026-10-29",
+          "clicks": 0,
+          "spend": 0,
+          "cpc": null,
+          "isToday": false
+        },
+        {
+          "date": "2026-10-30",
+          "clicks": 0,
+          "spend": 0,
+          "cpc": null,
+          "isToday": false
+        },
+        {
+          "date": "2026-10-31",
+          "clicks": 0,
+          "spend": 0,
+          "cpc": null,
+          "isToday": false
+        },
+        {
+          "date": "2026-11-01",
+          "clicks": 0,
+          "spend": 0,
+          "cpc": null,
+          "isToday": true
+        }
+      ],
+      "clicks7Total": {
+        "clicks": 30,
+        "spend": 624.1,
+        "cpc": 20.803333333333335
       }
     }
   ]
