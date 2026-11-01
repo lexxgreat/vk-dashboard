@@ -1,7 +1,7 @@
 [
   {
     "extId": 16019221,
-    "name": "Варвара Бякова",
+    "name": "Веселая Затея Ижевск",
     "clientName": "Варвара Бякова",
     "noTokenStatus": "ok",
     "noTokenNote": null
@@ -61,5 +61,12 @@
     "clientName": "Геннадий Шаров",
     "noTokenStatus": "ok",
     "noTokenNote": null
+  },
+  {
+    "extId": 17323149,
+    "name": "Марина Владимировна Киров",
+    "clientName": "Марина Владимировна — старый кабинет",
+    "noTokenStatus": "nokey",
+    "noTokenNote": "нет токена — добавьте в секрет VK_TOKENS"
   }
 ]
