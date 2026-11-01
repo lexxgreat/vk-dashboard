@@ -28,11 +28,11 @@
     "noTokenNote": null
   },
   {
-    "extId": null,
+    "extId": 28571374,
     "name": "Адамович помор",
     "clientName": "Адамович",
     "noTokenStatus": "nokey",
-    "noTokenNote": "нет API-ключа"
+    "noTokenNote": "нет токена — добавьте в секрет VK_TOKENS"
   },
   {
     "extId": 15155276,
@@ -67,6 +67,6 @@
     "name": "Марина Владимировна Киров",
     "clientName": "Марина Владимировна — старый кабинет",
     "noTokenStatus": "nokey",
-    "noTokenNote": "нет токена — добавьте в секрет VK_TOKENS"
+    "noTokenNote": "ждём токен кабинета (ID известен: 17323149)"
   }
 ]
