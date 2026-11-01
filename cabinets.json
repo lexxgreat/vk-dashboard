@@ -1,0 +1,65 @@
+[
+  {
+    "extId": 16019221,
+    "name": "Варвара Бякова",
+    "clientName": "Варвара Бякова",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  },
+  {
+    "extId": 24158606,
+    "name": "Мельников",
+    "clientName": "Андрей Мельников",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  },
+  {
+    "extId": 15545622,
+    "name": "Твои шарики",
+    "clientName": "В. Шаров",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  },
+  {
+    "extId": 26047668,
+    "name": "ШАРТ",
+    "clientName": "В. Шаров",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  },
+  {
+    "extId": null,
+    "name": "Адамович помор",
+    "clientName": "Адамович",
+    "noTokenStatus": "nokey",
+    "noTokenNote": "нет API-ключа"
+  },
+  {
+    "extId": 15155276,
+    "name": "Шарок Архангельск",
+    "clientName": "Адамович",
+    "noTokenStatus": "nokey",
+    "noTokenNote": "нет API-ключа"
+  },
+  {
+    "extId": 15635657,
+    "name": "Воздух",
+    "clientName": "Воздух — Куляшова",
+    "noTokenStatus": "token_limit",
+    "noTokenNote": "лимит токенов VK, повторим автоматически (старые токены истекают в течение суток)"
+  },
+  {
+    "extId": 23685298,
+    "name": "Праздник Сказка",
+    "clientName": "Праздник Сказка — Пантюшкина",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  },
+  {
+    "extId": 15957290,
+    "name": "Геннадий Шаров",
+    "clientName": "Геннадий Шаров",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
+  }
+]
