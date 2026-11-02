@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VK Реклама — статистика кабинетов</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <main class="container">
@@ -41,13 +41,14 @@
             <th class="col-money">Реальные деньги</th>
             <th class="col-money">Расход вчера</th>
             <th class="col-money">Расход позавчера</th>
+            <th class="col-money" title="Средняя цена клика за последние 2 дня: (расход вчера + расход позавчера) ÷ клики за те же дни">Цена клика (2 дня)</th>
             <th class="col-money">Расход за месяц</th>
             <th class="col-int">Сообщений вчера</th>
             <th class="col-int">Сообщений за месяц</th>
           </tr>
         </thead>
         <tbody id="table-body">
-          <tr><td colspan="8" class="loading">Загрузка данных…</td></tr>
+          <tr><td colspan="9" class="loading">Загрузка данных…</td></tr>
         </tbody>
       </table>
     </div>
@@ -72,11 +73,12 @@
     <p class="footnote">
       Баланс — по данным VK Рекламы; «реальные деньги» рассчитываются по истории транзакций (могут немного
       отличаться от панели). Сообщения — конверсии по цели «Сообщения в сообществе» за полные сутки (вчера)
-      и за 30 дней. Красным выделены кабинеты, где реальных денег меньше 300 ₽.
+      и за 30 дней. Цена клика за 2 дня — средневзвешенная: (расход вчера + расход позавчера) ÷ клики за те же дни.
+      Красным выделены кабинеты, где реальных денег меньше 300 ₽.
     </p>
-    <p class="footnote muted">Данные обновляются автоматически на GitHub каждые 30 минут; страница сама подтягивает свежие данные каждые 5 минут.</p>
+    <p class="footnote muted">Данные обновляются автоматически на GitHub каждые 30 минут (в :13 и :43); страница сама подтягивает свежие данные каждые 5 минут.</p>
   </main>
 
-  <script src="app.js" defer></script>
+  <script src="app.js?v=2" defer></script>
 </body>
 </html>

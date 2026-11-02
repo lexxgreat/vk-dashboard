@@ -54,6 +54,24 @@ function isLow(cab) {
   return cab.balanceReal != null && cab.balanceReal < LOW_REAL_THRESHOLD;
 }
 
+// клики кабинета за конкретный день (из 7-дневной таблицы; дня нет = показов не было)
+function clicksOn(cab, iso) {
+  if (!cab.clicks7 || !iso) return 0;
+  for (var i = 0; i < cab.clicks7.length; i++) {
+    if (cab.clicks7[i].date === iso) return cab.clicks7[i].clicks || 0;
+  }
+  return 0;
+}
+
+// средняя цена клика за последние 2 полных дня (вчера + позавчера):
+// (расход вчера + расход позавчера) ÷ клики за те же дни
+function cpc2days(cab, data) {
+  if (cab.spendYesterday == null || cab.spendDayBefore == null) return null;
+  var clicks = clicksOn(cab, data.yesterday) + clicksOn(cab, data.dayBefore);
+  if (clicks <= 0) return null;
+  return (cab.spendYesterday + cab.spendDayBefore) / clicks;
+}
+
 var STATUS = {
   nokey: { label: "нет ключа API", cls: "b-nokey" },
   token_limit: { label: "лимит токенов", cls: "b-limit" },
@@ -96,12 +114,24 @@ function renderTotals(data) {
     messagesYesterday: sum(rows.map(function (c) { return c.messagesYesterday; })),
     messagesMonth: sum(rows.map(function (c) { return c.messagesMonth; })),
   };
+  var spend2 = 0;
+  var clicks2 = 0;
+  var hasSpend2 = false;
+  rows.forEach(function (c) {
+    if (c.spendYesterday == null || c.spendDayBefore == null) return;
+    hasSpend2 = true;
+    spend2 += c.spendYesterday + c.spendDayBefore;
+    clicks2 += clicksOn(c, data.yesterday) + clicksOn(c, data.dayBefore);
+  });
+  var cpc2 = hasSpend2 && clicks2 > 0 ? spend2 / clicks2 : null;
+
   var items = [
     { label: "Общий остаток", value: fmtMoneyPrecise(t.balanceTotal), muted: false },
     { label: "Реальные деньги", value: fmtMoneyPrecise(t.balanceReal), muted: false },
     { label: "Бонусы", value: fmtMoneyPrecise(t.balanceBonus), muted: true },
     { label: "Расход за " + fmtDateLong(data.yesterday), value: fmtMoneyPrecise(t.spendYesterday), muted: false },
     { label: "Расход за " + fmtDateLong(data.dayBefore), value: fmtMoneyPrecise(t.spendDayBefore), muted: false },
+    { label: "Ср. цена клика (2 дня)", value: fmtCpc(cpc2), muted: false },
     { label: "Расход за 30 дней", value: fmtMoney(t.spendMonth), muted: true },
     { label: "Сообщений вчера", value: t.messagesYesterday != null ? String(t.messagesYesterday) : "—", muted: false },
     { label: "Сообщений за 30 дней", value: t.messagesMonth != null ? String(t.messagesMonth) : "—", muted: false },
@@ -128,12 +158,21 @@ function intCell(v) {
   return "<span>" + esc(String(v)) + "</span>";
 }
 
+function cpcCellHtml(cab, data) {
+  var v = cpc2days(cab, data);
+  if (v == null) {
+    var why = cab.status !== "ok" ? "" : "кликов за последние 2 дня не было";
+    return '<span class="na" title="' + esc(why) + '">—</span>';
+  }
+  return '<span class="money">' + esc(fmtCpc(v)) + "</span>";
+}
+
 function renderTable(data) {
   var tbody = document.getElementById("table-body");
   tbody.innerHTML = "";
 
   if (!data.rows.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="loading">Нет данных</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="loading">Нет данных</td></tr>';
     return;
   }
 
@@ -188,6 +227,7 @@ function renderTable(data) {
       "<td>" + realCell + "</td>" +
       "<td>" + moneyCell(cab.spendYesterday) + "</td>" +
       "<td>" + moneyCell(cab.spendDayBefore) + "</td>" +
+      "<td>" + cpcCellHtml(cab, data) + "</td>" +
       "<td>" + moneyCell(cab.spendMonth) + "</td>" +
       '<td class="cell-int">' + msgYestCell + "</td>" +
       '<td class="cell-int">' + intCell(cab.messagesMonth) + "</td>";

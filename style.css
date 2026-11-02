@@ -103,7 +103,7 @@ h1 {
 .tiles {
   margin-top: 8px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
@@ -111,7 +111,7 @@ h1 {
   overflow: hidden;
 }
 @media (min-width: 1024px) {
-  .tiles { grid-template-columns: repeat(8, 1fr); }
+  .tiles { grid-template-columns: repeat(9, 1fr); }
 }
 .tile { background: var(--tile-bg); padding: 12px; }
 .tile .label { font-size: 11px; color: var(--muted); line-height: 1.2; }
@@ -128,7 +128,7 @@ h1 {
 
 .grid-table {
   width: 100%;
-  min-width: 1050px;        /* сумма ширин столбцов — таблица не сжимается */
+  min-width: 1150px;        /* сумма ширин столбцов — таблица не сжимается */
   border-collapse: collapse;
   font-size: 14px;
 }
