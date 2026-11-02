@@ -17,6 +17,53 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_FILE = path.join(ROOT, "data.json");
 const CAB_FILE = path.join(ROOT, "cabinets.json");
 
+// ---------- транспорт: прямой VK API или прокси TargetHunter ----------
+// Токены с префиксом "THPROXY:" идут через прокси TargetHunter
+// (агентские кабинеты ТН: rk.targethunter.ru), остальные — напрямую с Bearer.
+const TH_PROXY_PREFIX = "THPROXY:";
+const TH_PROXY_URL = "https://rk.targethunter.ru/vkr.request";
+
+const TH_PROXY_HEADERS = {
+  "Content-Type": "application/x-www-form-urlencoded",
+  "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36",
+  "Accept": "application/json, text/plain, */*",
+  "Origin": "https://rk.targethunter.ru",
+  "Referer": "https://rk.targethunter.ru/",
+};
+
+async function vkGet(token, pathWithQuery) {
+  if (token.startsWith(TH_PROXY_PREFIX)) {
+    const res = await fetch(TH_PROXY_URL, {
+      method: "POST",
+      headers: TH_PROXY_HEADERS,
+      body: new URLSearchParams({
+        method: `/api/v2${pathWithQuery}`,
+        params: "",
+        access_token: token.slice(TH_PROXY_PREFIX.length),
+      }),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const text = await res.text();
+    let j;
+    try {
+      j = JSON.parse(text);
+    } catch {
+      throw new Error(`TH proxy non-JSON: ${text.slice(0, 120)}`);
+    }
+    if (j && typeof j === "object" && "status" in j && "response" in j) {
+      if (j.status !== true) throw new Error(`токен прокси ТН недействителен: ${j.msg || "запрос отклонён"}`);
+      return typeof j.response === "string" ? JSON.parse(j.response) : j.response;
+    }
+    return j;
+  }
+  const res = await fetch(`${BASE}${pathWithQuery}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (res.status === 401) throw new Error("токен недействителен (401)");
+  return res.json();
+}
+
 // ---------- аргументы ----------
 
 const argv = process.argv.slice(2);
@@ -59,12 +106,7 @@ function loadTokens() {
 async function fetchAllTxGroups(token) {
   const all = [];
   for (let off = 0; off < 5000; off += 200) {
-    const res = await fetch(`${BASE}/billing/transaction_groups.json?limit=200&offset=${off}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      signal: AbortSignal.timeout(30_000),
-    });
-    if (res.status === 401) throw new Error("токен недействителен (401)");
-    const r = await res.json();
+    const r = await vkGet(token, `/billing/transaction_groups.json?limit=200&offset=${off}`);
     if (!r.items || r.items.length === 0) break;
     all.push(...r.items);
     if (r.items.length < 200) break;
@@ -139,17 +181,14 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let lastStatsCall = 0; // троттлинг: не чаще одного запроса статистики в 3 секунды
 
 async function fetchDailyStats(token, dateFrom, dateTo) {
-  const url = `${BASE}/statistics/ad_plans/day.json?date_from=${dateFrom}&date_to=${dateTo}`;
-  const auth = { Authorization: `Bearer ${token}` };
+  const url = `/statistics/ad_plans/day.json?date_from=${dateFrom}&date_to=${dateTo}`;
 
   let lastErr = "";
   for (let attempt = 0; attempt < 4; attempt++) {
     const wait = 3000 - (Date.now() - lastStatsCall);
     if (wait > 0) await sleep(wait);
     lastStatsCall = Date.now();
-    const res = await fetch(url, { headers: auth, signal: AbortSignal.timeout(30_000) });
-    if (res.status === 401) throw new Error("токен недействителен (401)");
-    const r = await res.json();
+    const r = await vkGet(token, url);
     if (r.items) {
       const byDate = {};
       for (const it of r.items) {
@@ -172,12 +211,7 @@ async function fetchDailyStats(token, dateFrom, dateTo) {
 
 async function fetchCampaignsCount(token) {
   try {
-    const res = await fetch(`${BASE}/campaigns.json?limit=1`, {
-      headers: { Authorization: `Bearer ${token}` },
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (res.status === 401) throw new Error("токен недействителен (401)");
-    const r = await res.json();
+    const r = await vkGet(token, "/campaigns.json?limit=1");
     return typeof r.count === "number" ? r.count : null;
   } catch {
     return null;
