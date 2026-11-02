@@ -31,8 +31,8 @@
     "extId": 28571374,
     "name": "Адамович помор",
     "clientName": "Адамович",
-    "noTokenStatus": "nokey",
-    "noTokenNote": "нет токена — добавьте в секрет VK_TOKENS"
+    "noTokenStatus": "ok",
+    "noTokenNote": null
   },
   {
     "extId": 15155276,
@@ -43,10 +43,10 @@
   },
   {
     "extId": 15635657,
-    "name": "Воздух",
-    "clientName": "Воздух — Куляшова",
+    "name": "Воздух Пермь",
+    "clientName": "Владлена Куляшова — Пермь",
     "noTokenStatus": "token_limit",
-    "noTokenNote": "лимит токенов VK, повторим автоматически (старые токены истекают в течение суток)"
+    "noTokenNote": "лимит токенов VK — нажмите Run workflow позже или перевыпустите доступ к API"
   },
   {
     "extId": 23685298,
