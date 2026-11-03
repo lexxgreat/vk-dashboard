@@ -1,0 +1,49 @@
+name: Создание объявлений VK
+
+# Срабатывает, когда на сайте через Contents API появляется файл задания
+# в ads-jobs/pending/ (сайт кладёт туда фото и тексты; токены VK остаются
+# в секретах GitHub и в браузер не попадают). Результат воркер пишет в
+# ads-jobs/done/<id>.json — сайт опрашивает его и показывает статусы.
+# Также можно запустить вручную (воркер обработает все накопившиеся задания).
+
+on:
+  push:
+    paths:
+      - "ads-jobs/pending/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ads-jobs
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрать репозиторий
+        uses: actions/checkout@v4
+
+      - name: Настроить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Обработать задания на объявления
+        run: node scripts/ads_job_worker.mjs
+        env:
+          VK_ADS_DIRECT_TOKENS: ${{ secrets.VK_ADS_DIRECT_TOKENS }}
+
+      - name: Записать результаты в репозиторий
+        run: |
+          git config user.name "vk-dashboard-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add ads-jobs/ ads/creatives.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "изменений нет"
+          else
+            git commit -m "объявления: задания обработаны $(TZ=Europe/Moscow date '+%d.%m %H:%M')"
+            git push
+          fi
