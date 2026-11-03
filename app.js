@@ -72,6 +72,106 @@ function cpc2days(cab, data) {
   return (cab.spendYesterday + cab.spendDayBefore) / clicks;
 }
 
+// ---------- график в карточке клиента: клики (столбики) + цена клика (линия) ----------
+// Чистый SVG без библиотек — строится из clicks7, уже лежащего в data.json.
+
+function niceCeilInt(v) {
+  var steps = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 40, 50, 60, 80, 100, 150, 200, 300, 500, 1000];
+  for (var i = 0; i < steps.length; i++) if (steps[i] >= v) return steps[i];
+  return Math.ceil(v / 500) * 500;
+}
+
+function niceCeil(v) {
+  if (!(v > 0)) return 1;
+  var exp = Math.pow(10, Math.floor(Math.log10(v)));
+  var f = v / exp;
+  var steps = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+  for (var j = 0; j < steps.length; j++) if (steps[j] >= f) return steps[j] * exp;
+  return 10 * exp;
+}
+
+function fmtAxisCpc(v) {
+  if (v === 0) return "0";
+  if (v >= 10) return String(Math.round(v));
+  return v.toFixed(1).replace(".", ",");
+}
+
+function buildChartSvg(days) {
+  var W = 520, H = 224;
+  var mL = 34, mR = 58, mT = 14, mB = 24;
+  var iw = W - mL - mR, ih = H - mT - mB;
+  var n = days.length;
+  if (!n) return "";
+
+  var maxClicks = niceCeilInt(Math.max.apply(null, days.map(function (d) { return d.clicks || 0; })));
+  var cpcVals = days
+    .map(function (d) { return d.cpc != null && isFinite(d.cpc) ? d.cpc : null; })
+    .filter(function (v) { return v != null; });
+  var hasCpc = cpcVals.length > 0;
+  var maxCpc = niceCeil(hasCpc ? Math.max.apply(null, cpcVals) : 0);
+
+  var yC = function (v) { return mT + ih - (ih * v) / maxClicks; };
+  var yP = function (v) { return mT + ih - (ih * v) / maxCpc; };
+  var band = iw / n;
+  var xC = function (i) { return mL + band * (i + 0.5); };
+
+  var p = [];
+
+  // сетка + оси: клики слева, цена клика справа
+  for (var g = 0; g <= 3; g++) {
+    var frac = g / 3;
+    var y = (mT + ih - ih * frac).toFixed(1);
+    p.push('<line x1="' + mL + '" y1="' + y + '" x2="' + (W - mR) + '" y2="' + y + '" stroke="#e5e7eb" stroke-width="1"/>');
+    p.push('<text x="' + (mL - 6) + '" y="' + (+y + 3.5).toFixed(1) + '" text-anchor="end" font-size="10" fill="#6b7280">' + Math.round(maxClicks * frac) + "</text>");
+    if (hasCpc) {
+      p.push('<text x="' + (W - mR + 6) + '" y="' + (+y + 3.5).toFixed(1) + '" text-anchor="start" font-size="10" fill="#6b7280">' + fmtAxisCpc(maxCpc * frac) + "</text>");
+    }
+  }
+
+  // столбики кликов (сегодня — полупрозрачный с пунктиром) + подпись значения
+  days.forEach(function (d, i) {
+    var clicks = d.clicks || 0;
+    var x = xC(i);
+    var bw = Math.min(band * 0.52, 40);
+    var yTop = yC(clicks);
+    var h = clicks > 0 ? Math.max(2, mT + ih - yTop) : 0;
+    var todayFill = d.isToday ? ' opacity="0.55"' : "";
+    var todayStroke = d.isToday ? ' stroke="#3f8ae0" stroke-dasharray="3 2" stroke-width="1"' : "";
+    p.push(
+      '<g><title>' + esc(fmtDateShort(d.date)) + (d.isToday ? " (сегодня, ещё идёт)" : "") +
+      ": клики " + clicks + ", расход " + fmtMoneyPrecise(d.spend) + ", цена клика " + fmtCpc(d.cpc) + "</title>" +
+      '<rect x="' + (x - bw / 2).toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="#3f8ae0"' + todayFill + todayStroke + "/>" +
+      (clicks > 0 ? '<text x="' + x.toFixed(1) + '" y="' + (yTop - 5).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">' + clicks + "</text>" : "") +
+      "</g>"
+    );
+    p.push(
+      '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10"' +
+      (d.isToday ? ' font-weight="600" fill="#3f8ae0"' : ' fill="#6b7280"') + ">" + esc(fmtDateShort(d.date)) + "</text>"
+    );
+  });
+
+  // линия цены клика — только там, где она известна (клики в этот день были)
+  var pts = [];
+  days.forEach(function (d, i) {
+    if (d.cpc != null && isFinite(d.cpc)) pts.push({ x: xC(i), y: yP(d.cpc), d: d });
+  });
+  if (pts.length >= 2) {
+    p.push(
+      '<polyline points="' +
+      pts.map(function (pt) { return pt.x.toFixed(1) + "," + pt.y.toFixed(1); }).join(" ") +
+      '" fill="none" stroke="#d97706" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    );
+  }
+  pts.forEach(function (pt) {
+    p.push(
+      '<circle cx="' + pt.x.toFixed(1) + '" cy="' + pt.y.toFixed(1) + '" r="3.5" fill="#d97706" stroke="#fff" stroke-width="1.5">' +
+      '<title>' + esc(fmtDateShort(pt.d.date)) + ": цена клика " + fmtCpc(pt.d.cpc) + "</title></circle>"
+    );
+  });
+
+  return '<svg class="chart-svg" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="График: клики и цена клика за ' + n + ' дней">' + p.join("") + "</svg>";
+}
+
 var STATUS = {
   nokey: { label: "нет ключа API", cls: "b-nokey" },
   token_limit: { label: "лимит токенов", cls: "b-limit" },
@@ -241,7 +341,7 @@ function openModal(cab) {
   document.getElementById("modal-title").textContent = cab.clientName || cab.name;
   var hasData = cab.status === "ok";
   document.getElementById("modal-subtitle").textContent = hasData
-    ? "клики за последние 7 дней"
+    ? "клики и цена клика за последние 7 дней"
     : statusBadge(cab.status, cab.statusNote) ? "нет данных по кабинету" : "";
 
   var body = document.getElementById("modal-body");
@@ -273,6 +373,21 @@ function openModal(cab) {
     ));
   });
   block.appendChild(grid);
+
+  // график: столбики кликов + линия цены клика за 7 дней
+  if (cab.clicks7 && cab.clicks7.length) {
+    block.appendChild(el(
+      '<div class="chart-wrap">' +
+      '<div class="chart-head">' +
+      '<span class="chart-title">Динамика за 7 дней</span>' +
+      '<span class="chart-legend">' +
+      '<span class="leg leg-bar"><i></i>клики, шт</span>' +
+      '<span class="leg leg-line"><i></i>цена клика, ₽</span>' +
+      "</span></div>" +
+      buildChartSvg(cab.clicks7) +
+      "</div>"
+    ));
+  }
 
   if (isLow(cab)) {
     block.appendChild(el(
