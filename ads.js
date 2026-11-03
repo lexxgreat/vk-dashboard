@@ -19,6 +19,14 @@
   var GH_BRANCH = "main";
   var GH_RAW = "https://raw.githubusercontent.com/" + GH_REPO + "/" + GH_BRANCH + "/";
   var GH_API = "https://api.github.com/repos/" + GH_REPO + "/";
+  // ссылка с автозаполнением формы токена (имя/описание/срок/право Contents:rw).
+  // Параметры по документации GitHub; репозиторий и «Generate» пользователь выбирает сам.
+  var GH_NEW_TOKEN_URL =
+    "https://github.com/settings/personal-access-tokens/new?name=" +
+    encodeURIComponent("vk-dashboard сайт") +
+    "&description=" +
+    encodeURIComponent("Создание объявлений с сайта vk-dashboard") +
+    "&expires_in=90&contents=write";
   var LS_BACKEND = "adsBackendUrl";
   var LS_KEY = "adsPanelKey";
   var LS_GH_KEY = "adsGhToken";
@@ -225,13 +233,16 @@
       "репозиторий. Это НЕ токен VK: токены кабинетов лежат в секретах GitHub Actions и " +
       "в браузер не попадают. Этот ключ может только добавлять файлы в этот один " +
       "репозиторий — до секретов и настроек ему нельзя, даже если его кто-то узнает.<br>" +
-      "<b>Как создать:</b> github.com → Settings → Developer settings → " +
-      "Fine-grained personal access tokens → Generate new token. Repository access: " +
-      "<i>Only select repositories</i> → <b>" + GH_REPO + "</b>. Permissions → Repository permissions → " +
-      "<b>Contents: Read and write</b>. Остальное не трогайте. Токен сохраняется только в " +
-      "этом браузере (localStorage) и в любой момент отзывается на github.com.";
+      "<b>Как создать:</b> нажмите кнопку ниже — имя, описание, срок 90 дней и право " +
+      "<b>Contents: Read and write</b> заполнятся сами. На открывшейся странице останется " +
+      "два шага: Repository access → <i>Only select repositories</i> → выбрать <b>" + GH_REPO +
+      "</b>, затем внизу <b>Generate token</b>. Скопируйте токен (показывается один раз) " +
+      "и вставьте в поле здесь. Токен сохраняется только в этом браузере (localStorage) " +
+      "и в любой момент отзывается на github.com.";
     return (
       '<div class="ads-gh"><p class="ads-gh-help">' + help + "</p>" +
+      '<div style="margin-top:10px"><a class="btn" href="' + GH_NEW_TOKEN_URL +
+      '" target="_blank" rel="noopener noreferrer">Создать токен — всё уже заполнено</a></div>' +
       '<form class="ads-key" id="ads-gh-form">' +
       '<label for="ads-gh-input">Токен GitHub (fine-grained)</label>' +
       '<input type="password" id="ads-gh-input" placeholder="github_pat_…" value="' + esc(ghToken) + '" autocomplete="off">' +
