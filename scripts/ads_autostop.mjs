@@ -5,7 +5,10 @@
 // Механика: по каждому активному баннеру группы читается статистика
 //   GET /statistics/banners/day.json?date_from&date_to&id=<bannerId>
 //   (параметр id — ровно один баннер за вызов; total.base.spent/clicks).
-// Нарушение: расход > maxSpend ИЛИ (клики ≥ 1 и расход/клики > maxCpc).
+// Нарушение: задан один порог — решает он один; заданы оба — срабатывают ВМЕСТЕ:
+//   стоп, когда баннер уже потратил больше maxSpend И клик дороже maxCpc
+//   (дешёвые клики при исчерпанном бюджете — удачный вариант, его не трогаем;
+//   кликов 0 при исчерпанном бюджете — худший вариант, тоже стоп).
 // Действие: POST /banners/{id}.json {"status":"blocked"} — «Остановлено» в VK Рекламе
 //   (статусы баннера: active / blocked / deleted; тексты и креатив не затираются — проверено).
 // Журнал: ads-rules-log.json (последние 300 событий + сводка последнего прогона).
@@ -78,14 +81,27 @@ async function bannerStats(token, bannerId, dateFrom, dateTo) {
   return null; // не удалось — баннер пропускаем, не останавливаем вслепую
 }
 
+/** Нарушение правила. Один порог — решает он; оба порога — срабатывают ВМЕСТЕ:
+ *  останавливаем, когда баннер уже потратил больше maxSpend И клик дороже maxCpc
+ *  (дешёвые клики = удачный вариант — крутится дальше; кликов 0 при исчерпанном
+ *  бюджете — худший вариант, останавливаем). */
 function violation(rule, st) {
-  if (st.spend > 0 && rule.maxSpend != null && st.spend > rule.maxSpend) {
-    return `расход ${r2(st.spend)} ₽ > ${rule.maxSpend} ₽`;
+  const hasSpend = rule.maxSpend != null;
+  const hasCpc = rule.maxCpc != null;
+  if (!hasSpend && !hasCpc) return null;
+  const spendOver = hasSpend && st.spend > rule.maxSpend;
+  const cpc = st.clicks >= 1 ? st.spend / st.clicks : null;
+  const cpcOver = hasCpc && cpc != null && cpc > rule.maxCpc;
+  if (hasSpend && hasCpc) {
+    if (spendOver && (cpcOver || st.clicks === 0)) {
+      return st.clicks === 0
+        ? `расход ${r2(st.spend)} ₽ > ${rule.maxSpend} ₽ и ни одного клика`
+        : `расход ${r2(st.spend)} ₽ > ${rule.maxSpend} ₽ и цена клика ${r2(cpc)} ₽ > ${rule.maxCpc} ₽`;
+    }
+    return null;
   }
-  if (st.clicks >= 1 && rule.maxCpc != null) {
-    const cpc = st.spend / st.clicks;
-    if (cpc > rule.maxCpc) return `цена клика ${r2(cpc)} ₽ > ${rule.maxCpc} ₽ (кликов ${st.clicks}, расход ${r2(st.spend)} ₽)`;
-  }
+  if (spendOver) return `расход ${r2(st.spend)} ₽ > ${rule.maxSpend} ₽`;
+  if (cpcOver) return `цена клика ${r2(cpc)} ₽ > ${rule.maxCpc} ₽ (кликов ${st.clicks}, расход ${r2(st.spend)} ₽)`;
   return null;
 }
 
