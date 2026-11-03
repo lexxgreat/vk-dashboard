@@ -219,11 +219,17 @@
 
   function ghTokenForm() {
     var help =
-      "<b>Как создать токен GitHub:</b> github.com → Settings → Developer settings → " +
+      "<b>Зачем нужен этот токен:</b> статистика на сайте работает без него. Но кнопка " +
+      "«Создать объявления» записывает файл-задание в репозиторий " + GH_REPO + ", а GitHub " +
+      "разрешает запись только по ключу — анонимному посетителю нельзя коммитить в чужой " +
+      "репозиторий. Это НЕ токен VK: токены кабинетов лежат в секретах GitHub Actions и " +
+      "в браузер не попадают. Этот ключ может только добавлять файлы в этот один " +
+      "репозиторий — до секретов и настроек ему нельзя, даже если его кто-то узнает.<br>" +
+      "<b>Как создать:</b> github.com → Settings → Developer settings → " +
       "Fine-grained personal access tokens → Generate new token. Repository access: " +
       "<i>Only select repositories</i> → <b>" + GH_REPO + "</b>. Permissions → Repository permissions → " +
-      "<b>Contents: Read and write</b>. Остальное не трогайте. Токен живёт в браузере " +
-      "(localStorage) и может только писать файлы в этот репозиторий.";
+      "<b>Contents: Read and write</b>. Остальное не трогайте. Токен сохраняется только в " +
+      "этом браузере (localStorage) и в любой момент отзывается на github.com.";
     return (
       '<div class="ads-gh"><p class="ads-gh-help">' + help + "</p>" +
       '<form class="ads-key" id="ads-gh-form">' +
@@ -915,7 +921,8 @@
         if (!ghToken) {
           connState(
             '<div class="ads-conn-gh"><div><b>Режим GitHub Actions.</b> Панель на компьютере не запущена — ' +
-            "объявления создаст workflow в репозитории. Нужен токен GitHub (см. ниже).</div>" +
+            "объявления создаст workflow в репозитории. Нужен токен GitHub — узкий ключ " +
+            "записи в репозиторий (зачем и как — ниже).</div>" +
             ghTokenForm() + "</div>"
           );
           bindGhTokenForm();
