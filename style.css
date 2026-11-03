@@ -563,3 +563,10 @@ td .na { color: var(--muted-2); }
 .ads-mod-decl, .ads-mod-unk { background: var(--red-note-bg); color: var(--red-note-fg); }
 
 .ads-note { font-size: 11.5px; color: var(--muted-2); margin: 0; }
+
+/* дополнения: режим GitHub Actions */
+.ads-conn-gh { background: var(--blue-50); color: var(--navy); border: 1px solid var(--border); }
+.ads-gh { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.ads-gh-help { font-size: 11.5px; color: var(--muted-2); margin: 0; line-height: 1.5;
+  background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.ads-gh-help b { color: var(--fg); }
