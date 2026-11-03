@@ -1,8 +1,9 @@
 // Обработчик заданий на создание объявлений (запускается в GitHub Actions,
 // workflow create-ads.yml, при появлении файлов в ads-jobs/pending/).
 // Задание (JSON): { id, type: "create"|"status", cabinet:<extId>, group,
-//   iconId, urlId, texts:{title,body,cta,about},
-//   items:[{name, slot, photo:<base64 jpeg уже в размере слота>}] }.
+//   iconId, urlId, texts:{title,body,cta,about} — общий вариант по умолчанию,
+//   items:[{name, slot, photo:<base64 jpeg>, texts?:{title,body} — свой текст,
+//          перекрывает общий (A/B-тесты заголовков/текстов)}] }.
 // Токены VK — из секрета VK_ADS_DIRECT_TOKENS (в браузер не попадают).
 // Результат пишется в ads-jobs/done/<id>.json, задание удаляется,
 // база дедупликации ads/creatives.json коммитится в репозиторий.
@@ -92,7 +93,7 @@ function slotKeyOf(fileName) {
 async function handleCreate(job) {
   const token = tokens[String(job.cabinet)];
   if (!token) throw new Error(`нет прямого токена для кабинета ${job.cabinet}`);
-  const t = job.texts ?? {};
+  const base = job.texts ?? {};
   const results = [];
   const cdb = loadCreatives();
 
@@ -101,6 +102,8 @@ async function handleCreate(job) {
       results.push({ name: item.name ?? "?", ok: false, bannerId: null, moderationStatus: null, error: "невалидный элемент задания" });
       continue;
     }
+    // тексты элемента перекрывают общие (варианты для A/B-тестов)
+    const t = { ...base, ...(item.texts ?? {}) };
     try {
       const buf = Buffer.from(item.photo, "base64");
       if (buf.length > 5 * 1024 * 1024) throw new Error(`фото больше 5 МБ (${(buf.length / 1048576).toFixed(1)})`);
