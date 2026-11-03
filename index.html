@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <main class="container">
@@ -75,6 +75,27 @@
       </div>
     </div>
 
+    <!-- ===== Реклама — создание объявлений (запись через панель-бэкенд, токены не в браузере) ===== -->
+    <section class="ads" id="ads-section" aria-label="Реклама — создание объявлений">
+      <header class="ads-head">
+        <div class="ads-head-txt">
+          <h2>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            Реклама — создание объявлений
+          </h2>
+          <p>Загрузите фото пачкой и напишите текст — объявления создадутся в кабинете VK и уйдут на модерацию</p>
+        </div>
+        <div class="ads-head-btns">
+          <button type="button" class="btn btn-outline" id="ads-refresh">Обновить</button>
+          <button type="button" class="btn" id="ads-toggle" aria-expanded="false">Создать объявления</button>
+        </div>
+      </header>
+      <div id="ads-body" hidden>
+        <div class="ads-conn" id="ads-conn"></div>
+        <div id="ads-form"></div>
+      </div>
+    </section>
+
     <p class="footnote">
       Баланс — по данным VK Рекламы; «реальные деньги» рассчитываются по истории транзакций (могут немного
       отличаться от панели). Сообщения — конверсии по цели «Сообщения в сообществе» за полные сутки (вчера)
@@ -85,5 +106,6 @@
   </main>
 
   <script src="app.js?v=3" defer></script>
+  <script src="ads.js?v=1" defer></script>
 </body>
 </html>
