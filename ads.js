@@ -1,30 +1,45 @@
 // VK Дашборд — секция «Реклама — создание объявлений» для GitHub Pages.
-// Запись в VK Рекламу идёт через панель-бэкенд (Next.js): токены VK остаются
-// на сервере и в браузер не попадают. Панель ищется по списку адресов ниже.
+// ДВА РЕЖИМА (выбирается автоматически):
+//  1. ПАНЕЛЬ: если на этом компьютере запущена Next.js-панель — запись идёт
+//     напрямую через неё (токены VK на сервере панели, ключ доступа в браузере).
+//  2. GITHUB ACTIONS: если панели нет — сайт читает ads-context.json из репозитория
+//     (кампании/группы/автозаполнение), а создание объявлений отправляет заданием
+//     ads-jobs/pending/*.json через GitHub Contents API. Задание обрабатывает
+//     workflow create-ads.yml с секретом VK_ADS_DIRECT_TOKENS — токены VK
+//     НИКОГДА не попадают в браузер. Нужен fine-grained PAT (contents:write
+//     только на этот репозиторий) — хранится в localStorage браузера.
 "use strict";
 
 (function () {
-  // ---------- конфиг: где искать панель ----------
+  // ---------- конфиг ----------
   var ADS_BACKENDS = [
     "http://127.0.0.1:3000", // панель на этом компьютере
-    // (публичный адрес панели добавляется при деплое)
   ];
+  var GH_REPO = "lexxgreat/vk-dashboard";
+  var GH_BRANCH = "main";
+  var GH_RAW = "https://raw.githubusercontent.com/" + GH_REPO + "/" + GH_BRANCH + "/";
+  var GH_API = "https://api.github.com/repos/" + GH_REPO + "/";
   var LS_BACKEND = "adsBackendUrl";
   var LS_KEY = "adsPanelKey";
+  var LS_GH_KEY = "adsGhToken";
 
   // ---------- состояние ----------
+  var mode = null; // "panel" | "gh" | null
   var backend = null;
   var panelKey = "";
-  var cabinets = null; // [{id,name,clientName,balance,canWrite,writeNote}]
-  var ctx = null; // AdsContextDto
-  var cabinetId = null;
+  var ghToken = "";
+  var ghContext = null; // ads-context.json
+  var cabinets = null;
+  var ctx = null;
+  var cabinetId = null; // панель: id из БД; gh: внешний id кабинета
   var planId = null;
   var groupId = null;
-  var photos = []; // см. addFiles
+  var photos = [];
   var uploading = false;
   var results = null;
-  var statuses = null; // [{id,name,status,moderationStatus,reasons}]
+  var statuses = null;
   var creating = false;
+  var polling = null; // таймер опроса результата gh-задания
   var uid = 0;
 
   var SLOTS = [
@@ -67,12 +82,15 @@
     });
     return best;
   }
-  function $(id) { return document.getElementById(id); }
+  function $ (id) { return document.getElementById(id); }
   function cleanName(fileName) {
     return fileName.replace(/\.(jpe?g|png)$/i, "").replace(/[-_\s]+/g, "").slice(0, 100);
   }
+  function b64utf8(s) {
+    return btoa(unescape(encodeURIComponent(s)));
+  }
 
-  // ---------- вызов API панели ----------
+  // ---------- вызовы API панели ----------
   function apiFetch(path, opts) {
     opts = opts || {};
     var headers = { "X-Panel-Key": panelKey };
@@ -84,13 +102,8 @@
       method: opts.method || "GET",
       headers: headers,
       body: opts.body,
-      signal: opts.signal,
     }).then(function (r) {
-      if (r.status === 401) {
-        var err = new Error("нужен ключ панели");
-        err.needKey = true;
-        throw err;
-      }
+      if (r.status === 401) { var e = new Error("нужен ключ панели"); e.needKey = true; throw e; }
       return r.json().catch(function () { return {}; }).then(function (j) {
         if (!r.ok) throw new Error(j.error || ("HTTP " + r.status));
         return j;
@@ -98,14 +111,75 @@
     });
   }
 
-  // ---------- поиск панели ----------
+  // ---------- GitHub Contents API ----------
+  function ghPut(path, message, contentStr) {
+    return fetch(GH_API + "contents/" + encodeURIComponent(path).replace(/%2F/g, "/"), {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + ghToken,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: message, content: b64utf8(contentStr), branch: GH_BRANCH }),
+    }).then(function (r) {
+      if (r.status === 401 || r.status === 403) {
+        throw new Error("GitHub отклонил токен (проверьте fine-grained PAT с правом Contents: write на репозиторий " + GH_REPO + ")");
+      }
+      if (!r.ok) throw new Error("GitHub HTTP " + r.status);
+      return r.json();
+    });
+  }
+
+  function ghFetchContextJson() {
+    return fetch(GH_RAW + "ads-context.json?t=" + Date.now()).then(function (r) {
+      if (!r.ok) throw new Error("ads-context.json не найден (HTTP " + r.status + ")");
+      return r.json();
+    });
+  }
+
+  /** Обработка задания через GitHub Actions: отправка + опрос результата. */
+  function ghRunJob(job, onResult) {
+    var id = job.id;
+    var file = "ads-jobs/pending/" + id + ".json";
+    return ghPut(file, "задание на объявления " + id, JSON.stringify(job)).then(function () {
+      // мягкий дубль-триггер: repository_dispatch (если у токена есть право) —
+      // основной триггер всё равно push по пути ads-jobs/pending/**
+      fetch(GH_API + "dispatches", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + ghToken,
+          Accept: "application/vnd.github+json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_type: "ads-job", client_payload: { id: id } }),
+      }).catch(function () {});
+      // опрос результата (воркер пишет ads-jobs/done/<id>.json)
+      return new Promise(function (resolve, reject) {
+        var tries = 0;
+        (function poll() {
+          tries++;
+          if (tries > 55) { reject(new Error("GitHub Actions не успел за ~5 минут — проверьте вкладку Actions репозитория")); return; }
+          fetch(GH_RAW + "ads-jobs/done/" + id + ".json?t=" + Date.now())
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (j) {
+              if (j && j.id === id) { resolve(j); return; }
+              if (typeof onResult === "function") onResult(tries);
+              polling = setTimeout(poll, 6000);
+            })
+            .catch(function () { polling = setTimeout(poll, 6000); });
+        })();
+      });
+    });
+  }
+
+  // ---------- поиск панели / режим ----------
   function detectBackend() {
     var tryNext = function (list, i) {
       if (i >= list.length) return Promise.reject(new Error("not found"));
       var url = list[i];
       return fetch(url + "/api/ads/cabinets", {
         headers: { "X-Panel-Key": panelKey },
-        signal: AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined,
+        signal: AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined,
       }).then(function (r) {
         if (r.status === 401) { backend = url; var e = new Error("нужен ключ"); e.needKey = true; throw e; }
         if (!r.ok) throw new Error("HTTP " + r.status);
@@ -137,11 +211,37 @@
     connState(
       '<div class="ads-conn-off">' +
       '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>' +
-      "<div><b>Панель не найдена.</b> Создание объявлений работает через панель (сервер с ключами VK) — " +
-      "она должна быть запущена. " + esc(detail || "") + "</div></div>" +
-      keyFormHtml()
+      "<div><b>Панель не найдена.</b> " + esc(detail || "") + "</div></div>" +
+      ghTokenForm()
     );
-    bindKeyForm();
+    bindGhTokenForm();
+  }
+
+  function ghTokenForm() {
+    var help =
+      "<b>Как создать токен GitHub:</b> github.com → Settings → Developer settings → " +
+      "Fine-grained personal access tokens → Generate new token. Repository access: " +
+      "<i>Only select repositories</i> → <b>" + GH_REPO + "</b>. Permissions → Repository permissions → " +
+      "<b>Contents: Read and write</b>. Остальное не трогайте. Токен живёт в браузере " +
+      "(localStorage) и может только писать файлы в этот репозиторий.";
+    return (
+      '<div class="ads-gh"><p class="ads-gh-help">' + help + "</p>" +
+      '<form class="ads-key" id="ads-gh-form">' +
+      '<label for="ads-gh-input">Токен GitHub (fine-grained)</label>' +
+      '<input type="password" id="ads-gh-input" placeholder="github_pat_…" value="' + esc(ghToken) + '" autocomplete="off">' +
+      '<button type="submit" class="btn">Войти</button>' +
+      "</form></div>"
+    );
+  }
+  function bindGhTokenForm() {
+    var f = $("ads-gh-form");
+    if (!f) return;
+    f.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      ghToken = $("ads-gh-input").value.trim();
+      try { localStorage.setItem(LS_GH_KEY, ghToken); } catch (e) {}
+      boot();
+    });
   }
 
   function keyFormHtml() {
@@ -162,6 +262,15 @@
       try { localStorage.setItem(LS_KEY, panelKey); } catch (e) {}
       boot();
     });
+  }
+
+  function needKeyUi() {
+    connState(
+      '<div class="ads-conn-key">' +
+      "<div><b>Панель требует ключ.</b> Введите ключ доступа — он хранится только в вашем браузере.</div>" +
+      keyFormHtml() + "</div>"
+    );
+    bindKeyForm();
   }
 
   function renderConstructor() {
@@ -241,14 +350,17 @@
       "</div>" +
 
       "</div></div>" +
-      '<p class="ads-note">Запись идёт напрямую в VK Рекламу с сервера панели: токены не покидают сервер. ' +
-      "Кабинеты «только чтение» (прокси TargetHunter, лимит токенов) в списке отмечены и недоступны.</p>";
+      '<p class="ads-note">Запись идёт в VK Рекламу через сервер' +
+      (mode === "gh"
+        ? " GitHub Actions (токены VK — в секретах репозитория, в браузер не попадают)"
+        : " панели: токены VK не покидают сервер") +
+      ". Кабинеты «только чтение» в списке отмечены и недоступны.</p>";
     bindForm();
   }
 
   function bindForm() {
     $("ads-cabinet").addEventListener("change", function () {
-      switchCabinet(Number(this.value) || null);
+      switchCabinet(this.value || null);
     });
     $("ads-plan").addEventListener("change", function () {
       planId = Number(this.value) || null;
@@ -303,9 +415,9 @@
       cabinets
         .map(function (c) {
           var extra = c.clientName && c.clientName !== c.name ? " — " + c.clientName : "";
-          var note = c.canWrite ? "" : " · " + (c.writeNote || "только чтение");
+          var note = c.canWrite === false ? " · " + (c.writeNote || "только чтение") : "";
           return (
-            '<option value="' + c.id + '"' + (c.canWrite ? "" : " disabled") + ">" +
+            '<option value="' + esc(c.value) + '"' + (c.canWrite === false ? " disabled" : "") + ">" +
             esc(c.name + extra) + " · " + fmtMoney(c.balance) + esc(note) +
             "</option>"
           );
@@ -324,26 +436,27 @@
     ["ads-ctx", "ads-photos-step", "ads-texts-step", "ads-create-step"].forEach(function (i) { $(i).hidden = true; });
     $("ads-results").innerHTML = "";
     if (!cabinetId) return;
+
+    if (mode === "gh") {
+      // контекст уже в ads-context.json (обновляется каждые 30 минут)
+      ctx = ghContext.cabinets[String(cabinetId)] || null;
+      if (!ctx) {
+        var box = $("ads-ctx-err");
+        box.textContent = "Для этого кабинета нет данных в ads-context.json";
+        box.hidden = false;
+        return;
+      }
+      ctx.plans = ctx.plans || []; ctx.groups = ctx.groups || [];
+      applyContext();
+      return;
+    }
+
     $("ads-ctx-loading").hidden = false;
     $("ads-ctx-err").hidden = true;
-    apiFetch("/api/ads/context?cabinet=" + cabinetId).then(function (c) {
+    apiFetch("/api/ads/context?cabinet=" + encodeURIComponent(cabinetId)).then(function (c) {
       $("ads-ctx-loading").hidden = true;
       ctx = c;
-      fillPlans(); fillGroups(); fillDefaults();
-      $("ads-ctx").hidden = false;
-      $("ads-photos-step").hidden = false;
-      $("ads-texts-step").hidden = false;
-      $("ads-create-step").hidden = false;
-      var lim = $("ads-limits");
-      if (ctx.limits.maxActiveBanners != null) {
-        lim.textContent = "активных объявлений: " + (ctx.limits.activeBanners != null ? ctx.limits.activeBanners : "—") +
-          " / " + ctx.limits.maxActiveBanners;
-        lim.hidden = false;
-      }
-      var based = "автозаполнено из " + ctx.defaults.basedOnBanners + " существующих объявлений кабинета";
-      $("ads-based").textContent = based;
-      $("ads-based2").textContent = based;
-      updateCounts(); updateSummary();
+      applyContext();
     }).catch(function (e) {
       $("ads-ctx-loading").hidden = true;
       if (e && e.needKey) { needKeyUi(); return; }
@@ -351,6 +464,24 @@
       box.textContent = e.message || String(e);
       box.hidden = false;
     });
+  }
+
+  function applyContext() {
+    fillPlans(); fillGroups(); fillDefaults();
+    $("ads-ctx").hidden = false;
+    $("ads-photos-step").hidden = false;
+    $("ads-texts-step").hidden = false;
+    $("ads-create-step").hidden = false;
+    var lim = $("ads-limits");
+    if (ctx.limits && ctx.limits.maxActiveBanners != null) {
+      lim.textContent = "активных объявлений: " + (ctx.limits.activeBanners != null ? ctx.limits.activeBanners : "—") +
+        " / " + ctx.limits.maxActiveBanners;
+      lim.hidden = false;
+    } else lim.hidden = true;
+    var based = "автозаполнено из " + ((ctx.defaults && ctx.defaults.basedOnBanners) || 0) + " существующих объявлений кабинета";
+    $("ads-based").textContent = based;
+    $("ads-based2").textContent = based;
+    updateCounts(); updateSummary();
   }
 
   function fillPlans() {
@@ -375,7 +506,7 @@
       : "";
   }
   function fillDefaults() {
-    var d = ctx.defaults;
+    var d = ctx.defaults || {};
     $("ads-title").value = d.title || "";
     $("ads-cta").value = d.cta || "";
     $("ads-about").value = d.about || "";
@@ -390,7 +521,7 @@
     var accepted = [];
     Array.prototype.forEach.call(files, function (f) {
       if (!/\.(jpe?g|png)$/i.test(f.name) || f.size > 5 * 1024 * 1024) return;
-      accepted.push({ uid: ++uid, file: f, name: cleanName(f.name), url: URL.createObjectURL(f), w: null, h: null, slot: null, uploading: false, contentId: null, kept: null, reused: false, error: null });
+      accepted.push({ uid: ++uid, file: f, name: cleanName(f.name), url: URL.createObjectURL(f), w: null, h: null, slot: null, kept: null, uploading: false, contentId: null, reused: false, photo: null, error: null });
     });
     if (!accepted.length) return;
     photos = photos.concat(accepted);
@@ -400,12 +531,40 @@
       img.onload = function () {
         p.w = img.naturalWidth; p.h = img.naturalHeight;
         p.slot = pickSlot(p.w, p.h);
-        updatePhotoCard(p);
-        updateCounter();
+        p.kept = p.slot.kept;
+        if (mode === "gh") {
+          cropToSlot(img, p.slot, function (b64) {
+            p.photo = b64;          // jpeg уже в размере слота — грузить будет Actions
+            p.uploading = false;
+            updatePhotoCard(p); updateCounter();
+          });
+        }
+        updatePhotoCard(p); updateCounter();
       };
+      img.onerror = function () { p.error = "не удалось прочитать файл"; updatePhotoCard(p); };
       img.src = p.url;
     });
-    uploadQueue(accepted);
+    if (mode === "panel") uploadQueue(accepted);
+  }
+
+  /** Кроп под слот в браузере (canvas, cover, приоритет верхней части) → base64 JPEG. */
+  function cropToSlot(img, slot, cb) {
+    var w = slot.w, h = slot.h;
+    var canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    var c2d = canvas.getContext("2d");
+    var sw = img.naturalWidth, sh = img.naturalHeight;
+    var scale = Math.max(w / sw, h / sh);
+    var dw = sw * scale, dh = sh * scale;
+    var dx = (w - dw) / 2;          // по горизонтали — центр
+    var dy = dh >= h ? 0 : (h - dh) / 2; // по вертикали — прижим вверх (как sharp position: top)
+    c2d.drawImage(img, dx, dy, dw, dh);
+    canvas.toBlob(function (blob) {
+      if (!blob) return;
+      var fr = new FileReader();
+      fr.onload = function () { cb(fr.result.split(",")[1]); };
+      fr.readAsDataURL(blob);
+    }, "image/jpeg", 0.9);
   }
 
   function uploadQueue(items) {
@@ -414,7 +573,7 @@
     var chain = Promise.resolve();
     items.forEach(function (p) {
       chain = chain.then(function () {
-        if (photos.indexOf(p) < 0) return; // удалили пока грузилось
+        if (photos.indexOf(p) < 0) return;
         p.uploading = true; updatePhotoCard(p);
         var fd = new FormData();
         fd.append("cabinet", String(cabinetId));
@@ -453,7 +612,10 @@
   }
 
   function readyPhotos() {
-    return photos.filter(function (p) { return p.contentId && !p.uploading && !p.error; });
+    return photos.filter(function (p) {
+      if (p.error || p.uploading) return false;
+      return mode === "gh" ? !!p.photo : !!p.contentId;
+    });
   }
 
   function photoCard(p) {
@@ -462,6 +624,11 @@
       status = '<span class="ads-ph-st ads-ph-up">загружаем в кабинет…</span>';
     } else if (p.error) {
       status = '<span class="ads-ph-st ads-ph-err" title="' + esc(p.error) + '">✕ ' + esc(String(p.error).slice(0, 60)) + "</span>";
+    } else if (mode === "gh") {
+      status =
+        '<span class="ads-ph-st"><span class="ads-slot">' + esc((p.slot && p.slot.label) || "…") + "</span>" +
+        (p.photo ? "" : " <span class='ads-muted'>готовим…</span>") +
+        "</span>";
     } else if (p.contentId) {
       status =
         '<span class="ads-ph-st"><span class="ads-slot">' + esc((p.slot && p.slot.label) || p.slot) + "</span>" +
@@ -530,7 +697,7 @@
           : ' <span class="ads-muted">— по одному на каждую фотографию</span>');
     }
     var warn = $("ads-limit-warn");
-    if (ctx && ctx.limits.maxActiveBanners != null && ctx.limits.activeBanners != null && ready > 0) {
+    if (ctx && ctx.limits && ctx.limits.maxActiveBanners != null && ctx.limits.activeBanners != null && ready > 0) {
       var over = ctx.limits.activeBanners + ready > ctx.limits.maxActiveBanners;
       warn.hidden = !over;
       warn.textContent = "Лимит активных объявлений может быть превышен — VK может отклонить часть созданий.";
@@ -580,37 +747,75 @@
     }
   }
 
-  function needKeyUi() {
-    connState(
-      '<div class="ads-conn-key">' +
-      "<div><b>Панель требует ключ.</b> Введите ключ доступа — он хранится только в вашем браузере.</div>" +
-      keyFormHtml() + "</div>"
-    );
-    bindKeyForm();
-  }
-
   // ---------- создание ----------
   function doCreate() {
     if (creating) return;
     var ready = readyPhotos();
     var t = textsValid();
     var g = ctx.groups.filter(function (x) { return x.id === groupId; })[0];
-    var cab = cabinets.filter(function (c) { return c.id === cabinetId; })[0];
+    var cab = cabinets.filter(function (c) { return String(c.value) === String(cabinetId); })[0];
     var label = (cab ? cab.name : "кабинет") + " → " + (g ? g.name : "");
     if (!window.confirm(
       "Создать " + ready.length + " " + pluralAds(ready.length) + " в группе «" + (g ? g.name : "") + "» (" + label + ")?\n" +
-      "Все — с одинаковыми текстами. Сразу уйдут на модерацию VK."
+      "Все — с одинаковыми текстами. Сразу уйдут на модерацию VK." +
+      (mode === "gh" ? "\nОбработка через GitHub Actions займёт ~30–90 секунд." : "")
     )) return;
 
     creating = true;
     $("ads-progress").hidden = false;
+    $("ads-progress").textContent = mode === "gh"
+      ? "Отправляем задание в GitHub и ждём обработку (обычно 30–90 секунд)…"
+      : "Создаём по одному объявлению (~1 сек на штуку)…";
     $("ads-create-err").hidden = true;
     updateSummary();
+
+    var done = function () {
+      creating = false;
+      $("ads-progress").hidden = true;
+      updateSummary();
+    };
+
+    if (mode === "gh") {
+      var jobId = "job_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      var job = {
+        id: jobId,
+        type: "create",
+        cabinet: Number(cabinetId),
+        group: Number(groupId),
+        iconId: Number($("ads-icon").value),
+        urlId: Number($("ads-url").value),
+        texts: t,
+        items: ready.map(function (p) {
+          return { name: p.name, slot: p.slot.slot, photo: p.photo };
+        }),
+      };
+      ghRunJob(job, function (tries) {
+        $("ads-progress").textContent = "Задание в GitHub Actions, ждём результат… (" + (tries * 6) + " сек)";
+      }).then(function (out) {
+        results = out.results || [];
+        if (!out.ok && out.error) {
+          var box = $("ads-create-err");
+          box.textContent = out.error;
+          box.hidden = false;
+        }
+        statuses = null;
+        renderResults();
+        ghRefreshStatuses();
+        done();
+      }).catch(function (e) {
+        var box = $("ads-create-err");
+        box.textContent = e.message || String(e);
+        box.hidden = false;
+        done();
+      });
+      return;
+    }
+
     apiFetch("/api/ads/create", {
       method: "POST",
       json: {
-        cabinetId: cabinetId,
-        groupId: groupId,
+        cabinetId: Number(cabinetId),
+        groupId: Number(groupId),
         iconId: Number($("ads-icon").value),
         urlId: Number($("ads-url").value),
         texts: t,
@@ -627,11 +832,7 @@
       var box = $("ads-create-err");
       box.textContent = e.message || String(e);
       box.hidden = false;
-    }).then(function () {
-      creating = false;
-      $("ads-progress").hidden = true;
-      updateSummary();
-    });
+    }).then(done);
   }
 
   function modBadge(s, reasons) {
@@ -658,7 +859,7 @@
       results.map(function (r) {
         var st = statuses ? statuses.filter(function (s) { return s.id === r.bannerId; })[0] : null;
         var mod = st ? st.moderationStatus : r.moderationStatus;
-        var reason = st ? st.reasons : [];
+        var reason = st ? st.reasons : null;
         return (
           "<tr><td>" + esc(r.name) + (r.ok ? "" : ' <span class="ads-err-txt">' + esc(r.error || "") + "</span>") +
           "</td><td class='num'>" + (r.bannerId != null ? r.bannerId : "—") +
@@ -666,39 +867,85 @@
         );
       }).join("") +
       "</tbody></table></div>";
-    $("ads-status-btn").addEventListener("click", refreshStatuses);
+    $("ads-status-btn").addEventListener("click", function () {
+      if (mode === "gh") ghRefreshStatuses(); else refreshStatuses();
+    });
   }
 
   function refreshStatuses() {
-    if (!cabinetId || !groupId) return;
-    apiFetch("/api/ads/status?cabinet=" + cabinetId + "&group=" + groupId).then(function (j) {
+    if (mode !== "panel" || !cabinetId || !groupId) return;
+    apiFetch("/api/ads/status?cabinet=" + encodeURIComponent(cabinetId) + "&group=" + groupId).then(function (j) {
       statuses = j.rows || [];
       renderResults();
     }).catch(function (e) { /* тихо: статусы не критичны */ });
+  }
+
+  function ghRefreshStatuses() {
+    if (mode !== "gh" || !cabinetId || !groupId || !ghToken) return;
+    var jobId = "st_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    var job = { id: jobId, type: "status", cabinet: Number(cabinetId), group: Number(groupId) };
+    ghRunJob(job).then(function (out) {
+      if (out.ok) {
+        statuses = out.rows || [];
+        renderResults();
+      }
+    }).catch(function (e) { /* тихо */ });
   }
 
   // ---------- запуск ----------
   var booted = false;
   function boot() {
     try { panelKey = localStorage.getItem(LS_KEY) || ""; } catch (e) { panelKey = ""; }
+    try { ghToken = localStorage.getItem(LS_GH_KEY) || ""; } catch (e) { ghToken = ""; }
     connState('<div class="ads-conn-ok">Ищем панель…</div>');
+    mode = null;
+
     detectBackend().then(function (j) {
-      try {
-        cabinets = (j && j.rows) || [];
-        connState("");
-        if (!booted) {
-          renderConstructor();
-          booted = true;
-        }
-        renderCabinets();
-        $("ads-cabinet").value = cabinetId ? String(cabinetId) : "";
-      } catch (renderErr) {
-        console.error("[ads] render:", renderErr);
-      }
+      mode = "panel";
+      cabinets = (j && j.rows ? j.rows : []).map(function (c) {
+        return { value: String(c.id), name: c.name, clientName: c.clientName, balance: c.balance, canWrite: c.canWrite, writeNote: c.writeNote };
+      });
+      afterConnect();
     }).catch(function (e) {
-      if (e && e.needKey) { needKeyUi(); return; }
-      offlineNotice("Панель — это Next.js-сервер проекта (bun run dev). Запустите её на компьютере и нажмите «Обновить».");
+      if (e && e.needKey) { mode = "panel"; needKeyUi(); return; }
+      // панели нет → режим GitHub Actions
+      ghFetchContextJson().then(function (gc) {
+        ghContext = gc;
+        mode = "gh";
+        if (!ghToken) {
+          connState(
+            '<div class="ads-conn-gh"><div><b>Режим GitHub Actions.</b> Панель на компьютере не запущена — ' +
+            "объявления создаст workflow в репозитории. Нужен токен GitHub (см. ниже).</div>" +
+            ghTokenForm() + "</div>"
+          );
+          bindGhTokenForm();
+          if (!booted) { renderConstructor(); booted = true; }
+          return;
+        }
+        cabinets = Object.keys(gc.cabinets || {}).map(function (extId) {
+          var c = gc.cabinets[extId];
+          return { value: extId, name: c.name, clientName: c.clientName, balance: c.balance, canWrite: true };
+        });
+        connState('<div class="ads-conn-gh"><div><b>Режим GitHub Actions.</b> Задания обрабатывает workflow ' +
+          "в репозитории (токены VK — в секретах GitHub). Обработка ~30–90 сек.</div></div>");
+        afterConnect();
+      }).catch(function () {
+        offlineNotice("Создание объявлений работает либо через панель (Next.js, bun run dev — запустите её и нажмите «Обновить»), либо через GitHub Actions.");
+      });
     });
+  }
+
+  function afterConnect() {
+    connState(mode === "gh"
+      ? '<div class="ads-conn-gh"><div><b>Режим GitHub Actions.</b> Задания обрабатывает workflow в репозитории ' +
+        "(токены VK — в секретах GitHub). Обработка ~30–90 сек.</div></div>"
+      : "");
+    if (!booted) {
+      renderConstructor();
+      booted = true;
+    }
+    renderCabinets();
+    $("ads-cabinet").value = cabinetId ? String(cabinetId) : "";
   }
 
   function init() {
@@ -708,7 +955,7 @@
       $("ads-body").hidden = !open;
       toggle.setAttribute("aria-expanded", String(open));
       toggle.textContent = open ? "Свернуть" : "Создать объявления";
-      if (open && !backend) boot();
+      if (open && !mode) boot();
     });
     $("ads-refresh").addEventListener("click", function () {
       if (!$("ads-body").hidden) boot();
