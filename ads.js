@@ -43,6 +43,10 @@
   var planId = null;
   var groupId = null;
   var photos = [];
+  var titleVariants = []; // списки для A/B-тестов: каждое фото × каждый вариант
+  var textVariants = [];
+  var rulesData = null; // ads-rules.json (автостоп)
+  var rulesLog = null;  // ads-rules-log.json
   var uploading = false;
   var results = null;
   var statuses = null;
@@ -120,7 +124,7 @@
   }
 
   // ---------- GitHub Contents API ----------
-  function ghPut(path, message, contentStr) {
+  function ghPut(path, message, contentStr, sha) {
     return fetch(GH_API + "contents/" + encodeURIComponent(path).replace(/%2F/g, "/"), {
       method: "PUT",
       headers: {
@@ -128,13 +132,29 @@
         Accept: "application/vnd.github+json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: message, content: b64utf8(contentStr), branch: GH_BRANCH }),
+      body: JSON.stringify({ message: message, content: b64utf8(contentStr), branch: GH_BRANCH, ...(sha ? { sha: sha } : {}) }),
     }).then(function (r) {
       if (r.status === 401 || r.status === 403) {
         throw new Error("GitHub отклонил токен (проверьте fine-grained PAT с правом Contents: write на репозиторий " + GH_REPO + ")");
       }
+      if (!r.ok) throw new Error("GitHub HTTP " + r.status + (r.status === 409 ? " (файл успел измениться — нажмите «Обновить» и повторите)" : ""));
+      return r.json();
+    });
+  }
+
+  function utf8b64(s) {
+    return decodeURIComponent(escape(atob(s)));
+  }
+  /** Текущий файл из репозитория: { sha, text } или null (404). */
+  function ghGetFile(path) {
+    return fetch(GH_API + "contents/" + encodeURIComponent(path).replace(/%2F/g, "/") + "?ref=" + GH_BRANCH, {
+      headers: { Authorization: "Bearer " + ghToken, Accept: "application/vnd.github+json" },
+    }).then(function (r) {
+      if (r.status === 404) return null;
       if (!r.ok) throw new Error("GitHub HTTP " + r.status);
       return r.json();
+    }).then(function (meta) {
+      return meta ? { sha: meta.sha, text: utf8b64(meta.content) } : null;
     });
   }
 
@@ -334,7 +354,7 @@
 
       // Шаг 4 — тексты
       '<div class="ads-step" id="ads-texts-step" hidden>' +
-      '<div class="ads-row-head"><label class="ads-label" style="margin:0">Тексты — одинаковые для всех объявлений</label>' +
+      '<div class="ads-row-head"><label class="ads-label" style="margin:0" id="ads-texts-head">Тексты — одинаковые для всех объявлений</label>' +
       '<span class="ads-hint" id="ads-based2"></span></div>' +
       '<div class="ads-grid-2">' +
       "<div><label class='ads-label' for='ads-title'>Заголовок <span id='ads-title-c' class='ads-count'></span></label>" +
@@ -346,6 +366,29 @@
       "<input type='text' id='ads-about' maxlength='115'>" +
       "<label class='ads-label' for='ads-body'>Текст объявления <span id='ads-body-c' class='ads-count'></span></label>" +
       "<textarea id='ads-body' rows='4' maxlength='2000'></textarea>" +
+
+      // списки текстов для A/B-тестов
+      '<div class="ads-bulk" id="ads-bulk">' +
+      '<div class="ads-row-head"><label class="ads-label" style="margin:0">Тексты списком — для A/B-тестов</label>' +
+      '<span class="ads-hint">необязательно</span></div>' +
+      '<div class="ads-bulk-tools">' +
+      '<label class="btn btn-outline ads-bulk-filebtn">Загрузить Excel/CSV<input type="file" id="ads-bulk-file" accept=".xlsx,.xls,.csv,.tsv,.txt" hidden></label>' +
+      '<button type="button" class="btn btn-outline" id="ads-bulk-clear">Очистить списки</button>' +
+      "</div>" +
+      '<div class="ads-bulk-paste">' +
+      "<div><label class='ads-label' for='ads-bulk-titles'>Заголовки — по одному в строке</label>" +
+      "<textarea id='ads-bulk-titles' rows='3' placeholder='Например:&#10;Шарики с гелием&#10;Шары под потолок'></textarea></div>" +
+      "<div><label class='ads-label' for='ads-bulk-texts'>Тексты — по одному в строке</label>" +
+      "<textarea id='ads-bulk-texts' rows='3' placeholder='Каждая строка — отдельный вариант текста объявления'></textarea></div>" +
+      "</div>" +
+      '<div class="ads-btnrow"><button type="button" class="btn" id="ads-bulk-apply">Применить списки</button>' +
+      '<span class="ads-hint" id="ads-bulk-msg"></span></div>' +
+      '<div class="ads-bulk-lists" id="ads-bulk-lists"></div>' +
+      '<p class="ads-hint">Каждое фото × каждый заголовок × каждый текст = отдельное объявление. ' +
+      "Excel/CSV: колонки «заголовок» и «текст» (можно одну; без заголовков — первая колонка заголовки, вторая тексты). " +
+      "Поля выше — общий вариант: пустая ячейка списка подставит его.</p>" +
+      "</div>" +
+
       '<button type="button" class="ads-more" id="ads-more">Показать дополнительно (иконка и ссылка объявления)</button>' +
       '<div class="ads-grid-2" id="ads-adv" hidden>' +
       "<div><label class='ads-label' for='ads-icon'>Иконка (content_id) — как у существующих объявлений</label>" +
@@ -367,6 +410,33 @@
       "</div>" +
 
       "</div></div>" +
+
+      // Автостоп — правила автоостановки объявлений (только gh-режим: исполняет GitHub)
+      (mode === "gh"
+        ? '<div class="ads-card" id="ads-rules-card">' +
+          '<div class="ads-card-head"><span>Автостоп объявлений</span><span class="badge" id="ads-rules-badge">…</span></div>' +
+          '<div class="ads-card-body">' +
+          '<p class="ads-hint">Правила проверяются на GitHub каждые 30 минут: у активных баннеров группы читается расход и цена клика; при превышении порога объявление останавливается («Остановлено» в VK Рекламе, творец и тексты остаются). Изменение правил запускает внеплановую проверку через ~1 мин. Статистика VK отстаёт на ~1–2 часа.</p>' +
+          '<div id="ads-rules-list"></div>' +
+          '<form class="ads-rule-form" id="ads-rule-form">' +
+          '<div class="ads-rule-row">' +
+          '<select class="ads-select" id="ads-rule-cabinet"><option value="">Кабинет…</option></select>' +
+          '<select class="ads-select" id="ads-rule-group"><option value="">Группа…</option></select>' +
+          "</div>" +
+          '<div class="ads-rule-row">' +
+          '<label>стоп при расходе &gt; <input type="number" id="ads-rule-spend" min="1" step="1" placeholder="25"> ₽</label>' +
+          '<label>или цене клика &gt; <input type="number" id="ads-rule-cpc" min="0.5" step="0.5" placeholder="30"> ₽</label>' +
+          '<label>за <input type="number" id="ads-rule-days" min="1" max="90" step="1" value="30"> дн.</label>' +
+          "</div>" +
+          '<div class="ads-btnrow"><button type="submit" class="btn" id="ads-rule-add">Добавить правило</button>' +
+          '<button type="button" class="btn btn-outline" id="ads-rules-refresh">Обновить</button>' +
+          '<span class="ads-hint" id="ads-rule-msg"></span></div>' +
+          "</form>" +
+          '<p class="ads-err" id="ads-rule-err" hidden></p>' +
+          '<div class="ads-rules-log" id="ads-rules-log"></div>' +
+          "</div></div>"
+        : "") +
+
       '<p class="ads-note">Запись идёт в VK Рекламу через сервер' +
       (mode === "gh"
         ? " GitHub Actions (токены VK — в секретах репозитория, в браузер не попадают)"
@@ -422,6 +492,8 @@
     $("ads-url").addEventListener("input", function () { this.value = this.value.replace(/\D/g, ""); updateSummary(); });
 
     $("ads-create").addEventListener("click", doCreate);
+    bindBulk();
+    if (mode === "gh") bindRules();
   }
 
   // ---------- кабинеты ----------
@@ -701,10 +773,18 @@
     if (!bar) return;
     if (!photos.length) { bar.hidden = true; return; }
     var ready = readyPhotos().length;
+    var cc = comboCounts();
     bar.hidden = false;
     if (uploading) {
-      bar.innerHTML = "Загружаем фото в кабинет… готово " + ready + " из " + photos.length;
+      bar.innerHTML = "Готовим фото… готово " + ready + " из " + photos.length;
       bar.classList.add("muted");
+    } else if (variantsActive()) {
+      bar.classList.remove("muted");
+      var parts = ["Загружено " + photos.length + " " + pluralPhotos(photos.length)];
+      if (cc.titles) parts.push(cc.titles + " " + pluralField(cc.titles, "заголовок", "заголовка", "заголовков"));
+      if (cc.texts) parts.push(cc.texts + " " + pluralField(cc.texts, "текст", "текста", "текстов"));
+      bar.innerHTML = parts.join(" · ") + " → <b>будет создано " + cc.total + " " + pluralAds(cc.total) + "</b>" +
+        (photos.length !== ready ? ' <span class="ads-muted">(' + (photos.length - ready) + " фото не готовы)</span>" : "");
     } else {
       bar.classList.remove("muted");
       bar.innerHTML =
@@ -714,13 +794,334 @@
           : ' <span class="ads-muted">— по одному на каждую фотографию</span>');
     }
     var warn = $("ads-limit-warn");
-    if (ctx && ctx.limits && ctx.limits.maxActiveBanners != null && ctx.limits.activeBanners != null && ready > 0) {
-      var over = ctx.limits.activeBanners + ready > ctx.limits.maxActiveBanners;
+    if (ctx && ctx.limits && ctx.limits.maxActiveBanners != null && ctx.limits.activeBanners != null && cc.total > 0) {
+      var over = ctx.limits.activeBanners + cc.total > ctx.limits.maxActiveBanners;
       warn.hidden = !over;
       warn.textContent = "Лимит активных объявлений может быть превышен — VK может отклонить часть созданий.";
     } else if (warn) warn.hidden = true;
     updateSummary();
   }
+
+  // ---------- списки текстов (A/B-тесты) ----------
+  function pluralField(n, one, few, many) {
+    var a = Math.abs(n) % 100, b = a % 10;
+    if (a > 10 && a < 20) return many;
+    if (b > 1 && b < 5) return few;
+    if (b === 1) return one;
+    return many;
+  }
+  function variantsActive() { return titleVariants.length > 0 || textVariants.length > 0; }
+  function comboCounts() {
+    var ready = readyPhotos().length;
+    var t = titleVariants.length, x = textVariants.length;
+    return { photos: ready, titles: t, texts: x, total: ready * (t || 1) * (x || 1) };
+  }
+
+  function loadSheetJS(cb) {
+    if (window.XLSX) return cb(true);
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload = function () { cb(true); };
+    s.onerror = function () { cb(false); };
+    document.head.appendChild(s);
+  }
+
+  /** строки таблицы → списки заголовков/текстов (заголовочная строка опознаётся по словам) */
+  function listsFromRows(rows) {
+    rows = (rows || [])
+      .map(function (r) { return (r || []).map(function (c) { return String(c == null ? "" : c).trim(); }); })
+      .filter(function (r) { return r.join(""); });
+    if (!rows.length) return { titles: [], texts: [] };
+    var lower = rows[0].map(function (c) { return c.toLowerCase(); });
+    var hTitle = lower.findIndex(function (c) { return /заголов|title/.test(c); });
+    var hText = lower.findIndex(function (c) { return /текст|text/.test(c); });
+    var hasHead = hTitle >= 0 || hText >= 0;
+    var data = hasHead ? rows.slice(1) : rows;
+    var cols = hasHead ? [hTitle, hText] : (rows[0].length > 1 ? [0, 1] : [-1, 0]);
+    var titles = [], texts = [];
+    data.forEach(function (r) {
+      if (cols[0] >= 0 && r[cols[0]]) titles.push(r[cols[0]].slice(0, 40));
+      if (cols[1] >= 0 && r[cols[1]]) texts.push(r[cols[1]].slice(0, 2000));
+    });
+    return { titles: titles, texts: texts };
+  }
+
+  function parseDelimited(text) {
+    var lines = String(text || "").split(/\r?\n/).filter(function (l) { return l.trim(); });
+    var first = lines[0] || "";
+    var delim = first.indexOf("\t") >= 0 ? "\t" : first.indexOf(";") >= 0 ? ";" : first.indexOf(",") >= 0 ? "," : null;
+    return listsFromRows(lines.map(function (l) { return delim ? l.split(delim) : [l]; }));
+  }
+
+  function applyBulkLists(titles, texts) {
+    titleVariants = titles;
+    textVariants = texts;
+    renderBulkLists();
+    updateCounter();
+  }
+
+  function bulkMsg(s, isErr) {
+    var el = $("ads-bulk-msg");
+    if (!el) return;
+    el.textContent = s || "";
+    el.className = s ? (isErr ? "ads-err-txt" : "ads-hint") : "ads-hint";
+  }
+
+  function renderBulkLists() {
+    var box = $("ads-bulk-lists");
+    if (!box) return;
+    var html = "";
+    if (titleVariants.length) {
+      html += '<span class="ads-chip" title="' + esc(titleVariants.slice(0, 8).join(" · ")) + '">Заголовки: <b>' +
+        titleVariants.length + "</b> " + esc(pluralField(titleVariants.length, "вариант", "варианта", "вариантов")) +
+        ' <button type="button" class="ads-chip-x" data-clear="title" aria-label="Убрать заголовки">×</button></span>';
+    }
+    if (textVariants.length) {
+      html += '<span class="ads-chip" title="' + esc(textVariants.slice(0, 5).map(function (t) { return t.slice(0, 60); }).join(" · ")) + '">Тексты: <b>' +
+        textVariants.length + "</b> " + esc(pluralField(textVariants.length, "вариант", "варианта", "вариантов")) +
+        ' <button type="button" class="ads-chip-x" data-clear="text" aria-label="Убрать тексты">×</button></span>';
+    }
+    if (!html) html = '<span class="ads-muted">списки пусты — все объявления пойдут с одинаковыми текстами</span>';
+    box.innerHTML = html;
+    box.querySelectorAll(".ads-chip-x").forEach(function (b) {
+      b.onclick = function () {
+        if (b.dataset.clear === "title") titleVariants = [];
+        else textVariants = [];
+        renderBulkLists(); updateCounter();
+      };
+    });
+    var head = $("ads-texts-head");
+    if (head) {
+      head.textContent = variantsActive()
+        ? "Тексты — списки вариантов (A/B-тест)"
+        : "Тексты — одинаковые для всех объявлений";
+    }
+  }
+
+  function bindBulk() {
+    var file = $("ads-bulk-file");
+    if (!file) return;
+    file.addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      this.value = "";
+      if (!f) return;
+      bulkMsg("Читаем " + f.name + "…");
+      if (/\.(xlsx|xls)$/i.test(f.name)) {
+        loadSheetJS(function (ok) {
+          if (!ok) { bulkMsg("Не удалось загрузить парсер Excel (CDN недоступен?) — вставьте списки текстом или CSV", true); return; }
+          var fr = new FileReader();
+          fr.onload = function () {
+            try {
+              var wb = XLSX.read(fr.result, { type: "array" });
+              var rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: false, defval: "" });
+              var lists = listsFromRows(rows);
+              if (!lists.titles.length && !lists.texts.length) { bulkMsg("В файле не нашлось непустых строк", true); return; }
+              applyBulkLists(lists.titles, lists.texts);
+              bulkMsg("Из " + f.name + ": заголовков " + lists.titles.length + ", текстов " + lists.texts.length);
+            } catch (e) { bulkMsg("Не удалось разобрать файл: " + (e.message || e), true); }
+          };
+          fr.readAsArrayBuffer(f);
+        });
+      } else {
+        var fr = new FileReader();
+        fr.onload = function () {
+          try {
+            var lists = parseDelimited(fr.result);
+            if (!lists.titles.length && !lists.texts.length) { bulkMsg("В файле не нашлось непустых строк", true); return; }
+            applyBulkLists(lists.titles, lists.texts);
+            bulkMsg("Из " + f.name + ": заголовков " + lists.titles.length + ", текстов " + lists.texts.length);
+          } catch (e) { bulkMsg("Не удалось разобрать файл: " + (e.message || e), true); }
+        };
+        fr.readAsText(f, "utf-8");
+      }
+    });
+    $("ads-bulk-apply").addEventListener("click", function () {
+      var titles = $("ads-bulk-titles").value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+      var texts = $("ads-bulk-texts").value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (!titles.length && !texts.length) { bulkMsg("Оба поля пусты — вставьте списки или загрузите файл", true); return; }
+      applyBulkLists(titles, texts);
+      bulkMsg("Применено: заголовков " + titles.length + ", текстов " + texts.length);
+    });
+    $("ads-bulk-clear").addEventListener("click", function () {
+      applyBulkLists([], []);
+      $("ads-bulk-titles").value = "";
+      $("ads-bulk-texts").value = "";
+      bulkMsg("Списки очищены — объявления пойдут с одинаковыми текстами");
+    });
+    renderBulkLists();
+  }
+
+  // ---------- автостоп: правила ----------
+  function fmtTs(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit" }) + " " +
+        d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    } catch (e) { return String(iso || ""); }
+  }
+
+  function loadRules() {
+    if (mode !== "gh") return;
+    fetch(GH_RAW + "ads-rules.json?t=" + Date.now()).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { rulesData = j && j.rules ? j : { updatedAt: null, rules: [] }; renderRules(); })
+      .catch(function () { rulesData = { updatedAt: null, rules: [] }; renderRules(); });
+    fetch(GH_RAW + "ads-rules-log.json?t=" + Date.now()).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { rulesLog = j || null; renderRulesLog(); })
+      .catch(function () { rulesLog = null; renderRulesLog(); });
+  }
+
+  function ruleCabinetContext(extId) {
+    return ghContext && ghContext.cabinets ? ghContext.cabinets[String(extId)] : null;
+  }
+
+  function fillRuleCabinets() {
+    var sel = $("ads-rule-cabinet");
+    if (!sel) return;
+    var opts = '<option value="">Кабинет…</option>';
+    var list = cabinets || [];
+    list.forEach(function (c) {
+      opts += '<option value="' + esc(c.value) + '">' + esc(c.name) + "</option>";
+    });
+    sel.innerHTML = opts;
+  }
+
+  function fillRuleGroups(extId) {
+    var sel = $("ads-rule-group");
+    if (!sel) return;
+    var opts = '<option value="">Группа…</option>';
+    var c = ruleCabinetContext(extId);
+    if (c && c.groups) {
+      c.groups.forEach(function (g) {
+        opts += '<option value="' + g.id + '">' + esc(g.name) + "</option>";
+      });
+    }
+    sel.innerHTML = opts;
+  }
+
+  function renderRules() {
+    var badge = $("ads-rules-badge");
+    var list = $("ads-rules-list");
+    if (!badge || !list) return;
+    var rules = (rulesData && rulesData.rules) || [];
+    var active = rules.filter(function (r) { return r.enabled !== false; }).length;
+    badge.textContent = active ? active + " " + pluralField(active, "правило", "правила", "правил") : "нет правил";
+    if (!rules.length) {
+      list.innerHTML = '<p class="ads-hint">Правил пока нет — добавьте первое ниже. Например: группа «Архангельск» → стоп при расходе &gt; 25 ₽ или цене клика &gt; 30 ₽.</p>';
+      return;
+    }
+    var names = {};
+    (cabinets || []).forEach(function (c) { names[String(c.value)] = c.name; });
+    list.innerHTML =
+      '<div class="table-wrap ads-res-table"><table class="grid-table"><thead><tr>' +
+      "<th>Кабинет · группа</th><th>Пороги</th><th></th></tr></thead><tbody>" +
+      rules.map(function (r, i) {
+        var g = ruleCabinetContext(r.cabinet);
+        var gname = "";
+        if (g && g.groups) {
+          var f = g.groups.filter(function (x) { return Number(x.id) === Number(r.group); })[0];
+          if (f) gname = f.name;
+        }
+        var conds = [];
+        if (r.maxSpend != null) conds.push("расход &gt; " + r.maxSpend + " ₽");
+        if (r.maxCpc != null) conds.push("цена клика &gt; " + r.maxCpc + " ₽");
+        return (
+          "<tr><td>" + esc(names[String(r.cabinet)] || ("кабинет " + r.cabinet)) + " · <b>" + esc(gname || ("группа " + r.group)) + "</b>" +
+          (r.enabled === false ? ' <span class="ads-muted">(выключено)</span>' : "") +
+          "</td><td class='num'>" + (conds.length ? esc(conds.join(" или ")) : "—") + " · за " + (r.days || 30) + " дн.</td>" +
+          '<td class="num"><button type="button" class="ads-chip-x" data-rule-toggle="' + i + '" aria-label="Включить/выключить">' + (r.enabled === false ? "▶" : "⏸") +
+          '</button> <button type="button" class="ads-chip-x" data-rule-del="' + i + '" aria-label="Удалить">×</button></td></tr>'
+        );
+      }).join("") +
+      "</tbody></table></div>";
+    list.querySelectorAll("[data-rule-del]").forEach(function (b) {
+      b.onclick = function () { saveRules(rules.filter(function (_, i2) { return i2 !== Number(b.dataset.ruleDel); }), "автостоп: правило удалено"); };
+    });
+    list.querySelectorAll("[data-rule-toggle]").forEach(function (b) {
+      b.onclick = function () {
+        var idx = Number(b.dataset.ruleToggle);
+        var next = rules.slice();
+        next[idx] = { ...next[idx], enabled: next[idx].enabled === false };
+        saveRules(next, "автостоп: правило " + (next[idx].enabled ? "включено" : "выключено"));
+      };
+    });
+  }
+
+  function renderRulesLog() {
+    var box = $("ads-rules-log");
+    if (!box) return;
+    var events = (rulesLog && rulesLog.events) || [];
+    if (!events.length) {
+      box.innerHTML = '<p class="ads-hint">Журнал пуст — срабатываний пока не было' +
+        (rulesLog && rulesLog.lastReport ? " (последняя проверка: " + fmtTs(rulesLog.lastReport.ranAt) + ")" : "") + ".</p>";
+      return;
+    }
+    box.innerHTML =
+      '<div class="ads-rules-log-head">Последние остановки:</div><ul class="ads-rules-log-list">' +
+      events.slice(0, 8).map(function (e) {
+        return "<li><span class='ads-muted'>" + fmtTs(e.ts) + "</span> · <b>" + esc(e.name) + "</b> (#" + e.bannerId + ") — " + esc(e.reason) + "</li>";
+      }).join("") +
+      "</ul>";
+  }
+
+  function ruleMsg(s, isErr) {
+    var el = $("ads-rule-msg");
+    if (!el) return;
+    el.textContent = s || "";
+    el.className = s ? (isErr ? "ads-err-txt" : "ads-hint") : "ads-hint";
+    var box = $("ads-rule-err");
+    if (box) { box.hidden = !isErr; if (isErr) box.textContent = s; }
+  }
+
+  /** Сохранить правила в репозиторий (Contents API, с sha) и перечитать. */
+  function saveRules(rules, message) {
+    if (!ghToken) { ruleMsg("Нужен токен GitHub — форма выше", true); return; }
+    ruleMsg("Сохраняем…");
+    var doc, sha;
+    ghGetFile("ads-rules.json").then(function (cur) {
+      sha = cur ? cur.sha : null;
+      doc = { updatedAt: new Date().toISOString(), rules: rules };
+      return ghPut("ads-rules.json", message, JSON.stringify(doc), sha);
+    }).then(function () {
+      rulesData = doc;
+      renderRules();
+      ruleMsg("Сохранено. Проверка запустится автоматически (~1 мин).");
+      setTimeout(loadRules, 65000);
+    }).catch(function (e) {
+      ruleMsg(e.message || String(e), true);
+    });
+  }
+
+  function bindRules() {
+    var form = $("ads-rule-form");
+    if (!form) return;
+    fillRuleCabinets();
+    $("ads-rule-cabinet").addEventListener("change", function () {
+      fillRuleGroups(this.value || null);
+    });
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var cab = $("ads-rule-cabinet").value;
+      var grp = $("ads-rule-group").value;
+      var spend = parseFloat($("ads-rule-spend").value);
+      var cpc = parseFloat($("ads-rule-cpc").value);
+      var days = parseInt($("ads-rule-days").value, 10) || 30;
+      if (!cab || !grp) { ruleMsg("выберите кабинет и группу", true); return; }
+      if (!spend && !cpc) { ruleMsg("укажите хотя бы один порог — расход и/или цену клика", true); return; }
+      var rules = ((rulesData && rulesData.rules) || []).slice();
+      rules.push({
+        id: "r_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+        cabinet: Number(cab), group: Number(grp),
+        maxSpend: spend > 0 ? spend : null,
+        maxCpc: cpc > 0 ? cpc : null,
+        days: days, enabled: true,
+        createdAt: new Date().toISOString(),
+      });
+      saveRules(rules, "автостоп: + правило (группа " + grp + ")");
+    });
+    $("ads-rules-refresh").addEventListener("click", loadRules);
+    loadRules();
+  }
+
 
   // ---------- тексты ----------
   function updateCounts() {
@@ -737,28 +1138,55 @@
       body: $("ads-body").value.trim(),
     };
   }
+  function variantsValid() {
+    for (var i = 0; i < titleVariants.length; i++) if (!titleVariants[i]) return false;
+    for (var j = 0; j < textVariants.length; j++) if (!textVariants[j]) return false;
+    return true;
+  }
 
   function updateSummary() {
     var sum = $("ads-summary"), btn = $("ads-create"), hint = $("ads-create-hint");
     if (!sum) return;
-    var ready = readyPhotos().length;
+    var cc = comboCounts();
     var g = ctx && ctx.groups ? ctx.groups.filter(function (x) { return x.id === groupId; })[0] : null;
-    sum.innerHTML =
-      "Будет создано: <b>" + ready + " " + pluralAds(ready) + "</b>" +
-      (ready === 0
-        ? " — загрузите фото выше"
-        : " — по одному на каждое фото, с одинаковыми текстами" + (g ? ", в группе «" + esc(g.name) + "»" : ""));
+    if (variantsActive()) {
+      sum.innerHTML =
+        "Будет создано: <b>" + cc.total + " " + pluralAds(cc.total) + "</b>" +
+        (cc.total === 0
+          ? " — загрузите фото выше"
+          : " — каждое фото" +
+            (cc.titles ? " × каждый заголовок (" + cc.titles + ")" : "") +
+            (cc.texts ? " × каждый текст (" + cc.texts + ")" : "") +
+            ", в группе «" + esc(g ? g.name : "") + "»");
+    } else {
+      sum.innerHTML =
+        "Будет создано: <b>" + cc.total + " " + pluralAds(cc.total) + "</b>" +
+        (cc.total === 0
+          ? " — загрузите фото выше"
+          : " — по одному на каждое фото, с одинаковыми текстами" + (g ? ", в группе «" + esc(g.name) + "»" : ""));
+    }
     var t = textsValid();
-    var ok = !!groupId && ready > 0 && t.title && t.about && t.body && t.cta &&
+    var ok = !!groupId && cc.total > 0 && variantsValid() &&
+      (variantsActive() || (t.title && t.body)) &&
+      t.cta && t.about &&
       $("ads-icon").value && $("ads-url").value;
+    // общие поля (CTA, реквизиты, иконка, ссылка) нужны всегда; заголовок/текст —
+    // либо общие, либо списком; в режиме панели списки пока не поддерживаются
+    if (ok && mode === "panel" && variantsActive()) ok = false;
     btn.disabled = !ok || creating;
-    btn.textContent = creating ? "Создаём…" : "Создать " + ready + " " + pluralAds(ready);
+    btn.textContent = creating ? "Создаём…" : "Создать " + cc.total + " " + pluralAds(cc.total);
     if (!ok && !creating) {
       hint.textContent = !groupId
         ? "выберите группу объявлений"
-        : ready === 0
+        : cc.total === 0
           ? "загрузите хотя бы одно фото"
-          : "проверьте тексты и поля";
+          : mode === "panel" && variantsActive()
+            ? "списки текстов сейчас работают в режиме GitHub Actions (панель — в планах)"
+            : !variantsValid()
+              ? "в списках есть пустые строки"
+              : !t.cta || !t.about
+                ? "заполните CTA и реквизиты"
+                : "проверьте тексты и поля";
     } else {
       hint.textContent = "";
     }
@@ -769,12 +1197,20 @@
     if (creating) return;
     var ready = readyPhotos();
     var t = textsValid();
+    var cc = comboCounts();
+    var titles = titleVariants.length ? titleVariants : [t.title];
+    var bodies = textVariants.length ? textVariants : [t.body];
     var g = ctx.groups.filter(function (x) { return x.id === groupId; })[0];
     var cab = cabinets.filter(function (c) { return String(c.value) === String(cabinetId); })[0];
     var label = (cab ? cab.name : "кабинет") + " → " + (g ? g.name : "");
+    var comboNote = variantsActive()
+      ? "\nКомбинации: " + cc.photos + " фото" +
+        (cc.titles ? " × " + cc.titles + " заголовков" : "") +
+        (cc.texts ? " × " + cc.texts + " текстов" : "") + " = " + cc.total + " объявлений — каждое со своим текстом."
+      : "\nВсе — с одинаковыми текстами.";
     if (!window.confirm(
-      "Создать " + ready.length + " " + pluralAds(ready.length) + " в группе «" + (g ? g.name : "") + "» (" + label + ")?\n" +
-      "Все — с одинаковыми текстами. Сразу уйдут на модерацию VK." +
+      "Создать " + cc.total + " " + pluralAds(cc.total) + " в группе «" + (g ? g.name : "") + "» (" + label + ")?" +
+      comboNote + " Сразу уйдут на модерацию VK." +
       (mode === "gh" ? "\nОбработка через GitHub Actions займёт ~30–90 секунд." : "")
     )) return;
 
@@ -794,6 +1230,25 @@
 
     if (mode === "gh") {
       var jobId = "job_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      var items = [];
+      ready.forEach(function (p) {
+        titles.forEach(function (tv, ti) {
+          bodies.forEach(function (bv, bi) {
+            var multi = titles.length > 1 || bodies.length > 1;
+            var suffix = "";
+            if (multi) {
+              if (titles.length > 1) suffix += " з" + (ti + 1);
+              if (bodies.length > 1) suffix += (suffix ? "-" : " ") + "т" + (bi + 1);
+            }
+            items.push({
+              name: (p.name + (suffix ? " ·" + suffix.replace(" ", "") : "")).slice(0, 100),
+              slot: p.slot.slot,
+              photo: p.photo,
+              texts: { title: tv, body: bv },
+            });
+          });
+        });
+      });
       var job = {
         id: jobId,
         type: "create",
@@ -801,10 +1256,8 @@
         group: Number(groupId),
         iconId: Number($("ads-icon").value),
         urlId: Number($("ads-url").value),
-        texts: t,
-        items: ready.map(function (p) {
-          return { name: p.name, slot: p.slot.slot, photo: p.photo };
-        }),
+        texts: t, // общий вариант (fallback) + CTA/реквизиты
+        items: items,
       };
       ghRunJob(job, function (tries) {
         $("ads-progress").textContent = "Задание в GitHub Actions, ждём результат… (" + (tries * 6) + " сек)";
@@ -958,6 +1411,7 @@
       ? '<div class="ads-conn-gh"><div><b>Режим GitHub Actions.</b> Задания обрабатывает workflow в репозитории ' +
         "(токены VK — в секретах GitHub). Обработка ~30–90 сек.</div></div>"
       : "");
+    if (mode === "gh" && booted) { loadRules(); fillRuleCabinets(); }
     if (!booted) {
       renderConstructor();
       booted = true;
@@ -969,14 +1423,14 @@
   function init() {
     var toggle = $("ads-toggle");
     toggle.addEventListener("click", function () {
-      var open = $("ads-body").hidden;
-      $("ads-body").hidden = !open;
+      var open = $("ads-wrap").hidden;
+      $("ads-wrap").hidden = !open;
       toggle.setAttribute("aria-expanded", String(open));
       toggle.textContent = open ? "Свернуть" : "Создать объявления";
       if (open && !mode) boot();
     });
     $("ads-refresh").addEventListener("click", function () {
-      if (!$("ads-body").hidden) boot();
+      if (!$("ads-wrap").hidden) boot();
     });
   }
 
