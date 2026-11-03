@@ -1,6 +1,0 @@
-{
-  "updatedAt": "2026-11-03T14:00:00.000Z",
-  "rules": [
-    { "id": "r_e2e", "cabinet": 28571374, "group": 164743978, "maxSpend": 999999, "maxCpc": null, "days": 30, "enabled": true, "createdAt": "2026-11-03T14:00:00.000Z", "note": "E2E-тест: безопасный порог, будет удалён" }
-  ]
-}
