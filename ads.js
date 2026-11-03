@@ -416,7 +416,7 @@
         ? '<div class="ads-card" id="ads-rules-card">' +
           '<div class="ads-card-head"><span>Автостоп объявлений</span><span class="badge" id="ads-rules-badge">…</span></div>' +
           '<div class="ads-card-body">' +
-          '<p class="ads-hint">Правила проверяются на GitHub каждые 30 минут: у активных баннеров группы читается расход и цена клика; при превышении порога объявление останавливается («Остановлено» в VK Рекламе, творец и тексты остаются). Изменение правил запускает внеплановую проверку через ~1 мин. Статистика VK отстаёт на ~1–2 часа.</p>' +
+          '<p class="ads-hint">Правила проверяет GitHub — даже когда вы ушли с сайта: запланировано 6 раз в час (:07–:57), сразу после изменения правил и по кнопке «Проверить сейчас». GitHub нередко прореживает запуски, поэтому реально проверки проходят примерно раз в 1–2 часа. Статистика VK отстаёт на ~1–2 часа — от превышения порога до остановки обычно проходит 1–3 часа. Остановка = «Остановлено» в VK Рекламе: баннер не крутится, но сохраняется (тексты и креатив на месте, можно запустить снова). Оба порога срабатывают вместе: потратил больше лимита И клик дороже — стоп; дешёвые клики — вариант удачный, крутится дальше.</p>' +
           '<div id="ads-rules-list"></div>' +
           '<form class="ads-rule-form" id="ads-rule-form">' +
           '<div class="ads-rule-row">' +
@@ -425,11 +425,13 @@
           "</div>" +
           '<div class="ads-rule-row">' +
           '<label>стоп при расходе &gt; <input type="number" id="ads-rule-spend" min="1" step="1" placeholder="25"> ₽</label>' +
-          '<label>или цене клика &gt; <input type="number" id="ads-rule-cpc" min="0.5" step="0.5" placeholder="30"> ₽</label>' +
+          '<label>и цене клика &gt; <input type="number" id="ads-rule-cpc" min="0.5" step="0.5" placeholder="30"> ₽</label>' +
           '<label>за <input type="number" id="ads-rule-days" min="1" max="90" step="1" value="30"> дн.</label>' +
           "</div>" +
+          '<p class="ads-hint">Оба порога работают вместе — стоп, когда потрачено больше И клик дороже; один порог (второй пустой) — срабатывает сам по себе.</p>' +
           '<div class="ads-btnrow"><button type="submit" class="btn" id="ads-rule-add">Добавить правило</button>' +
           '<button type="button" class="btn btn-outline" id="ads-rules-refresh">Обновить</button>' +
+          '<button type="button" class="btn btn-outline" id="ads-rule-check">Проверить сейчас</button>' +
           '<span class="ads-hint" id="ads-rule-msg"></span></div>' +
           "</form>" +
           '<p class="ads-err" id="ads-rule-err" hidden></p>' +
@@ -1006,7 +1008,7 @@
     var active = rules.filter(function (r) { return r.enabled !== false; }).length;
     badge.textContent = active ? active + " " + pluralField(active, "правило", "правила", "правил") : "нет правил";
     if (!rules.length) {
-      list.innerHTML = '<p class="ads-hint">Правил пока нет — добавьте первое ниже. Например: группа «Архангельск» → стоп при расходе &gt; 25 ₽ или цене клика &gt; 30 ₽.</p>';
+      list.innerHTML = '<p class="ads-hint">Правил пока нет — добавьте первое ниже. Например: группа «Архангельск» → стоп при расходе &gt; 25 ₽ и цене клика &gt; 30 ₽.</p>';
       return;
     }
     var names = {};
@@ -1027,7 +1029,7 @@
         return (
           "<tr><td>" + esc(names[String(r.cabinet)] || ("кабинет " + r.cabinet)) + " · <b>" + esc(gname || ("группа " + r.group)) + "</b>" +
           (r.enabled === false ? ' <span class="ads-muted">(выключено)</span>' : "") +
-          "</td><td class='num'>" + (conds.length ? esc(conds.join(" или ")) : "—") + " · за " + (r.days || 30) + " дн.</td>" +
+          "</td><td class='num'>" + (conds.length ? esc(conds.join(" и ")) : "—") + " · за " + (r.days || 30) + " дн.</td>" +
           '<td class="num"><button type="button" class="ads-chip-x" data-rule-toggle="' + i + '" aria-label="Включить/выключить">' + (r.enabled === false ? "▶" : "⏸") +
           '</button> <button type="button" class="ads-chip-x" data-rule-del="' + i + '" aria-label="Удалить">×</button></td></tr>'
         );
@@ -1119,6 +1121,26 @@
       saveRules(rules, "автостоп: + правило (группа " + grp + ")");
     });
     $("ads-rules-refresh").addEventListener("click", loadRules);
+    $("ads-rule-check").addEventListener("click", function () {
+      if (!ghToken) { ruleMsg("Нужен токен GitHub — форма выше", true); return; }
+      ruleMsg("Запускаем проверку на GitHub…");
+      fetch(GH_API + "dispatches", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + ghToken,
+          Accept: "application/vnd.github+json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_type: "autostop-check" }),
+      }).then(function (r) {
+        if (r.status === 204) {
+          ruleMsg("Проверка запущена — журнал обновится через ~1–2 мин.");
+          setTimeout(loadRules, 90000);
+        } else {
+          ruleMsg("GitHub HTTP " + r.status + " — не удалось запустить проверку", true);
+        }
+      }).catch(function (e) { ruleMsg(e.message || String(e), true); });
+    });
     loadRules();
   }
 
