@@ -1,0 +1,52 @@
+name: Автостоп объявлений
+
+# Раз в 30 минут проверяет правила из ads-rules.json: у активных баннеров групп
+# читается статистика (расход, клики); при превышении порогов баннер
+# останавливается (status: blocked). Сразу после изменения правил на сайте
+# запускается внеплановая проверка (push по ads-rules.json).
+# Крон :17/:47 — между запусками обновления статистики (:13/:43), чтобы не
+# накладываться на пиковые минуты планировщика GitHub Actions (:00/:30).
+
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  push:
+    paths:
+      - "ads-rules.json"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ads-autostop
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Забрать репозиторий
+        uses: actions/checkout@v4
+
+      - name: Настроить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Проверить правила автостопа
+        run: node scripts/ads_autostop.mjs
+        env:
+          VK_ADS_DIRECT_TOKENS: ${{ secrets.VK_ADS_DIRECT_TOKENS }}
+
+      - name: Записать журнал в репозиторий
+        run: |
+          git config user.name "vk-dashboard-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add ads-rules-log.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "остановок нет — журнал не меняется"
+          else
+            git commit -m "автостоп: сработали правила $(TZ=Europe/Moscow date '+%d.%m %H:%M')"
+            git push
+          fi
