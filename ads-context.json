@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-05T12:15:13.299Z",
+ "generatedAt": "2026-11-05T20:17:09.995Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 1476.45,
+   "balance": 1214.81,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -51,7 +51,7 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 1761.72,
+   "balance": 1468.14,
    "userName": "vkads_205397140@vk",
    "plans": [
     {
@@ -98,7 +98,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1739.98,
+   "balance": 1601.18,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -145,7 +145,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 8777.96,
+   "balance": 8744.57,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -199,7 +199,7 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 7504.36,
+   "balance": 7292.82,
    "userName": "vkads_636285275@vk",
    "plans": [
     {
@@ -215,8 +215,8 @@
    ],
    "groups": [
     {
-     "id": 162121535,
-     "name": "ключи",
+     "id": 162123050,
+     "name": "все",
      "status": "active",
      "planId": 36849100,
      "packageId": 4004
@@ -224,13 +224,6 @@
     {
      "id": 163741421,
      "name": "авто",
-     "status": "active",
-     "planId": 38130534,
-     "packageId": 3194
-    },
-    {
-     "id": 163741876,
-     "name": "ключи",
      "status": "active",
      "planId": 38130534,
      "packageId": 3194
@@ -247,13 +240,13 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 3
+    "activeBanners": 2
    }
   },
   "26047668": {
    "name": "ШАРТ",
    "clientName": "В. Шаров",
-   "balance": 1734.88,
+   "balance": 1591.78,
    "userName": "vkads_332616006@vk@10956269",
    "plans": [
     {
@@ -288,7 +281,7 @@
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 235.72,
+   "balance": -0.03,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
