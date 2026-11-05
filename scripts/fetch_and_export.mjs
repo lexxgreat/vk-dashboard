@@ -16,6 +16,10 @@ const BASE = "https://ads.vk.com/api/v2";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_FILE = path.join(ROOT, "data.json");
 const CAB_FILE = path.join(ROOT, "cabinets.json");
+// Глубина подневной статистики в data.json (полгода) — для выбора периода
+// 7 / 30 / свой период в карточке клиента на сайте. API отдаёт и более
+// длинные диапазоны одним вызовом, поэтому расширение окна не добавляет запросов.
+const STATS_DAYS = 183;
 
 // ---------- транспорт: прямой VK API или прокси TargetHunter ----------
 // Токены с префиксом "THPROXY:" идут через прокси TargetHunter
@@ -228,7 +232,7 @@ async function main() {
   const today = mskTodayIso();
   const yesterday = isoAddDays(today, -1);
   const dayBefore = isoAddDays(today, -2);
-  const from = isoAddDays(today, -30);
+  const from = isoAddDays(today, -STATS_DAYS);
 
   console.log(`сбор данных: ${cabinets.length} кабинетов, сегодня (МСК) ${today}`);
 
@@ -264,7 +268,7 @@ async function main() {
       console.log(`${cab.name}: запрашиваю баланс…`);
       const bal = computeBalance(await fetchAllTxGroups(token));
 
-      console.log(`${cab.name}: запрашиваю статистику за 31 день…`);
+      console.log(`${cab.name}: запрашиваю статистику за ${STATS_DAYS + 1} дней…`);
       const byDate = await fetchDailyStats(token, from, today);
       const stat = (iso) => byDate[iso] || null;
 
@@ -292,6 +296,19 @@ async function main() {
       const c7clicks = clicks7.reduce((s, d) => s + d.clicks, 0);
       const c7spend = clicks7.reduce((s, d) => s + d.spend, 0);
 
+      // Подневная статистика за всё окно (полгода) — для выбора периода
+      // 7 / 30 / свой период в карточке клиента на сайте. Дни без активности
+      // (везде нули) не пишем: пустые даты сайт добирает нулями сам.
+      const daily = {};
+      for (let i = STATS_DAYS; i >= 0; i--) {
+        const iso = isoAddDays(today, -i);
+        const s = stat(iso);
+        if (!s) continue;
+        if (s.clicks || s.spend || s.shows || s.goals) {
+          daily[iso] = { clicks: s.clicks, spend: r2(s.spend), shows: s.shows, goals: s.goals };
+        }
+      }
+
       const campaignsCount = await fetchCampaignsCount(token);
       await sleep(1500); // пауза между кабинетами
 
@@ -313,6 +330,8 @@ async function main() {
         campaignsCount,
         clicks7,
         clicks7Total: { clicks: c7clicks, spend: r2(c7spend), cpc: c7clicks > 0 ? c7spend / c7clicks : null },
+        dailyFrom: from,
+        daily,
       });
       console.log(
         `  ${cab.name}: баланс ${bal.total.toFixed(2)} ₽ (живые ${bal.real.toFixed(2)}), вчера ${(stat(yesterday)?.spend || 0).toFixed(2)} ₽, сообщений ${stat(yesterday)?.goals || 0}`
