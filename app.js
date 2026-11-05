@@ -6,6 +6,11 @@
 
 var LOW_REAL_THRESHOLD = 300;
 var DATA = null;
+// карточка клиента: чей период открыт и где рисуется динамика
+var CUR_CAB = null;
+var DYN_EL = null;
+// выбранный период динамики: "7" | "30" | "custom" (from/to в ISO)
+var PERIOD = { mode: "7", from: null, to: null };
 
 // ---------- форматирование (как в панели) ----------
 
@@ -29,6 +34,11 @@ function fmtDateLong(iso) {
 function fmtDateShort(iso) {
   var p = iso.split("-");
   return p[2] + "." + p[1];
+}
+function isoShift(iso, days) {
+  var d = new Date(iso + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 function fmtDateTimeMsk(iso) {
   if (!iso) return "—";
@@ -102,6 +112,9 @@ function buildChartSvg(days) {
   var iw = W - mL - mR, ih = H - mT - mB;
   var n = days.length;
   if (!n) return "";
+  // длинные периоды (30+ дней, свой): даты реже, цифры над столбиками не ставим
+  var labelStep = n > 12 ? Math.ceil(n / 10) : 1;
+  var showBarNums = n <= 16;
 
   var maxClicks = niceCeilInt(Math.max.apply(null, days.map(function (d) { return d.clicks || 0; })));
   var cpcVals = days
@@ -141,13 +154,15 @@ function buildChartSvg(days) {
       '<g><title>' + esc(fmtDateShort(d.date)) + (d.isToday ? " (сегодня, ещё идёт)" : "") +
       ": клики " + clicks + ", расход " + fmtMoneyPrecise(d.spend) + ", цена клика " + fmtCpc(d.cpc) + "</title>" +
       '<rect x="' + (x - bw / 2).toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="#3f8ae0"' + todayFill + todayStroke + "/>" +
-      (clicks > 0 ? '<text x="' + x.toFixed(1) + '" y="' + (yTop - 5).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">' + clicks + "</text>" : "") +
+      (clicks > 0 && showBarNums ? '<text x="' + x.toFixed(1) + '" y="' + (yTop - 5).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">' + clicks + "</text>" : "") +
       "</g>"
     );
-    p.push(
-      '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10"' +
-      (d.isToday ? ' font-weight="600" fill="#3f8ae0"' : ' fill="#6b7280"') + ">" + esc(fmtDateShort(d.date)) + "</text>"
-    );
+    if (i % labelStep === 0 || (i === n - 1 && (n - 1) % labelStep > 1)) {
+      p.push(
+        '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10"' +
+        (d.isToday ? ' font-weight="600" fill="#3f8ae0"' : ' fill="#6b7280"') + ">" + esc(fmtDateShort(d.date)) + "</text>"
+      );
+    }
   });
 
   // линия цены клика — только там, где она известна (клики в этот день были)
@@ -335,9 +350,214 @@ function renderTable(data) {
   });
 }
 
+// ---------- выбор периода в карточке клиента (7 / 30 / свой) ----------
+
+function hasDaily(cab) {
+  return !!(cab && cab.daily && cab.dailyFrom);
+}
+
+// подпись выбранного периода: «последние 7 дней» / «период 06.05–05.11»
+function periodLabel(kind) {
+  if (PERIOD.mode === "custom" && PERIOD.from && PERIOD.to) {
+    var s = fmtDateShort(PERIOD.from) + "–" + fmtDateShort(PERIOD.to);
+    return kind === "short" ? s : "период " + s;
+  }
+  return kind === "short" ? PERIOD.mode + " дней" : "последние " + PERIOD.mode + " дней";
+}
+
+// серия дней выбранного периода: из daily (полгода) или clicks7 (старый data.json)
+function periodSeries(cab) {
+  if (!DATA || !DATA.today) return [];
+  if (hasDaily(cab)) {
+    var from = PERIOD.from || isoShift(DATA.today, -6);
+    var to = PERIOD.to || DATA.today;
+    var out = [];
+    for (var iso = from; iso <= to; iso = isoShift(iso, 1)) {
+      var d = cab.daily[iso] || null;
+      var clicks = d ? d.clicks || 0 : 0;
+      var spend = d ? d.spend || 0 : 0;
+      out.push({
+        date: iso,
+        clicks: clicks,
+        spend: spend,
+        shows: d ? d.shows || 0 : 0,
+        goals: d ? d.goals || 0 : 0,
+        cpc: clicks > 0 ? spend / clicks : null,
+        isToday: iso === DATA.today,
+      });
+    }
+    return out;
+  }
+  return (cab.clicks7 || []).slice();
+}
+
+function syncPeriodBar(cab) {
+  var chips = document.querySelectorAll("#period-chips .period-chip");
+  Array.prototype.forEach.call(chips, function (chip) {
+    chip.classList.toggle("active", chip.getAttribute("data-period") === PERIOD.mode);
+  });
+  var dates = document.getElementById("period-dates");
+  var from = document.getElementById("period-from");
+  var to = document.getElementById("period-to");
+  var hint = document.getElementById("period-hint");
+  if (!dates || !from || !to) return;
+  dates.hidden = PERIOD.mode !== "custom";
+  if (PERIOD.mode === "custom") {
+    from.value = PERIOD.from || "";
+    to.value = PERIOD.to || "";
+    if (hasDaily(cab)) {
+      from.min = cab.dailyFrom;
+      to.min = cab.dailyFrom;
+    }
+    from.max = DATA.today;
+    to.max = DATA.today;
+    if (hint && hasDaily(cab)) {
+      hint.textContent = "данные с " + fmtDateShort(cab.dailyFrom);
+    }
+  }
+}
+
+function setPeriodMode(mode) {
+  var cab = CUR_CAB;
+  if (!cab || !DATA || !DATA.today) return;
+  PERIOD.mode = mode;
+  if (mode === "custom") {
+    if (!PERIOD.from || !PERIOD.to) {
+      PERIOD.from = isoShift(DATA.today, -6);
+      PERIOD.to = DATA.today;
+    }
+  } else {
+    var days = parseInt(mode, 10) || 7;
+    PERIOD.from = isoShift(DATA.today, -(days - 1));
+    PERIOD.to = DATA.today;
+  }
+  syncPeriodBar(cab);
+  renderDyn();
+}
+
+function onPeriodDateChange(which, value) {
+  var cab = CUR_CAB;
+  if (!cab || !DATA || !value) return;
+  var min = hasDaily(cab) ? cab.dailyFrom : null;
+  var max = DATA.today;
+  var v = value;
+  if (min && v < min) v = min;
+  if (v > max) v = max;
+  PERIOD.mode = "custom";
+  if (which === "from") {
+    PERIOD.from = v;
+    if (!PERIOD.to || PERIOD.to < v) PERIOD.to = v;
+  } else {
+    PERIOD.to = v;
+    if (PERIOD.from && PERIOD.from > v) PERIOD.from = v;
+  }
+  syncPeriodBar(cab);
+  renderDyn();
+}
+
+function buildPeriodBar(cab) {
+  var bar = el(
+    '<div class="period-bar">' +
+    '<div class="period-chips" id="period-chips" role="group" aria-label="Период статистики">' +
+    '<button type="button" class="period-chip active" data-period="7">7 дней</button>' +
+    '<button type="button" class="period-chip" data-period="30">30 дней</button>' +
+    '<button type="button" class="period-chip" data-period="custom">Свой период</button>' +
+    "</div>" +
+    '<div class="period-dates" id="period-dates" hidden>' +
+    '<label>с <input type="date" id="period-from" aria-label="Начало периода"></label>' +
+    '<label>по <input type="date" id="period-to" aria-label="Конец периода"></label>' +
+    '<span class="period-hint" id="period-hint"></span>' +
+    "</div>" +
+    "</div>"
+  );
+  var chips = bar.querySelectorAll(".period-chip");
+  Array.prototype.forEach.call(chips, function (chip) {
+    var v = chip.getAttribute("data-period");
+    if (!hasDaily(cab) && v !== "7") {
+      chip.disabled = true;
+      chip.title = "Станет доступно после следующего обновления данных";
+      return;
+    }
+    chip.addEventListener("click", function () { setPeriodMode(v); });
+  });
+  var from = bar.querySelector("#period-from");
+  var to = bar.querySelector("#period-to");
+  if (from) from.addEventListener("change", function () { onPeriodDateChange("from", this.value); });
+  if (to) to.addEventListener("change", function () { onPeriodDateChange("to", this.value); });
+  return bar;
+}
+
+// перерисовать график + таблицу под выбранный период
+function renderDyn() {
+  var cab = CUR_CAB;
+  var box = DYN_EL;
+  if (!cab || !box) return;
+  box.innerHTML = "";
+
+  var series = periodSeries(cab);
+  var hasActivity = series.some(function (d) { return d.clicks || d.spend || d.shows || d.goals; });
+
+  // подзаголовок карточки — под выбранный период
+  if (cab.status === "ok") {
+    document.getElementById("modal-subtitle").textContent =
+      "клики и цена клика за " + periodLabel();
+  }
+
+  if (!series.length || !hasActivity) {
+    box.appendChild(el('<p class="no-data">За выбранный период показов и кликов не было.</p>'));
+    return;
+  }
+
+  var totalClicks = 0;
+  var totalSpend = 0;
+  series.forEach(function (d) { totalClicks += d.clicks || 0; totalSpend += d.spend || 0; });
+
+  // график: столбики кликов + линия цены клика за выбранный период
+  box.appendChild(el(
+    '<div class="chart-wrap">' +
+    '<div class="chart-head">' +
+    '<span class="chart-title">Динамика за ' + esc(periodLabel("short")) + "</span>" +
+    '<span class="chart-legend">' +
+    '<span class="leg leg-bar"><i></i>клики, шт</span>' +
+    '<span class="leg leg-line"><i></i>цена клика, ₽</span>' +
+    "</span></div>" +
+    buildChartSvg(series) +
+    "</div>"
+  ));
+
+  // подневная таблица за выбранный период
+  var rowsHtml = series.map(function (d) {
+    var todayNote = d.isToday ? '<span class="today-note">сегодня, ещё идёт</span>' : "";
+    return (
+      "<tr>" +
+      "<td>" + esc(fmtDateShort(d.date)) + todayNote + "</td>" +
+      "<td>" + esc(String(d.clicks)) + "</td>" +
+      "<td>" + esc(fmtMoneyPrecise(d.spend)) + "</td>" +
+      "<td>" + esc(fmtCpc(d.cpc)) + "</td>" +
+      "</tr>"
+    );
+  }).join("");
+  var totalLabel = PERIOD.mode === "custom" ? "Итого за период" : "Итого за " + PERIOD.mode + " дней";
+  var totalRow =
+    '<tr class="total-row">' +
+    "<td>" + esc(totalLabel) + "</td>" +
+    "<td>" + esc(String(totalClicks)) + "</td>" +
+    "<td>" + esc(fmtMoneyPrecise(totalSpend)) + "</td>" +
+    "<td>" + esc(fmtCpc(totalClicks > 0 ? totalSpend / totalClicks : null)) + '<span class="cpc-note">средняя цена клика</span></td>' +
+    "</tr>";
+  box.appendChild(el(
+    '<div class="clicks-table-wrap"><table class="clicks-table"><thead><tr>' +
+    "<th>Дата</th><th>Клики</th><th>Расход</th><th>Цена клика</th>" +
+    "</tr></thead><tbody>" + rowsHtml + totalRow + "</tbody></table></div>"
+  ));
+}
+
 // ---------- карточка клиента (модалка) ----------
 
 function openModal(cab) {
+  CUR_CAB = cab;
+  PERIOD = { mode: "7", from: null, to: null };
+  DYN_EL = null;
   document.getElementById("modal-title").textContent = cab.clientName || cab.name;
   var hasData = cab.status === "ok";
   document.getElementById("modal-subtitle").textContent = hasData
@@ -374,19 +594,12 @@ function openModal(cab) {
   });
   block.appendChild(grid);
 
-  // график: столбики кликов + линия цены клика за 7 дней
-  if (cab.clicks7 && cab.clicks7.length) {
-    block.appendChild(el(
-      '<div class="chart-wrap">' +
-      '<div class="chart-head">' +
-      '<span class="chart-title">Динамика за 7 дней</span>' +
-      '<span class="chart-legend">' +
-      '<span class="leg leg-bar"><i></i>клики, шт</span>' +
-      '<span class="leg leg-line"><i></i>цена клика, ₽</span>' +
-      "</span></div>" +
-      buildChartSvg(cab.clicks7) +
-      "</div>"
-    ));
+  // выбор периода (7 / 30 / свой) + динамика под него
+  if (hasData) {
+    block.appendChild(buildPeriodBar(cab));
+    DYN_EL = el('<div class="dyn-wrap"></div>');
+    block.appendChild(DYN_EL);
+    renderDyn();
   }
 
   if (isLow(cab)) {
@@ -395,37 +608,7 @@ function openModal(cab) {
     ));
   }
 
-  // 7-дневная таблица кликов
-  if (cab.clicks7 && cab.clicks7.length) {
-    var total = cab.clicks7Total;
-    var rowsHtml = cab.clicks7.map(function (d) {
-      var todayNote = d.isToday ? '<span class="today-note">сегодня, ещё идёт</span>' : "";
-      return (
-        "<tr>" +
-        "<td>" + esc(fmtDateShort(d.date)) + todayNote + "</td>" +
-        "<td>" + esc(String(d.clicks)) + "</td>" +
-        "<td>" + esc(fmtMoneyPrecise(d.spend)) + "</td>" +
-        "<td>" + esc(fmtCpc(d.cpc)) + "</td>" +
-        "</tr>"
-      );
-    }).join("");
-    var totalRow =
-      '<tr class="total-row">' +
-      "<td>Итого за 7 дней</td>" +
-      "<td>" + esc(String(total.clicks)) + "</td>" +
-      "<td>" + esc(fmtMoneyPrecise(total.spend)) + "</td>" +
-      "<td>" + esc(fmtCpc(total.cpc)) + '<span class="cpc-note">средняя цена клика</span></td>' +
-      "</tr>";
-    block.appendChild(el(
-      '<div class="clicks-table-wrap"><table class="clicks-table"><thead><tr>' +
-      "<th>Дата</th><th>Клики</th><th>Расход</th><th>Цена клика</th>" +
-      "</tr></thead><tbody>" + rowsHtml + totalRow + "</tbody></table></div>"
-    ));
-  } else if (hasData) {
-    block.appendChild(el('<p class="no-data">За последние 7 дней показов и кликов не было.</p>'));
-  }
-
-  block.appendChild(el('<p class="footnote">«Сегодня» — данные за неполный день, накопление идёт в течение суток.</p>'));
+  block.appendChild(el('<p class="footnote">«Сегодня» — данные за неполный день, накопление идёт в течение суток. Период можно сменить над графиком: 7 дней (по умолчанию), 30 дней или свой.</p>'));
 
   body.appendChild(block);
   document.getElementById("modal").hidden = false;
