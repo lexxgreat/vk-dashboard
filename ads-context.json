@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-06T15:54:23.687Z",
+ "generatedAt": "2026-11-06T21:29:13.329Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 1909.77,
+   "balance": 1736.88,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -51,34 +51,43 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 1040.28,
+   "balance": 937.35,
    "userName": "vkads_205397140@vk",
    "plans": [
     {
-     "id": 17503364,
-     "name": "род",
-     "status": "active"
-    },
-    {
-     "id": 20514431,
-     "name": "Сообщения 2.0",
+     "id": 39738146,
+     "name": "конкурс 18 ноября",
      "status": "active"
     }
    ],
    "groups": [
     {
-     "id": 129553057,
-     "name": "1902 род",
+     "id": 165698866,
+     "name": "авто",
      "status": "active",
-     "planId": 17503364,
-     "packageId": 3127
+     "planId": 39738146,
+     "packageId": 3194
     },
     {
-     "id": 145261909,
-     "name": "Ключи финал",
+     "id": 165699685,
+     "name": "ключи",
      "status": "active",
-     "planId": 20514431,
-     "packageId": 3127
+     "planId": 39738146,
+     "packageId": 3194
+    },
+    {
+     "id": 165699687,
+     "name": "родители",
+     "status": "active",
+     "planId": 39738146,
+     "packageId": 3194
+    },
+    {
+     "id": 165699688,
+     "name": "подарки",
+     "status": "active",
+     "planId": 39738146,
+     "packageId": 3194
     }
    ],
    "defaults": {
@@ -88,17 +97,17 @@
     "cta": "write",
     "title": "ПроШары Воздушные шары в Тамбове",
     "text": "Дети в восторге, гости делают фото, а мама наконец-то отдыхает!\nТак бывает, когда заказываешь шары в \"ПроШарах\".\nНапишите нам. Посчитаем стоимость по фото из интернета или скинем примеры работ с ценами под Ваш запрос.",
-    "basedOnBanners": 168
+    "basedOnBanners": 172
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 2
+    "activeBanners": 4
    }
   },
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1378.43,
+   "balance": 1294.41,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -145,7 +154,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 8681,
+   "balance": 8647.3,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -199,7 +208,7 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 6922.01,
+   "balance": 6771.1,
    "userName": "vkads_636285275@vk",
    "plans": [
     {
@@ -246,7 +255,7 @@
   "26047668": {
    "name": "ШАРТ",
    "clientName": "В. Шаров",
-   "balance": 1370.73,
+   "balance": 1282.78,
    "userName": "vkads_332616006@vk@10956269",
    "plans": [
     {
@@ -281,7 +290,7 @@
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 2499.97,
+   "balance": 1955.39,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
