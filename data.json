@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T21:28:28.149Z",
+  "generatedAt": "2026-11-07T01:12:17.942Z",
   "today": "2026-11-07",
   "yesterday": "2026-11-06",
   "dayBefore": "2026-11-05",
@@ -10,9 +10,9 @@
       "clientName": "Варвара Бякова",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:05.259Z",
-      "balanceTotal": 1294.41,
-      "balanceReal": 1294.41,
+      "lastSyncAt": "2026-11-07T01:11:54.837Z",
+      "balanceTotal": 1280.31,
+      "balanceReal": 1280.31,
       "balanceBonus": 0,
       "spendYesterday": 300,
       "spendDayBefore": 600,
@@ -66,15 +66,15 @@
         {
           "date": "2026-11-07",
           "clicks": 0,
-          "spend": 0.75,
+          "spend": 14.81,
           "cpc": null,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 47,
-        "spend": 3029.78,
-        "cpc": 64.46340425531915
+        "spend": 3043.84,
+        "cpc": 64.76255319148936
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -1082,8 +1082,8 @@
         },
         "2026-11-07": {
           "clicks": 0,
-          "spend": 0.75,
-          "shows": 20,
+          "spend": 14.81,
+          "shows": 159,
           "goals": 0
         }
       }
@@ -1094,9 +1094,9 @@
       "clientName": "Андрей Мельников",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:07.891Z",
-      "balanceTotal": 6771.1,
-      "balanceReal": 6771.1,
+      "lastSyncAt": "2026-11-07T01:11:57.604Z",
+      "balanceTotal": 6746.01,
+      "balanceReal": 6746.01,
       "balanceBonus": 0,
       "spendYesterday": 498.59,
       "spendDayBefore": 643.73,
@@ -1149,16 +1149,16 @@
         },
         {
           "date": "2026-11-07",
-          "clicks": 0,
-          "spend": 4.64,
-          "cpc": null,
+          "clicks": 1,
+          "spend": 30.93,
+          "cpc": 30.93,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 67,
-        "spend": 4192.55,
-        "cpc": 62.57537313432836
+        "clicks": 68,
+        "spend": 4218.84,
+        "cpc": 62.04176470588236
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -1259,10 +1259,10 @@
           "goals": 10
         },
         "2026-11-07": {
-          "clicks": 0,
-          "spend": 4.64,
-          "shows": 17,
-          "goals": 0
+          "clicks": 1,
+          "spend": 30.93,
+          "shows": 139,
+          "goals": 1
         }
       }
     },
@@ -1272,9 +1272,9 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:11.195Z",
-      "balanceTotal": 1736.88,
-      "balanceReal": 1861.38,
+      "lastSyncAt": "2026-11-07T01:12:00.832Z",
+      "balanceTotal": 1711.07,
+      "balanceReal": 1835.57,
       "balanceBonus": 0,
       "spendYesterday": 532.5,
       "spendDayBefore": 532.5,
@@ -1328,15 +1328,15 @@
         {
           "date": "2026-11-07",
           "clicks": 0,
-          "spend": 9.68,
+          "spend": 36.81,
           "cpc": null,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 49,
-        "spend": 3204.68,
-        "cpc": 65.40163265306123
+        "spend": 3231.81,
+        "cpc": 65.95530612244897
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -2308,8 +2308,8 @@
         },
         "2026-11-07": {
           "clicks": 0,
-          "spend": 9.68,
-          "shows": 28,
+          "spend": 36.81,
+          "shows": 125,
           "goals": 0
         }
       }
@@ -2320,9 +2320,9 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:14.329Z",
-      "balanceTotal": 1282.78,
-      "balanceReal": 1456.91,
+      "lastSyncAt": "2026-11-07T01:12:03.998Z",
+      "balanceTotal": 1272.25,
+      "balanceReal": 1446.38,
       "balanceBonus": 0,
       "spendYesterday": 300,
       "spendDayBefore": 300,
@@ -2376,15 +2376,15 @@
         {
           "date": "2026-11-07",
           "clicks": 0,
-          "spend": 6.03,
+          "spend": 16.93,
           "cpc": null,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 88,
-        "spend": 1806.03,
-        "cpc": 20.523068181818182
+        "spend": 1816.93,
+        "cpc": 20.64693181818182
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -3350,8 +3350,8 @@
         },
         "2026-11-07": {
           "clicks": 0,
-          "spend": 6.03,
-          "shows": 34,
+          "spend": 16.93,
+          "shows": 130,
           "goals": 0
         }
       }
@@ -3362,9 +3362,9 @@
       "clientName": "Адамович",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:17.394Z",
-      "balanceTotal": 1955.39,
-      "balanceReal": 1955.39,
+      "lastSyncAt": "2026-11-07T01:12:06.968Z",
+      "balanceTotal": 1918.13,
+      "balanceReal": 1918.13,
       "balanceBonus": 0,
       "spendYesterday": 522.53,
       "spendDayBefore": 684.09,
@@ -3417,16 +3417,16 @@
         },
         {
           "date": "2026-11-07",
-          "clicks": 0,
-          "spend": 20.14,
-          "cpc": null,
+          "clicks": 4,
+          "spend": 59.24,
+          "cpc": 14.809999999999999,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 158,
-        "spend": 3042.68,
-        "cpc": 19.25746835443038
+        "clicks": 162,
+        "spend": 3081.78,
+        "cpc": 19.023333333333333
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -4289,10 +4289,10 @@
           "goals": 9
         },
         "2026-11-07": {
-          "clicks": 0,
-          "spend": 20.14,
-          "shows": 207,
-          "goals": 0
+          "clicks": 4,
+          "spend": 59.24,
+          "shows": 621,
+          "goals": 2
         }
       }
     },
@@ -4348,9 +4348,9 @@
       "clientName": "Праздник Сказка — Пантюшкина",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:20.417Z",
-      "balanceTotal": 8647.3,
-      "balanceReal": 8647.3,
+      "lastSyncAt": "2026-11-07T01:12:09.866Z",
+      "balanceTotal": 8640.77,
+      "balanceReal": 8640.77,
       "balanceBonus": 0,
       "spendYesterday": 87.91,
       "spendDayBefore": 84.06,
@@ -4404,15 +4404,15 @@
         {
           "date": "2026-11-07",
           "clicks": 0,
-          "spend": 2.7,
+          "spend": 9.23,
           "cpc": null,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 26,
-        "spend": 1136.41,
-        "cpc": 43.70807692307694
+        "spend": 1142.94,
+        "cpc": 43.95923076923078
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -4760,8 +4760,8 @@
         },
         "2026-11-07": {
           "clicks": 0,
-          "spend": 2.7,
-          "shows": 1,
+          "spend": 9.23,
+          "shows": 5,
           "goals": 0
         }
       }
@@ -4772,9 +4772,9 @@
       "clientName": "Геннадий Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:23.281Z",
-      "balanceTotal": 937.35,
-      "balanceReal": 937.35,
+      "lastSyncAt": "2026-11-07T01:12:13.151Z",
+      "balanceTotal": 920.71,
+      "balanceReal": 920.71,
       "balanceBonus": 0,
       "spendYesterday": 501.7,
       "spendDayBefore": 600,
@@ -4827,16 +4827,16 @@
         },
         {
           "date": "2026-11-07",
-          "clicks": 1,
-          "spend": 14.63,
-          "cpc": 14.63,
+          "clicks": 2,
+          "spend": 34.59,
+          "cpc": 17.295,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 73,
-        "spend": 1859.06,
-        "cpc": 25.466575342465756
+        "clicks": 74,
+        "spend": 1879.02,
+        "cpc": 25.392162162162162
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -5615,10 +5615,10 @@
           "goals": 0
         },
         "2026-11-07": {
-          "clicks": 1,
-          "spend": 14.63,
-          "shows": 111,
-          "goals": 0
+          "clicks": 2,
+          "spend": 34.59,
+          "shows": 233,
+          "goals": 1
         }
       }
     },
@@ -5628,9 +5628,9 @@
       "clientName": "Марина Владимировна — старый кабинет",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-06T21:28:28.148Z",
-      "balanceTotal": 373.7,
-      "balanceReal": 373.7,
+      "lastSyncAt": "2026-11-07T01:12:17.942Z",
+      "balanceTotal": 349.52,
+      "balanceReal": 349.52,
       "balanceBonus": 0,
       "spendYesterday": 419.62,
       "spendDayBefore": 0,
@@ -5683,16 +5683,16 @@
         },
         {
           "date": "2026-11-07",
-          "clicks": 0,
-          "spend": 21.68,
-          "cpc": null,
+          "clicks": 2,
+          "spend": 49.86,
+          "cpc": 24.93,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 17,
-        "spend": 1260.3,
-        "cpc": 74.13529411764705
+        "clicks": 19,
+        "spend": 1288.48,
+        "cpc": 67.81473684210525
       },
       "dailyFrom": "2026-05-08",
       "daily": {
@@ -6201,9 +6201,9 @@
           "goals": 1
         },
         "2026-11-07": {
-          "clicks": 0,
-          "spend": 21.68,
-          "shows": 52,
+          "clicks": 2,
+          "spend": 49.86,
+          "shows": 134,
           "goals": 0
         }
       }
