@@ -82,6 +82,52 @@ function cpc2days(cab, data) {
   return (cab.spendYesterday + cab.spendDayBefore) / clicks;
 }
 
+// ---------- график сообщений группы: писавшие по дням (столбики) ----------
+
+function buildMsgChartSvg(days) {
+  var W = 520, H = 190;
+  var mL = 34, mR = 12, mT = 14, mB = 24;
+  var iw = W - mL - mR, ih = H - mT - mB;
+  var n = days.length;
+  if (!n) return "";
+  var labelStep = n > 12 ? Math.ceil(n / 10) : 1;
+  var showBarNums = n <= 16;
+  var maxW = niceCeilInt(Math.max.apply(null, days.map(function (d) { return d.writers || 0; })));
+  var yW = function (v) { return mT + ih - (ih * v) / maxW; };
+  var band = iw / n;
+  var xC = function (i) { return mL + band * (i + 0.5); };
+
+  var p = [];
+  for (var g = 0; g <= 3; g++) {
+    var frac = g / 3;
+    var y = (mT + ih - ih * frac).toFixed(1);
+    p.push('<line x1="' + mL + '" y1="' + y + '" x2="' + (W - mR) + '" y2="' + y + '" stroke="#e5e7eb" stroke-width="1"/>');
+    p.push('<text x="' + (mL - 6) + '" y="' + (+y + 3.5).toFixed(1) + '" text-anchor="end" font-size="10" fill="#6b7280">' + Math.round(maxW * frac) + "</text>");
+  }
+  days.forEach(function (d, i) {
+    var writers = d.writers || 0;
+    var x = xC(i);
+    var bw = Math.min(band * 0.52, 40);
+    var yTop = yW(writers);
+    var h = writers > 0 ? Math.max(2, mT + ih - yTop) : 0;
+    var todayFill = d.isToday ? ' opacity="0.55"' : "";
+    var todayStroke = d.isToday ? ' stroke="#16a34a" stroke-dasharray="3 2" stroke-width="1"' : "";
+    p.push(
+      '<g><title>' + esc(fmtDateShort(d.date)) + (d.isToday ? " (сегодня, ещё идёт)" : "") + ": писавших " + writers + "</title>" +
+      '<rect x="' + (x - bw / 2).toFixed(1) + '" y="' + yTop.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="#16a34a"' + todayFill + todayStroke + "/>" +
+      (writers > 0 && showBarNums ? '<text x="' + x.toFixed(1) + '" y="' + (yTop - 5).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">' + writers + "</text>" : "") +
+      "</g>"
+    );
+    if (i % labelStep === 0 || (i === n - 1 && (n - 1) % labelStep > 1)) {
+      p.push(
+        '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10"' +
+        (d.isToday ? ' font-weight="600" fill="#16a34a"' : ' fill="#6b7280"') + ">" + esc(fmtDateShort(d.date)) + "</text>"
+      );
+    }
+  });
+  return '<svg class="chart-svg" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="График: писавшие в группу за ' + n + ' дней">' + p.join("") + "</svg>";
+}
+
 // ---------- график в карточке клиента: клики (столбики) + цена клика (линия) ----------
 // Чистый SVG без библиотек — строится из clicks7, уже лежащего в data.json.
 
@@ -248,8 +294,8 @@ function renderTotals(data) {
     { label: "Расход за " + fmtDateLong(data.dayBefore), value: fmtMoneyPrecise(t.spendDayBefore), muted: false },
     { label: "Ср. цена клика (2 дня)", value: fmtCpc(cpc2), muted: false },
     { label: "Расход за 30 дней", value: fmtMoney(t.spendMonth), muted: true },
-    { label: "Сообщений вчера", value: t.messagesYesterday != null ? String(t.messagesYesterday) : "—", muted: false },
-    { label: "Сообщений за 30 дней", value: t.messagesMonth != null ? String(t.messagesMonth) : "—", muted: false },
+    { label: "Сообщений в группе (вчера)", value: t.messagesYesterday != null ? String(t.messagesYesterday) : "—", muted: false },
+    { label: "Сообщений в группе (30 дн.)", value: t.messagesMonth != null ? String(t.messagesMonth) : "—", muted: false },
   ];
   var tiles = document.getElementById("totals-tiles");
   tiles.innerHTML = "";
@@ -331,10 +377,10 @@ function renderTable(data) {
     else if (low) realCell = '<span class="low">' + esc(fmtMoneyPrecise(cab.balanceReal)) + "</span>";
     else realCell = "<span>" + esc(fmtMoneyPrecise(cab.balanceReal)) + "</span>";
 
-    // Сообщений вчера: при проблеме показываем бейдж статуса
+    // Сообщений в группе: показываем только у клиентов с подключённой группой
     var msgYestCell = cab.status !== "ok"
       ? statusBadge(cab.status, cab.statusNote)
-      : intCell(cab.messagesYesterday);
+      : intCell(cab.messagesSource === "group" ? cab.messagesYesterday : null);
 
     tr.innerHTML =
       "<td>" + cabCell + "</td>" +
@@ -345,7 +391,7 @@ function renderTable(data) {
       "<td>" + cpcCellHtml(cab, data) + "</td>" +
       "<td>" + moneyCell(cab.spendMonth) + "</td>" +
       '<td class="cell-int">' + msgYestCell + "</td>" +
-      '<td class="cell-int">' + intCell(cab.messagesMonth) + "</td>";
+      '<td class="cell-int">' + intCell(cab.messagesSource === "group" ? cab.messagesMonth : null) + "</td>";
     tbody.appendChild(tr);
   });
 }
@@ -487,6 +533,34 @@ function buildPeriodBar(cab) {
   return bar;
 }
 
+function pluralWriters(n) {
+  var m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return "человек";
+  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return "человека";
+  return "человек";
+}
+
+// серия дней выбранного периода по сообщениям группы (уникальные писавшие).
+// Данные сообщений начинаются с msgDailyFrom (когда группу подключили) —
+// дни до него не рисуем, вместо этого подсказка.
+function msgSeries(cab) {
+  if (!cab.msgDaily || !DATA.today) return [];
+  var from = PERIOD.from || isoShift(DATA.today, -6);
+  var to = PERIOD.to || DATA.today;
+  var min = cab.msgDailyFrom || null;
+  if (min && from < min) from = min;
+  if (from > to) return [];
+  var out = [];
+  for (var iso = from; iso <= to; iso = isoShift(iso, 1)) {
+    out.push({
+      date: iso,
+      writers: cab.msgDaily[iso] || 0,
+      isToday: iso === DATA.today,
+    });
+  }
+  return out;
+}
+
 // перерисовать график + таблицу под выбранный период
 function renderDyn() {
   var cab = CUR_CAB;
@@ -503,52 +577,101 @@ function renderDyn() {
       "клики и цена клика за " + periodLabel();
   }
 
-  if (!series.length || !hasActivity) {
+  if (series.length && hasActivity) {
+    var totalClicks = 0;
+    var totalSpend = 0;
+    series.forEach(function (d) { totalClicks += d.clicks || 0; totalSpend += d.spend || 0; });
+
+    // график: столбики кликов + линия цены клика за выбранный период
+    box.appendChild(el(
+      '<div class="chart-wrap">' +
+      '<div class="chart-head">' +
+      '<span class="chart-title">Динамика за ' + esc(periodLabel("short")) + "</span>" +
+      '<span class="chart-legend">' +
+      '<span class="leg leg-bar"><i></i>клики, шт</span>' +
+      '<span class="leg leg-line"><i></i>цена клика, ₽</span>' +
+      "</span></div>" +
+      buildChartSvg(series) +
+      "</div>"
+    ));
+
+    // подневная таблица за выбранный период
+    var rowsHtml = series.map(function (d) {
+      var todayNote = d.isToday ? '<span class="today-note">сегодня, ещё идёт</span>' : "";
+      return (
+        "<tr>" +
+        "<td>" + esc(fmtDateShort(d.date)) + todayNote + "</td>" +
+        "<td>" + esc(String(d.clicks)) + "</td>" +
+        "<td>" + esc(fmtMoneyPrecise(d.spend)) + "</td>" +
+        "<td>" + esc(fmtCpc(d.cpc)) + "</td>" +
+        "</tr>"
+      );
+    }).join("");
+    var totalLabel = PERIOD.mode === "custom" ? "Итого за период" : "Итого за " + PERIOD.mode + " дней";
+    var totalRow =
+      '<tr class="total-row">' +
+      "<td>" + esc(totalLabel) + "</td>" +
+      "<td>" + esc(String(totalClicks)) + "</td>" +
+      "<td>" + esc(fmtMoneyPrecise(totalSpend)) + "</td>" +
+      "<td>" + esc(fmtCpc(totalClicks > 0 ? totalSpend / totalClicks : null)) + '<span class="cpc-note">средняя цена клика</span></td>' +
+      "</tr>";
+    box.appendChild(el(
+      '<div class="clicks-table-wrap"><table class="clicks-table"><thead><tr>' +
+      "<th>Дата</th><th>Клики</th><th>Расход</th><th>Цена клика</th>" +
+      "</tr></thead><tbody>" + rowsHtml + totalRow + "</tbody></table></div>"
+    ));
+  } else {
     box.appendChild(el('<p class="no-data">За выбранный период показов и кликов не было.</p>'));
-    return;
   }
 
-  var totalClicks = 0;
-  var totalSpend = 0;
-  series.forEach(function (d) { totalClicks += d.clicks || 0; totalSpend += d.spend || 0; });
+  // сообщения группы — тем же периодом (если группа подключена)
+  renderMsgDyn(cab, box);
+}
 
-  // график: столбики кликов + линия цены клика за выбранный период
-  box.appendChild(el(
-    '<div class="chart-wrap">' +
-    '<div class="chart-head">' +
-    '<span class="chart-title">Динамика за ' + esc(periodLabel("short")) + "</span>" +
-    '<span class="chart-legend">' +
-    '<span class="leg leg-bar"><i></i>клики, шт</span>' +
-    '<span class="leg leg-line"><i></i>цена клика, ₽</span>' +
-    "</span></div>" +
-    buildChartSvg(series) +
-    "</div>"
-  ));
+// блок сообщений группы в карточке: график + таблица по выбранному периоду
+function renderMsgDyn(cab, box) {
+  if (!cab.msgDaily) return;
+  var mseries = msgSeries(cab);
+  var mTotal = 0;
+  mseries.forEach(function (d) { mTotal += d.writers || 0; });
 
-  // подневная таблица за выбранный период
-  var rowsHtml = series.map(function (d) {
+  var head =
+    '<div class="chart-head msg-head">' +
+    '<span class="chart-title">Сообщения в группе' +
+    (cab.groupName ? " — " + esc(cab.groupName) : "") + "</span>" +
+    '<span class="chart-legend"><span class="leg leg-msg"><i></i>писавшие, чел</span></span>' +
+    "</div>";
+
+  var hintFrom = cab.msgDailyFrom && PERIOD.from && cab.msgDailyFrom > PERIOD.from
+    ? '<p class="period-hint msg-from-hint">данные сообщений — с ' + esc(fmtDateShort(cab.msgDailyFrom)) + " (тогда подключили группу)</p>"
+    : "";
+
+  var chart = mseries.length
+    ? '<div class="chart-wrap">' + head + buildMsgChartSvg(mseries) + "</div>"
+    : '<div class="chart-wrap">' + head + '<p class="no-data">За выбранный период данных сообщений нет.</p></div>';
+  box.appendChild(el(chart + hintFrom));
+
+  if (!mseries.length) return;
+
+  var mRows = mseries.map(function (d) {
     var todayNote = d.isToday ? '<span class="today-note">сегодня, ещё идёт</span>' : "";
     return (
       "<tr>" +
       "<td>" + esc(fmtDateShort(d.date)) + todayNote + "</td>" +
-      "<td>" + esc(String(d.clicks)) + "</td>" +
-      "<td>" + esc(fmtMoneyPrecise(d.spend)) + "</td>" +
-      "<td>" + esc(fmtCpc(d.cpc)) + "</td>" +
+      '<td class="cell-int">' + esc(String(d.writers)) + "</td>" +
       "</tr>"
     );
   }).join("");
-  var totalLabel = PERIOD.mode === "custom" ? "Итого за период" : "Итого за " + PERIOD.mode + " дней";
-  var totalRow =
+  var mTotalLabel = PERIOD.mode === "custom" ? "Итого за период" : "Итого за " + PERIOD.mode + " дней";
+  var mTotalRow =
     '<tr class="total-row">' +
-    "<td>" + esc(totalLabel) + "</td>" +
-    "<td>" + esc(String(totalClicks)) + "</td>" +
-    "<td>" + esc(fmtMoneyPrecise(totalSpend)) + "</td>" +
-    "<td>" + esc(fmtCpc(totalClicks > 0 ? totalSpend / totalClicks : null)) + '<span class="cpc-note">средняя цена клика</span></td>' +
+    "<td>" + esc(mTotalLabel) + "</td>" +
+    '<td class="cell-int">' + esc(String(mTotal)) + ' <span class="cpc-note">' + esc(pluralWriters(mTotal) + " писали") + "</span></td>" +
     "</tr>";
   box.appendChild(el(
-    '<div class="clicks-table-wrap"><table class="clicks-table"><thead><tr>' +
-    "<th>Дата</th><th>Клики</th><th>Расход</th><th>Цена клика</th>" +
-    "</tr></thead><tbody>" + rowsHtml + totalRow + "</tbody></table></div>"
+    '<div class="clicks-table-wrap"><table class="clicks-table msgs-table"><thead><tr>' +
+    "<th>Дата</th><th>Писавших в группу</th>" +
+    "</tr></thead><tbody>" + mRows + mTotalRow + "</tbody></table></div>"
   ));
 }
 
@@ -584,6 +707,10 @@ function openModal(cab) {
     { label: "Расход позавчера", value: cab.spendDayBefore != null ? fmtMoneyPrecise(cab.spendDayBefore) : "—", strong: true },
     { label: "Расход за 30 дней", value: cab.spendMonth != null ? fmtMoney(cab.spendMonth) : "—", muted: true },
   ];
+  if (cab.messagesSource === "group") {
+    stats.push({ label: "Писали в группу — вчера", value: cab.messagesYesterday != null ? String(cab.messagesYesterday) + " чел." : "—", strong: true });
+    stats.push({ label: "Писали в группу — за 30 дней", value: cab.messagesMonth != null ? String(cab.messagesMonth) + " чел." : "—", strong: true });
+  }
   var grid = el('<div class="cab-stats"></div>');
   stats.forEach(function (s) {
     var cls = "tile" + (s.muted ? " muted" : "");
@@ -608,7 +735,7 @@ function openModal(cab) {
     ));
   }
 
-  block.appendChild(el('<p class="footnote">«Сегодня» — данные за неполный день, накопление идёт в течение суток. Период можно сменить над графиком: 7 дней (по умолчанию), 30 дней или свой.</p>'));
+  block.appendChild(el('<p class="footnote">«Сегодня» — данные за неполный день, накопление идёт в течение суток. Период можно сменить над графиком: 7 дней (по умолчанию), 30 дней или свой — он действует и на клики, и на сообщения группы (если группа подключена).</p>'));
 
   body.appendChild(block);
   document.getElementById("modal").hidden = false;
