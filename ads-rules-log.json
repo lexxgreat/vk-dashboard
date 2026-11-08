@@ -1,20 +1,73 @@
 {
- "updatedAt": "2026-11-03T13:55:02.085Z",
- "events": [],
+ "updatedAt": "2026-11-08T15:01:58.170Z",
+ "events": [
+  {
+   "ts": "2026-11-08T15:01:37.516Z",
+   "ruleId": "r_mw7ympje52x",
+   "cabinet": 28571374,
+   "group": 164743978,
+   "bannerId": 248673806,
+   "name": "тест5",
+   "spend": 101.41,
+   "clicks": 4,
+   "cpc": 25.35,
+   "reason": "расход 101.41 ₽ > 50 ₽ и цена клика 25.35 ₽ > 15 ₽",
+   "stopped": true
+  },
+  {
+   "ts": "2026-11-08T15:01:42.879Z",
+   "ruleId": "r_mw7ympje52x",
+   "cabinet": 28571374,
+   "group": 164743978,
+   "bannerId": 248674104,
+   "name": "тест7",
+   "spend": 108.33,
+   "clicks": 4,
+   "cpc": 27.08,
+   "reason": "расход 108.33 ₽ > 50 ₽ и цена клика 27.08 ₽ > 15 ₽",
+   "stopped": true
+  },
+  {
+   "ts": "2026-11-08T15:01:46.164Z",
+   "ruleId": "r_mw7ympje52x",
+   "cabinet": 28571374,
+   "group": 164743978,
+   "bannerId": 248674105,
+   "name": "тест8",
+   "spend": 126.01,
+   "clicks": 8,
+   "cpc": 15.75,
+   "reason": "расход 126.01 ₽ > 50 ₽ и цена клика 15.75 ₽ > 15 ₽",
+   "stopped": true
+  },
+  {
+   "ts": "2026-11-08T15:01:53.218Z",
+   "ruleId": "r_mw7ympje52x",
+   "cabinet": 28571374,
+   "group": 164743978,
+   "bannerId": 248674354,
+   "name": "тест11",
+   "spend": 106.63,
+   "clicks": 5,
+   "cpc": 21.33,
+   "reason": "расход 106.63 ₽ > 50 ₽ и цена клика 21.33 ₽ > 15 ₽",
+   "stopped": true
+  }
+ ],
  "lastReport": {
-  "ranAt": "2026-11-03T13:54:30.655Z",
+  "ranAt": "2026-11-08T15:01:29.706Z",
   "dryRun": false,
   "rules": [
    {
-    "rule": "r_e2e",
+    "rule": "r_mw7ympje52x",
     "cabinet": 28571374,
     "group": 164743978,
-    "checked": 15,
-    "violations": 0,
-    "stopped": 0,
+    "checked": 11,
+    "violations": 4,
+    "stopped": 4,
     "errors": []
    }
   ],
-  "stopped": 0
+  "stopped": 4
  }
 }
