@@ -377,10 +377,13 @@ function renderTable(data) {
     else if (low) realCell = '<span class="low">' + esc(fmtMoneyPrecise(cab.balanceReal)) + "</span>";
     else realCell = "<span>" + esc(fmtMoneyPrecise(cab.balanceReal)) + "</span>";
 
-    // Сообщений в группе: показываем только у клиентов с подключённой группой
-    var msgYestCell = cab.status !== "ok"
-      ? statusBadge(cab.status, cab.statusNote)
-      : intCell(cab.messagesSource === "group" ? cab.messagesYesterday : null);
+    // Сообщений в группе: показываем только у клиентов с подключённой группой;
+    // при проблемах с токеном кабинета сообщения всё равно доступны
+    var msgYestCell = cab.messagesSource === "group"
+      ? intCell(cab.messagesYesterday)
+      : cab.status !== "ok"
+        ? statusBadge(cab.status, cab.statusNote)
+        : intCell(null);
 
     tr.innerHTML =
       "<td>" + cabCell + "</td>" +
@@ -399,7 +402,8 @@ function renderTable(data) {
 // ---------- выбор периода в карточке клиента (7 / 30 / свой) ----------
 
 function hasDaily(cab) {
-  return !!(cab && cab.daily && cab.dailyFrom);
+  // подневные данные есть, если есть статистика рекламы (daily) ИЛИ сообщения группы
+  return !!(cab && ((cab.daily && cab.dailyFrom) || cab.msgDaily));
 }
 
 // подпись выбранного периода: «последние 7 дней» / «период 06.05–05.11»
@@ -458,7 +462,7 @@ function syncPeriodBar(cab) {
     from.max = DATA.today;
     to.max = DATA.today;
     if (hint && hasDaily(cab)) {
-      hint.textContent = "данные с " + fmtDateShort(cab.dailyFrom);
+      hint.textContent = "данные с " + fmtDateShort(cab.dailyFrom || cab.msgDailyFrom);
     }
   }
 }
@@ -575,6 +579,9 @@ function renderDyn() {
   if (cab.status === "ok") {
     document.getElementById("modal-subtitle").textContent =
       "клики и цена клика за " + periodLabel();
+  } else if (cab.messagesSource === "group") {
+    document.getElementById("modal-subtitle").textContent =
+      "реклама недоступна — сообщения группы за " + periodLabel();
   }
 
   if (series.length && hasActivity) {
@@ -683,9 +690,12 @@ function openModal(cab) {
   DYN_EL = null;
   document.getElementById("modal-title").textContent = cab.clientName || cab.name;
   var hasData = cab.status === "ok";
+  var hasGroup = cab.messagesSource === "group";
   document.getElementById("modal-subtitle").textContent = hasData
     ? "клики и цена клика за последние 7 дней"
-    : statusBadge(cab.status, cab.statusNote) ? "нет данных по кабинету" : "";
+    : hasGroup
+      ? "реклама недоступна — внутри только сообщения группы"
+      : "нет данных по кабинету";
 
   var body = document.getElementById("modal-body");
   body.innerHTML = "";
@@ -721,8 +731,8 @@ function openModal(cab) {
   });
   block.appendChild(grid);
 
-  // выбор периода (7 / 30 / свой) + динамика под него
-  if (hasData) {
+  // выбор периода (7 / 30 / свой) + динамика под него (клики и/или сообщения группы)
+  if (hasData || hasGroup) {
     block.appendChild(buildPeriodBar(cab));
     DYN_EL = el('<div class="dyn-wrap"></div>');
     block.appendChild(DYN_EL);
