@@ -415,10 +415,11 @@ function periodLabel(kind) {
   return kind === "short" ? PERIOD.mode + " дней" : "последние " + PERIOD.mode + " дней";
 }
 
-// серия дней выбранного периода: из daily (полгода) или clicks7 (старый data.json)
+// серия дней выбранного периода: из daily (полгода) или clicks7 (старый data.json).
+// Сообщения группы (msgDaily) здесь не участвуют — у них своя серия msgSeries.
 function periodSeries(cab) {
   if (!DATA || !DATA.today) return [];
-  if (hasDaily(cab)) {
+  if (cab && cab.daily && cab.dailyFrom) {
     var from = PERIOD.from || isoShift(DATA.today, -6);
     var to = PERIOD.to || DATA.today;
     var out = [];
