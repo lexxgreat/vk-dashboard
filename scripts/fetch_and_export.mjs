@@ -289,6 +289,8 @@ async function main() {
     const token = extId != null ? tokens[String(extId)] : null;
     if (!token) {
       console.log(`${cab.name}: нет токена → статус ${cab.noTokenStatus}`);
+      // сообщения сообщества доступны и без токена кабинета (Шарок, Воздух Пермь)
+      const msgs = groupMessages(groupsByCab[String(extId)], today);
       rows.push({
         extId,
         name: cab.name,
@@ -302,17 +304,18 @@ async function main() {
         spendYesterday: null,
         spendDayBefore: null,
         spendMonth: null,
-        messagesYesterday: null,
-        messagesMonth: null,
-        messagesSource: null,
-        msgDaily: null,
-        msgDailyFrom: null,
-        groupName: null,
-        groupMembers: null,
+        messagesYesterday: msgs ? msgs.yesterday : null,
+        messagesMonth: msgs ? msgs.month : null,
+        messagesSource: msgs ? "group" : null,
+        msgDaily: msgs ? msgs.daily : null,
+        msgDailyFrom: msgs ? msgs.from : null,
+        groupName: msgs ? msgs.groupName : null,
+        groupMembers: msgs ? msgs.members : null,
         campaignsCount: null,
         clicks7: [],
         clicks7Total: { clicks: 0, spend: 0, cpc: null },
       });
+      if (msgs) console.log(`  ${cab.name}: писали в группу ${msgs.yesterday} (за 30 дн. ${msgs.month})`);
       continue;
     }
 
@@ -397,6 +400,8 @@ async function main() {
     } catch (e) {
       const msg = String(e.message || e).slice(0, 300);
       console.warn(`  ${cab.name}: ошибка — ${msg}`);
+      // даже при сбое токена сообщения сообщества остаются доступными
+      const msgs = groupMessages(groupsByCab[String(extId)], today);
       rows.push({
         extId,
         name: cab.name,
@@ -410,13 +415,13 @@ async function main() {
         spendYesterday: null,
         spendDayBefore: null,
         spendMonth: null,
-        messagesYesterday: null,
-        messagesMonth: null,
-        messagesSource: null,
-        msgDaily: null,
-        msgDailyFrom: null,
-        groupName: null,
-        groupMembers: null,
+        messagesYesterday: msgs ? msgs.yesterday : null,
+        messagesMonth: msgs ? msgs.month : null,
+        messagesSource: msgs ? "group" : null,
+        msgDaily: msgs ? msgs.daily : null,
+        msgDailyFrom: msgs ? msgs.from : null,
+        groupName: msgs ? msgs.groupName : null,
+        groupMembers: msgs ? msgs.members : null,
         campaignsCount: null,
         clicks7: [],
         clicks7Total: { clicks: 0, spend: 0, cpc: null },
