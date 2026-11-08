@@ -428,6 +428,12 @@ td .na { color: var(--muted-2); }
 .chart-legend .leg { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .chart-legend i { width: 10px; height: 10px; border-radius: 3px; background: #3f8ae0; }
 .chart-legend .leg-line i { width: 14px; height: 0; border-radius: 0; background: none; border-top: 2px solid var(--accent); }
+.chart-legend .leg-msg i { background: #16a34a; }
+
+/* сообщения группы в карточке клиента */
+.msg-head { margin-top: 14px; }
+.msg-from-hint { margin: 6px 8px 0; }
+.msgs-table .total-row .cpc-note { font-size: 11px; color: var(--muted-2); margin-left: 6px; }
 .chart-svg { width: 100%; height: auto; display: block; margin-top: 4px; }
 
 /* ---------- подвал ---------- */
