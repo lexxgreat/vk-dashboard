@@ -6,7 +6,12 @@
 //
 // Логика — точная копия дашборда: баланс по transaction_groups (депозиты − списания,
 // разделение живые/бонус по событиям), статистика по /statistics/ad_plans/day.json,
-// даты в МСК (UTC+3), сообщения = конверсии (base.vk.goals || base.goals).
+// даты в МСК (UTC+3).
+//
+// СООБЩЕНИЯ: считаются из сообществ клиентов (groups-stats.json — уникальные
+// пользователи, писавшие в диалоги группы, по дням; файл обновляет панель при
+// синхронизации групп). Кабинеты без привязанной группы сообщений не имеют
+// (null → на сайте «—»). Конверсии-цели рекламы больше не используются.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -16,6 +21,8 @@ const BASE = "https://ads.vk.com/api/v2";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_FILE = path.join(ROOT, "data.json");
 const CAB_FILE = path.join(ROOT, "cabinets.json");
+// Статистика сообщений сообществ (уникальные писавшие по дням) — из репозитория
+const GROUPS_FILE = path.join(ROOT, "groups-stats.json");
 // Глубина подневной статистики в data.json (полгода) — для выбора периода
 // 7 / 30 / свой период в карточке клиента на сайте. API отдаёт и более
 // длинные диапазоны одним вызовом, поэтому расширение окна не добавляет запросов.
@@ -222,6 +229,42 @@ async function fetchCampaignsCount(token) {
   }
 }
 
+// ---------- сообщения сообществ: groups-stats.json ----------
+
+function loadGroupStats() {
+  try {
+    const j = JSON.parse(fs.readFileSync(GROUPS_FILE, "utf8"));
+    if (j && j.groups) {
+      const byCabinet = {};
+      for (const [gid, g] of Object.entries(j.groups)) {
+        if (g && g.cabinetExtId != null) byCabinet[String(g.cabinetExtId)] = { ...g, id: gid };
+      }
+      return { byCabinet, updatedAt: j.updatedAt ?? null };
+    }
+  } catch {}
+  return { byCabinet: {}, updatedAt: null };
+}
+
+// { yesterday, month, daily: {iso: count}, from } | null (группы нет — сообщений нет)
+function groupMessages(gs, today) {
+  if (!gs || !gs.daily) return null;
+  const day = (iso) => (gs.daily[iso] ? gs.daily[iso].length : 0);
+  const yesterday = isoAddDays(today, -1);
+  let month = 0;
+  for (let i = 1; i <= 30; i++) month += day(isoAddDays(today, -i));
+  const daily = {};
+  for (const [iso, uids] of Object.entries(gs.daily)) daily[iso] = Array.isArray(uids) ? uids.length : 0;
+  const dates = Object.keys(daily).sort();
+  return {
+    yesterday: day(yesterday),
+    month,
+    daily,
+    from: dates.length ? dates[0] : null,
+    members: gs.members ?? null,
+    groupName: gs.name ?? null,
+  };
+}
+
 // ---------- главный цикл ----------
 
 const r2 = (v) => Math.round(v * 100) / 100;
@@ -229,6 +272,10 @@ const r2 = (v) => Math.round(v * 100) / 100;
 async function main() {
   const tokens = loadTokens();
   const cabinets = JSON.parse(fs.readFileSync(CAB_FILE, "utf8"));
+  const { byCabinet: groupsByCab, updatedAt: groupsUpdatedAt } = loadGroupStats();
+  if (Object.keys(groupsByCab).length) {
+    console.log(`статистика сообществ: ${Object.keys(groupsByCab).length} групп (обновлена ${groupsUpdatedAt ?? "?"})`);
+  }
   const today = mskTodayIso();
   const yesterday = isoAddDays(today, -1);
   const dayBefore = isoAddDays(today, -2);
@@ -257,6 +304,11 @@ async function main() {
         spendMonth: null,
         messagesYesterday: null,
         messagesMonth: null,
+        messagesSource: null,
+        msgDaily: null,
+        msgDailyFrom: null,
+        groupName: null,
+        groupMembers: null,
         campaignsCount: null,
         clicks7: [],
         clicks7Total: { clicks: 0, spend: 0, cpc: null },
@@ -273,11 +325,11 @@ async function main() {
       const stat = (iso) => byDate[iso] || null;
 
       let spendMonth = 0;
-      let messagesMonth = 0;
       for (let i = 1; i <= 30; i++) {
         spendMonth += stat(isoAddDays(today, -i))?.spend || 0;
-        messagesMonth += stat(isoAddDays(today, -i))?.goals || 0;
       }
+      // сообщения — только из сообщества клиента (уникальные писавшие)
+      const msgs = groupMessages(groupsByCab[String(extId)], today);
 
       // 7-дневная таблица кликов (карточка клиента)
       const clicks7 = [];
@@ -325,8 +377,13 @@ async function main() {
         spendYesterday: stat(yesterday) ? r2(stat(yesterday).spend) : 0,
         spendDayBefore: stat(dayBefore) ? r2(stat(dayBefore).spend) : 0,
         spendMonth: r2(spendMonth),
-        messagesYesterday: stat(yesterday)?.goals || 0,
-        messagesMonth,
+        messagesYesterday: msgs ? msgs.yesterday : null,
+        messagesMonth: msgs ? msgs.month : null,
+        messagesSource: msgs ? "group" : null,
+        msgDaily: msgs ? msgs.daily : null,
+        msgDailyFrom: msgs ? msgs.from : null,
+        groupName: msgs ? msgs.groupName : null,
+        groupMembers: msgs ? msgs.members : null,
         campaignsCount,
         clicks7,
         clicks7Total: { clicks: c7clicks, spend: r2(c7spend), cpc: c7clicks > 0 ? c7spend / c7clicks : null },
@@ -334,7 +391,8 @@ async function main() {
         daily,
       });
       console.log(
-        `  ${cab.name}: баланс ${bal.total.toFixed(2)} ₽ (живые ${bal.real.toFixed(2)}), вчера ${(stat(yesterday)?.spend || 0).toFixed(2)} ₽, сообщений ${stat(yesterday)?.goals || 0}`
+        `  ${cab.name}: баланс ${bal.total.toFixed(2)} ₽ (живые ${bal.real.toFixed(2)}), вчера ${(stat(yesterday)?.spend || 0).toFixed(2)} ₽` +
+          (msgs ? `, писали в группу ${msgs.yesterday} (за 30 дн. ${msgs.month})` : "")
       );
     } catch (e) {
       const msg = String(e.message || e).slice(0, 300);
@@ -354,6 +412,11 @@ async function main() {
         spendMonth: null,
         messagesYesterday: null,
         messagesMonth: null,
+        messagesSource: null,
+        msgDaily: null,
+        msgDailyFrom: null,
+        groupName: null,
+        groupMembers: null,
         campaignsCount: null,
         clicks7: [],
         clicks7Total: { clicks: 0, spend: 0, cpc: null },
