@@ -1,6 +1,19 @@
 {
- "updatedAt": "2026-11-10T07:46:08.085Z",
+ "updatedAt": "2026-11-10T16:25:05.890Z",
  "events": [
+  {
+   "ts": "2026-11-10T16:25:00.947Z",
+   "ruleId": "r_mw7ympje52x",
+   "cabinet": 28571374,
+   "group": 164743978,
+   "bannerId": 248674106,
+   "name": "тест9",
+   "spend": 245.85,
+   "clicks": 15,
+   "cpc": 16.39,
+   "reason": "расход 245.85 ₽ > 50 ₽ и цена клика 16.39 ₽ > 15 ₽",
+   "stopped": true
+  },
   {
    "ts": "2026-11-10T07:46:01.594Z",
    "ruleId": "r_mw7ympje52x",
@@ -107,14 +120,14 @@
   }
  ],
  "lastReport": {
-  "ranAt": "2026-11-10T07:45:52.794Z",
+  "ranAt": "2026-11-10T16:24:53.154Z",
   "dryRun": false,
   "rules": [
    {
     "rule": "r_mw7ympje52x",
     "cabinet": 28571374,
     "group": 164743978,
-    "checked": 4,
+    "checked": 3,
     "violations": 1,
     "stopped": 1,
     "errors": []
@@ -123,7 +136,7 @@
     "rule": "r_mw8bjfk1m7o",
     "cabinet": 28571374,
     "group": 164743978,
-    "checked": 3,
+    "checked": 2,
     "violations": 0,
     "stopped": 0,
     "errors": []
