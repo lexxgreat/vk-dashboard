@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-10T07:45:38.019Z",
+ "generatedAt": "2026-11-10T16:24:34.847Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 1065.48,
+   "balance": 1879.09,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -107,7 +107,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1247.11,
+   "balance": 1106.26,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -154,7 +154,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 8354.79,
+   "balance": 8314.22,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -208,34 +208,34 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 5150.58,
+   "balance": 4963.56,
    "userName": "vkads_636285275@vk",
    "plans": [
-    {
-     "id": 36849100,
-     "name": "Товары",
-     "status": "active"
-    },
     {
      "id": 38130534,
      "name": "конкурс пост",
      "status": "active"
+    },
+    {
+     "id": 40433493,
+     "name": "ДЕД",
+     "status": "active"
     }
    ],
    "groups": [
-    {
-     "id": 162123050,
-     "name": "все",
-     "status": "active",
-     "planId": 36849100,
-     "packageId": 4004
-    },
     {
      "id": 163741421,
      "name": "авто",
      "status": "active",
      "planId": 38130534,
      "packageId": 3194
+    },
+    {
+     "id": 166541897,
+     "name": "родители",
+     "status": "active",
+     "planId": 40433493,
+     "packageId": 3127
     }
    ],
    "defaults": {
@@ -245,7 +245,7 @@
     "cta": "signUp",
     "title": "Воздушные шары в Воткинске",
     "text": "Заходите в группу и участвуйте в розыгрыше букета шаров.\nИтоги 11 ноября. Условия элементарные. Заходите и участвуйте",
-    "basedOnBanners": 8
+    "basedOnBanners": 9
    },
    "limits": {
     "maxActiveBanners": 300,
@@ -255,7 +255,7 @@
   "26047668": {
    "name": "ШАРТ",
    "clientName": "В. Шаров",
-   "balance": 1122.16,
+   "balance": 1801.2,
    "userName": "vkads_332616006@vk@10956269",
    "plans": [
     {
@@ -290,7 +290,7 @@
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 2181.38,
+   "balance": 1916.88,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
@@ -343,7 +343,7 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 6
+    "activeBanners": 5
    }
   }
  },
