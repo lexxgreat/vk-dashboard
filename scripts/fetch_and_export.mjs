@@ -129,61 +129,50 @@ function computeBalance(groups) {
   const sum = (arr) => arr.reduce((s, t) => s + parseFloat(t.amount || "0"), 0);
   const deposits = groups.filter((t) => t.type === "deposit");
   const charges = groups.filter((t) => t.type === "charge");
-  const total = sum(deposits) - sum(charges);
+  // Общий баланс VK: все деньги кабинета (живые + бонусные) = Σдепозитов − Σсписаний.
+  const gross = sum(deposits) - sum(charges);
+  const total = Math.max(r2(gross), 0);
 
-  const events = [];
-  const dayOf = (s) => (s || "").slice(0, 10);
-  const hourOf = (s) => parseInt((s || "").slice(11, 13) || "12", 10) || 12;
+  // Механика VK Рекламы (та же, что в панели src/lib/funds.ts, подтверждена транзакциями):
+  //   • депозит без слова «бонус» — живые деньги; с «бонус» — бонусные.
+  //   • «Сжигание бонусов» списывает только бонусный счёт (срез по остатку).
+  //   • списания за показы тратят живые и бонусные 50/50: бонус компенсирует
+  //     не более половины расхода, пока не кончится.
+  const kindOf = (t) => {
+    const d = t.description || "";
+    const bonusWord = /онус|жиган/.test(d); // «Бонус…» / «Сжигание бонусов»
+    if (t.type === "deposit") return bonusWord ? "bonus_dep" : "real_dep";
+    if (t.type === "charge") return bonusWord ? "bonus_burn" : "spend";
+    return "other";
+  };
+  const tsOf = (t) => Date.parse(String(t.first_at || t.last_at || "").replace(" ", "T") + "Z") || 0;
+  const sorted = [...groups].sort((a, b) => tsOf(a) - tsOf(b));
 
-  for (const t of groups) {
-    const amt = parseFloat(t.amount || "0");
-    const desc = t.description || "";
-    if (t.type === "deposit") {
-      events.push({ day: dayOf(t.first_at), hour: hourOf(t.first_at), kind: "dep", amt, isBonus: /бонус/i.test(desc) });
-    } else if (t.type === "charge") {
-      if (/сжигание бонус/i.test(desc)) {
-        events.push({ day: dayOf(t.last_at || t.first_at), hour: hourOf(t.last_at || t.first_at), kind: "burn", amt, isBonus: true });
-      } else {
-        const d1 = dayOf(t.first_at);
-        const d2 = dayOf(t.last_at || t.first_at);
-        if (!d1 || d1 === d2 || !d2 || d2 < d1) {
-          events.push({ day: d1, hour: hourOf(t.first_at), kind: "charge", amt, isBonus: false });
-        } else {
-          const days = Math.round((Date.parse(d2) - Date.parse(d1)) / 86_400_000) + 1;
-          const per = Math.round((amt / days) * 100) / 100;
-          let rest = amt;
-          for (let i = 0; i < days; i++) {
-            const iso = new Date(Date.parse(d1) + i * 86_400_000).toISOString().slice(0, 10);
-            const a = i === days - 1 ? rest : per;
-            rest = Math.round((rest - a) * 100) / 100;
-            events.push({ day: iso, hour: 12, kind: "charge", amt: a, isBonus: false });
-          }
-        }
-      }
-    }
-  }
-  events.sort((a, b) => a.day.localeCompare(b.day) || a.hour - b.hour);
-
-  let real = 0;
   let bonus = 0;
-  for (const e of events) {
-    if (e.kind === "dep") {
-      if (e.isBonus) bonus += e.amt;
-      else real += e.amt;
-    } else if (e.kind === "burn") {
-      bonus = Math.max(0, bonus - e.amt);
-    } else {
-      const fromBonus = Math.min(Math.max(bonus, 0), e.amt);
-      bonus -= fromBonus;
-      real -= e.amt - fromBonus;
+  for (const t of sorted) {
+    const amt = parseFloat(t.amount || "0");
+    switch (kindOf(t)) {
+      case "bonus_dep":
+        bonus += amt;
+        break;
+      case "bonus_burn":
+        bonus = Math.max(0, bonus - amt); // срез по остатку: лишнего не теряем
+        break;
+      case "spend": {
+        const bonusPart = Math.min(Math.max(bonus, 0), amt / 2); // 50/50
+        bonus -= bonusPart;
+        break;
+      }
+      default:
+        break;
     }
   }
-  if (real < 0 && bonus > 0) {
-    const shift = Math.min(bonus, -real);
-    bonus -= shift;
-    real += shift;
-  }
-  return { total, real, bonus };
+
+  // Нормализация: реальные деньги = общий баланс − бонусы (никогда не включают бонусы,
+  // и real + bonus всегда равны общему балансу VK до копейки).
+  const bonusFinal = Math.max(0, Math.min(r2(bonus), total));
+  const realFinal = r2(total - bonusFinal);
+  return { total: r2(total), real: realFinal, bonus: bonusFinal };
 }
 
 // ---------- статистика: ad_plans/day (как в дашборде) ----------
