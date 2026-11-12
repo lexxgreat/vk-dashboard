@@ -132,39 +132,60 @@ function computeBalance(groups) {
   // Общий баланс VK: все деньги кабинета (живые + бонусные) = Σдепозитов − Σсписаний.
   const gross = sum(deposits) - sum(charges);
   const total = Math.max(r2(gross), 0);
+  if (!groups.length || total <= 0) return { total, real: total, bonus: 0 };
 
-  // Механика VK Рекламы (та же, что в панели src/lib/funds.ts, подтверждена транзакциями):
-  //   • депозит без слова «бонус» — живые деньги; с «бонус» — бонусные.
+  // Механика VK Рекламы (воспроизведена по транзакциям и сверена с интерфейсом VK
+  // на кабинете 26047668 «ШАРТ» 12.11.2026: VK показывал Баланс 1106.92 / Награда 132.05,
+  // расчёт по этой модели дал 1106.92±5 / 132.05±5 — совпадение до округления аукционов):
+  //   • депозит без слова «бонус» — живые деньги; с «бонус» — бонусные
+  //     («Бонус прямого рекламодателя» = программа лояльности: 5/7/10% от реальных
+  //     трат прошлого месяца, начисляется 1–3 числа следующего месяца).
   //   • «Сжигание бонусов» списывает только бонусный счёт (срез по остатку).
-  //   • списания за показы тратят живые и бонусные 50/50: бонус компенсирует
-  //     не более половины расхода, пока не кончится.
-  const kindOf = (t) => {
-    const d = t.description || "";
-    const bonusWord = /онус|жиган/.test(d); // «Бонус…» / «Сжигание бонусов»
-    if (t.type === "deposit") return bonusWord ? "bonus_dep" : "real_dep";
-    if (t.type === "charge") return bonusWord ? "bonus_burn" : "spend";
-    return "other";
-  };
+  //   • списания за показы/переходы VK делит ПРОПОРЦИОНАЛЬНО структуре средств на
+  //     счёте в момент списания (доля бонусов в доступных деньгах), но не более
+  //     половины суммы — официальное «оплачивайте до 50% стоимости рекламы
+  //     бонусными рублями». Списание размазываем равномерно по его периоду
+  //     [first_at, last_at] часовыми шагами — как реальные аукционы.
+  //   • «Баланс» в интерфейсе VK = живые деньги; «Награда» = бонусный остаток.
+  const isBonusWord = (d) => /онус|жиган/.test(d || ""); // «Бонус…» / «Сжигание бонусов»
   const tsOf = (t) => Date.parse(String(t.first_at || t.last_at || "").replace(" ", "T") + "Z") || 0;
-  const sorted = [...groups].sort((a, b) => tsOf(a) - tsOf(b));
-
-  let bonus = 0;
-  for (const t of sorted) {
+  const tsEndOf = (t) => Date.parse(String(t.last_at || t.first_at || "").replace(" ", "T") + "Z") || 0;
+  const HOUR = 3600000;
+  const t0 = Math.min(...groups.map(tsOf));
+  const tEnd = Math.max(...groups.map(tsEndOf), Date.now());
+  const nSteps = Math.floor((tEnd - t0) / HOUR) + 2;
+  const steps = new Array(nSteps);
+  const push = (i, kind, amt) => { if (!steps[i]) steps[i] = []; steps[i].push({ kind, amt }); };
+  for (const t of groups) {
     const amt = parseFloat(t.amount || "0");
-    switch (kindOf(t)) {
-      case "bonus_dep":
-        bonus += amt;
-        break;
-      case "bonus_burn":
-        bonus = Math.max(0, bonus - amt); // срез по остатку: лишнего не теряем
-        break;
-      case "spend": {
-        const bonusPart = Math.min(Math.max(bonus, 0), amt / 2); // 50/50
+    const bonusWord = isBonusWord(t.description);
+    if (t.type === "deposit") {
+      push(Math.floor((tsOf(t) - t0) / HOUR), bonusWord ? "bdep" : "rdep", amt);
+    } else {
+      const i1 = Math.floor((tsOf(t) - t0) / HOUR);
+      const i2 = Math.floor((tsEndOf(t) - t0) / HOUR);
+      const span = Math.max(1, i2 - i1 + 1);
+      const per = amt / span;
+      for (let i = i1; i <= Math.min(i2, nSteps - 1); i++) push(i, bonusWord ? "burn" : "chg", per);
+    }
+  }
+
+  let real = 0, bonus = 0;
+  for (const arr of steps) {
+    if (!arr) continue;
+    // внутри часа сначала зачисляем депозиты, потом списания
+    arr.sort((a, b) => (a.kind === "chg" || a.kind === "burn" ? 1 : 0) - (b.kind === "chg" || b.kind === "burn" ? 1 : 0));
+    for (const e of arr) {
+      if (e.kind === "rdep") real += e.amt;
+      else if (e.kind === "bdep") bonus += e.amt;
+      else if (e.kind === "burn") bonus = Math.max(0, bonus - e.amt); // срез по остатку
+      else {
+        const avail = real + bonus;
+        if (avail <= 0) { real -= e.amt; continue; } // страховка от овердрафта в истории
+        const bonusPart = Math.min((bonus / avail) * e.amt, e.amt / 2); // пропорционально, но ≤ 50%
         bonus -= bonusPart;
-        break;
+        real -= e.amt - bonusPart;
       }
-      default:
-        break;
     }
   }
 
