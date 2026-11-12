@@ -31,6 +31,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Собрать статистику сообщений групп
+        run: node scripts/scan_groups_cloud.mjs
+        env:
+          VK_GROUP_TOKENS: ${{ secrets.VK_GROUP_TOKENS }}
+
       - name: Собрать данные VK Рекламы
         run: node scripts/fetch_and_export.mjs
         env:
@@ -45,7 +50,7 @@ jobs:
         run: |
           git config user.name "vk-dashboard-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data.json ads-context.json
+          git add data.json ads-context.json groups-stats.json
           if git diff --cached --quiet; then
             echo "данные не изменились — коммит не нужен"
           else
