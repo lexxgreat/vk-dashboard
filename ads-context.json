@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-12T13:15:23.727Z",
+ "generatedAt": "2026-11-12T15:04:15.175Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 1982.79,
+   "balance": 1935.64,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -107,7 +107,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1366.99,
+   "balance": 1350.44,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -118,6 +118,11 @@
     {
      "id": 19706269,
      "name": "Товары ретаргет",
+     "status": "active"
+    },
+    {
+     "id": 40864156,
+     "name": "конкурс",
      "status": "active"
     }
    ],
@@ -135,6 +140,13 @@
      "status": "active",
      "planId": 19706269,
      "packageId": 3278
+    },
+    {
+     "id": 167096924,
+     "name": "родители",
+     "status": "active",
+     "planId": 40864156,
+     "packageId": 3194
     }
    ],
    "defaults": {
@@ -144,17 +156,17 @@
     "cta": "write",
     "title": "\"Веселая Затея\" Воздушные шары Ижевск",
     "text": "Гелиевые шарики в Ижевске!\nВступайте в нашу группу, ведь мы рядом! А в году так много праздников!\nДобавьте празднику ярких красок! Закажите воздушные шары у нас! \nПодберём нужное оформление шарами под Ваш вкус и бюджет.\nПосчитаем стоимость по понравившемуся фото из интернета.\n\nСделаем всё красиво, доставим быстро! Самовывоз: ул. Маяковского 29/7\nили ул. Удмуртская 304 (ТОЦ \"Аврора парк\") ТЦ \"Радуга\".",
-    "basedOnBanners": 9
+    "basedOnBanners": 10
    },
    "limits": {
     "maxActiveBanners": 310,
-    "activeBanners": 2
+    "activeBanners": 3
    }
   },
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 7483.08,
+   "balance": 7448.23,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -201,7 +213,7 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 4265.63,
+   "balance": 4248.34,
    "userName": "vkads_636285275@vk",
    "plans": [
     {
@@ -236,24 +248,10 @@
   "26047668": {
    "name": "ШАРТ",
    "clientName": "В. Шаров",
-   "balance": 1253.72,
+   "balance": 1238.97,
    "userName": "vkads_332616006@vk@10956269",
-   "plans": [
-    {
-     "id": 35569595,
-     "name": "Акции",
-     "status": "active"
-    }
-   ],
-   "groups": [
-    {
-     "id": 160380799,
-     "name": "Группа 2026-10-14",
-     "status": "active",
-     "planId": 35569595,
-     "packageId": 3127
-    }
-   ],
+   "plans": [],
+   "groups": [],
    "defaults": {
     "iconId": 111389837,
     "urlId": 86842542,
@@ -265,13 +263,13 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 1
+    "activeBanners": 0
    }
   },
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 911.55,
+   "balance": 889.22,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
@@ -324,7 +322,7 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 3
+    "activeBanners": 2
    }
   }
  },
