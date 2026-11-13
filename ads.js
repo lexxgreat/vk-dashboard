@@ -145,10 +145,14 @@
   function utf8b64(s) {
     return decodeURIComponent(escape(atob(s)));
   }
-  /** Текущий файл из репозитория: { sha, text } или null (404). */
+  /** Текущий файл из репозитория: { sha, text } или null (404).
+   *  no-store + свежий параметр _t: браузерный кэш отдавал устаревший sha,
+   *  и PUT получал 409 «файл успел измениться» (баг 13.11 — правила не
+   *  удалялись/не создавались, хотя сервер иногда принимал первую из гонки). */
   function ghGetFile(path) {
-    return fetch(GH_API + "contents/" + encodeURIComponent(path).replace(/%2F/g, "/") + "?ref=" + GH_BRANCH, {
+    return fetch(GH_API + "contents/" + encodeURIComponent(path).replace(/%2F/g, "/") + "?ref=" + GH_BRANCH + "&_t=" + Date.now(), {
       headers: { Authorization: "Bearer " + ghToken, Accept: "application/vnd.github+json" },
+      cache: "no-store",
     }).then(function (r) {
       if (r.status === 404) return null;
       if (!r.ok) throw new Error("GitHub HTTP " + r.status);
@@ -1074,23 +1078,33 @@
     if (box) { box.hidden = !isErr; if (isErr) box.textContent = s; }
   }
 
-  /** Сохранить правила в репозиторий (Contents API, с sha) и перечитать. */
+  /** Сохранить правила в репозиторий (Contents API, с sha) и перечитать.
+   *  При 409 (файл изменился между чтением и записью — чужой клик, гонка,
+   *  автостоп-коммит) — автоматически до 2 повторов со свежим sha. */
   function saveRules(rules, message) {
     if (!ghToken) { ruleMsg("Нужен токен GitHub — форма выше", true); return; }
     ruleMsg("Сохраняем…");
-    var doc, sha;
-    ghGetFile("ads-rules.json").then(function (cur) {
-      sha = cur ? cur.sha : null;
-      doc = { updatedAt: new Date().toISOString(), rules: rules };
-      return ghPut("ads-rules.json", message, JSON.stringify(doc), sha);
-    }).then(function () {
+    var doc = { updatedAt: new Date().toISOString(), rules: rules };
+    var content = JSON.stringify(doc);
+    var done = function () {
       rulesData = doc;
       renderRules();
       ruleMsg("Сохранено. Проверка запустится автоматически (~1 мин).");
       setTimeout(loadRules, 65000);
-    }).catch(function (e) {
-      ruleMsg(e.message || String(e), true);
-    });
+    };
+    var attempt = function (n) {
+      ghGetFile("ads-rules.json").then(function (cur) {
+        return ghPut("ads-rules.json", message, content, cur ? cur.sha : null);
+      }).then(done).catch(function (e) {
+        if (n < 2 && /409/.test(String(e && e.message || e))) {
+          ruleMsg("Файл правил изменился — повторяем со свежей версией…");
+          setTimeout(function () { attempt(n + 1); }, 1500);
+          return;
+        }
+        ruleMsg(e.message || String(e), true);
+      });
+    };
+    attempt(0);
   }
 
   function bindRules() {
