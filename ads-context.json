@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-16T01:00:42.803Z",
+ "generatedAt": "2026-11-16T07:58:05.189Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 1195.62,
+   "balance": 1056.63,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -51,7 +51,7 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 498.77,
+   "balance": 375.47,
    "userName": "vkads_205397140@vk",
    "plans": [
     {
@@ -107,7 +107,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1733.42,
+   "balance": 1515.17,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -166,7 +166,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 5165.5,
+   "balance": 4999.5,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -213,7 +213,7 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 3247.32,
+   "balance": 3166.66,
    "userName": "vkads_636285275@vk",
    "plans": [
     {
