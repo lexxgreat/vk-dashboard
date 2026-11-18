@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-18T10:13:50.401Z",
+ "generatedAt": "2026-11-18T18:51:55.476Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 2061.86,
+   "balance": 1813.73,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -51,24 +51,10 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 0,
+   "balance": 1999.96,
    "userName": "vkads_205397140@vk",
-   "plans": [
-    {
-     "id": 39738146,
-     "name": "конкурс 18 ноября",
-     "status": "active"
-    }
-   ],
-   "groups": [
-    {
-     "id": 165699687,
-     "name": "родители",
-     "status": "active",
-     "planId": 39738146,
-     "packageId": 3194
-    }
-   ],
+   "plans": [],
+   "groups": [],
    "defaults": {
     "iconId": 112719371,
     "urlId": 120697638,
@@ -80,13 +66,13 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 1
+    "activeBanners": 0
    }
   },
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1800.51,
+   "balance": 1460.03,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -145,7 +131,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 3957.19,
+   "balance": 3774.51,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -192,7 +178,7 @@
   "24158606": {
    "name": "Мельников",
    "clientName": "Андрей Мельников",
-   "balance": 2538.6,
+   "balance": 2404.78,
    "userName": "vkads_636285275@vk",
    "plans": [
     {
@@ -248,7 +234,7 @@
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 1554.02,
+   "balance": 1431.01,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
@@ -301,7 +287,7 @@
    },
    "limits": {
     "maxActiveBanners": 300,
-    "activeBanners": 3
+    "activeBanners": 7
    }
   }
  },
