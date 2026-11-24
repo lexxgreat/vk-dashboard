@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T22:32:23.307Z",
+  "generatedAt": "2026-11-24T06:40:36.869Z",
   "today": "2026-11-24",
   "yesterday": "2026-11-23",
   "dayBefore": "2026-11-22",
@@ -10,10 +10,10 @@
       "clientName": "Варвара Бякова",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:00.020Z",
-      "balanceTotal": 1671.1,
-      "balanceReal": 1670.71,
-      "balanceBonus": 0.39,
+      "lastSyncAt": "2026-11-24T06:40:11.696Z",
+      "balanceTotal": 1525.72,
+      "balanceReal": 1525.28,
+      "balanceBonus": 0.44,
       "spendYesterday": 802.4,
       "spendDayBefore": 1000,
       "spendMonth": 17925.07,
@@ -62,11 +62,12 @@
         "2026-11-20": 5,
         "2026-11-21": 6,
         "2026-11-22": 6,
-        "2026-11-23": 9
+        "2026-11-23": 9,
+        "2026-11-24": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "«Веселая Затея» Воздушные шары Ижевск",
-      "groupMembers": 7996,
+      "groupMembers": 7998,
       "campaignsCount": 97,
       "clicks7": [
         {
@@ -113,16 +114,16 @@
         },
         {
           "date": "2026-11-24",
-          "clicks": 0,
-          "spend": 15.6,
-          "cpc": null,
+          "clicks": 6,
+          "spend": 159.44,
+          "cpc": 26.573333333333334,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 131,
-        "spend": 5471.94,
-        "cpc": 41.770534351145045
+        "clicks": 137,
+        "spend": 5615.78,
+        "cpc": 40.991094890510944
       },
       "dailyFrom": "2026-05-25",
       "daily": {
@@ -1141,10 +1142,10 @@
           "goals": 7
         },
         "2026-11-24": {
-          "clicks": 0,
-          "spend": 15.6,
-          "shows": 124,
-          "goals": 0
+          "clicks": 6,
+          "spend": 159.44,
+          "shows": 1030,
+          "goals": 2
         }
       }
     },
@@ -1154,10 +1155,10 @@
       "clientName": "Андрей Мельников",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:02.762Z",
-      "balanceTotal": 2.84,
-      "balanceReal": 1.42,
-      "balanceBonus": 1.42,
+      "lastSyncAt": "2026-11-24T06:40:14.487Z",
+      "balanceTotal": 0,
+      "balanceReal": 0,
+      "balanceBonus": 0,
       "spendYesterday": 510.13,
       "spendDayBefore": 521.79,
       "spendMonth": 14681.4,
@@ -1226,15 +1227,15 @@
         {
           "date": "2026-11-24",
           "clicks": 0,
-          "spend": 7,
+          "spend": 10,
           "cpc": null,
           "isToday": true
         }
       ],
       "clicks7Total": {
         "clicks": 94,
-        "spend": 2667.89,
-        "cpc": 28.381808510638297
+        "spend": 2670.89,
+        "cpc": 28.413723404255318
       },
       "dailyFrom": "2026-05-25",
       "daily": {
@@ -1438,8 +1439,8 @@
         },
         "2026-11-24": {
           "clicks": 0,
-          "spend": 7,
-          "shows": 41,
+          "spend": 10,
+          "shows": 71,
           "goals": 0
         }
       }
@@ -1450,10 +1451,10 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:06.339Z",
-      "balanceTotal": 1209.9,
-      "balanceReal": 1209.59,
-      "balanceBonus": 0.31,
+      "lastSyncAt": "2026-11-24T06:40:18.982Z",
+      "balanceTotal": 1101.19,
+      "balanceReal": 1100.84,
+      "balanceBonus": 0.35,
       "spendYesterday": 532.5,
       "spendDayBefore": 532.5,
       "spendMonth": 14248.33,
@@ -1501,7 +1502,8 @@
         "2026-11-20": 1,
         "2026-11-21": 3,
         "2026-11-22": 2,
-        "2026-11-23": 4
+        "2026-11-23": 4,
+        "2026-11-24": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые шарики Нижний Новгород",
@@ -1552,16 +1554,16 @@
         },
         {
           "date": "2026-11-24",
-          "clicks": 0,
-          "spend": 19.76,
-          "cpc": null,
+          "clicks": 5,
+          "spend": 127.59,
+          "cpc": 25.518,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 67,
-        "spend": 3205.02,
-        "cpc": 47.836119402985084
+        "clicks": 72,
+        "spend": 3312.85,
+        "cpc": 46.01180555555556
       },
       "dailyFrom": "2026-05-25",
       "daily": {
@@ -2532,10 +2534,10 @@
           "goals": 10
         },
         "2026-11-24": {
-          "clicks": 0,
-          "spend": 19.76,
-          "shows": 89,
-          "goals": 0
+          "clicks": 5,
+          "spend": 127.59,
+          "shows": 680,
+          "goals": 3
         }
       }
     },
@@ -2545,7 +2547,7 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:09.512Z",
+      "lastSyncAt": "2026-11-24T06:40:22.278Z",
       "balanceTotal": 1238.97,
       "balanceReal": 1100.23,
       "balanceBonus": 138.74,
@@ -2583,7 +2585,7 @@
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые и воздушные шары ШарАрт Нижний Новгород",
-      "groupMembers": 2173,
+      "groupMembers": 2174,
       "campaignsCount": 17,
       "clicks7": [
         {
@@ -3551,9 +3553,9 @@
       "clientName": "Адамович",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:12.647Z",
-      "balanceTotal": 2025.37,
-      "balanceReal": 2025.37,
+      "lastSyncAt": "2026-11-24T06:40:25.884Z",
+      "balanceTotal": 1905.76,
+      "balanceReal": 1905.76,
       "balanceBonus": 0,
       "spendYesterday": 451.91,
       "spendDayBefore": 0,
@@ -3605,7 +3607,8 @@
         "2026-11-20": 3,
         "2026-11-21": 3,
         "2026-11-22": 1,
-        "2026-11-23": 11
+        "2026-11-23": 11,
+        "2026-11-24": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Воздушные и гелиевые шары Архангельск. Доставка",
@@ -3656,16 +3659,16 @@
         },
         {
           "date": "2026-11-24",
-          "clicks": 1,
-          "spend": 22.53,
-          "cpc": 22.53,
+          "clicks": 6,
+          "spend": 140.75,
+          "cpc": 23.458333333333332,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 87,
-        "spend": 2258,
-        "cpc": 25.95402298850575
+        "clicks": 92,
+        "spend": 2376.22,
+        "cpc": 25.828478260869563
       },
       "dailyFrom": "2026-05-25",
       "daily": {
@@ -4528,9 +4531,9 @@
           "goals": 0
         },
         "2026-11-24": {
-          "clicks": 1,
-          "spend": 22.53,
-          "shows": 164,
+          "clicks": 6,
+          "spend": 140.75,
+          "shows": 1389,
           "goals": 0
         }
       }
@@ -4591,11 +4594,12 @@
         "2026-11-19": 3,
         "2026-11-20": 2,
         "2026-11-21": 1,
-        "2026-11-23": 4
+        "2026-11-23": 4,
+        "2026-11-24": 4
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Доставка воздушных и гелиевых шаров Архангельск",
-      "groupMembers": 7793,
+      "groupMembers": 7794,
       "campaignsCount": null,
       "clicks7": [],
       "clicks7Total": {
@@ -4664,11 +4668,12 @@
         "2026-11-20": 8,
         "2026-11-21": 7,
         "2026-11-22": 3,
-        "2026-11-23": 6
+        "2026-11-23": 6,
+        "2026-11-24": 3
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Воздух Пермь. Воздушные шары. Доставка",
-      "groupMembers": 7354,
+      "groupMembers": 7353,
       "campaignsCount": null,
       "clicks7": [],
       "clicks7Total": {
@@ -4683,10 +4688,10 @@
       "clientName": "Праздник Сказка — Пантюшкина",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:15.641Z",
-      "balanceTotal": 1757.18,
-      "balanceReal": 664.87,
-      "balanceBonus": 1092.31,
+      "lastSyncAt": "2026-11-24T06:40:29.050Z",
+      "balanceTotal": 1670.31,
+      "balanceReal": 621.43,
+      "balanceBonus": 1048.88,
       "spendYesterday": 392.82,
       "spendDayBefore": 399.29,
       "spendMonth": 11002.09,
@@ -4737,7 +4742,8 @@
         "2026-11-20": 2,
         "2026-11-21": 3,
         "2026-11-22": 3,
-        "2026-11-23": 2
+        "2026-11-23": 2,
+        "2026-11-24": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "«Праздник-сказка». Воздушные шары. Миасс",
@@ -4788,16 +4794,16 @@
         },
         {
           "date": "2026-11-24",
-          "clicks": 1,
-          "spend": 9.24,
-          "cpc": 9.24,
+          "clicks": 3,
+          "spend": 95.87,
+          "cpc": 31.956666666666667,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 93,
-        "spend": 2367.41,
-        "cpc": 25.45602150537634
+        "clicks": 95,
+        "spend": 2454.04,
+        "cpc": 25.832
       },
       "dailyFrom": "2026-05-25",
       "daily": {
@@ -5168,10 +5174,10 @@
           "goals": 16
         },
         "2026-11-24": {
-          "clicks": 1,
-          "spend": 9.24,
-          "shows": 77,
-          "goals": 1
+          "clicks": 3,
+          "spend": 95.87,
+          "shows": 1067,
+          "goals": 3
         }
       }
     },
@@ -5181,7 +5187,7 @@
       "clientName": "Геннадий Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:18.892Z",
+      "lastSyncAt": "2026-11-24T06:40:32.241Z",
       "balanceTotal": 0,
       "balanceReal": 0,
       "balanceBonus": 0,
@@ -6087,7 +6093,7 @@
       "clientName": "Марина Владимировна — старый кабинет",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-23T22:32:23.306Z",
+      "lastSyncAt": "2026-11-24T06:40:36.869Z",
       "balanceTotal": 0,
       "balanceReal": 0,
       "balanceBonus": 0,
@@ -6140,7 +6146,8 @@
         "2026-11-20": 5,
         "2026-11-21": 6,
         "2026-11-22": 5,
-        "2026-11-23": 6
+        "2026-11-23": 6,
+        "2026-11-24": 2
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые шары Киров",
