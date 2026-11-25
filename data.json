@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T03:03:30.904Z",
+  "generatedAt": "2026-11-25T13:05:48.732Z",
   "today": "2026-11-25",
   "yesterday": "2026-11-24",
   "dayBefore": "2026-11-23",
@@ -10,10 +10,10 @@
       "clientName": "Варвара Бякова",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:08.087Z",
-      "balanceTotal": 1444.09,
-      "balanceReal": 1443.83,
-      "balanceBonus": 0.26,
+      "lastSyncAt": "2026-11-25T13:02:39.455Z",
+      "balanceTotal": 1744.85,
+      "balanceReal": 1744.73,
+      "balanceBonus": 0.12,
       "spendYesterday": 991.91,
       "spendDayBefore": 802.4,
       "spendMonth": 18716.98,
@@ -63,11 +63,12 @@
         "2026-11-21": 6,
         "2026-11-22": 6,
         "2026-11-23": 9,
-        "2026-11-24": 6
+        "2026-11-24": 6,
+        "2026-11-25": 3
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "«Веселая Затея» Воздушные шары Ижевск",
-      "groupMembers": 8003,
+      "groupMembers": 8010,
       "campaignsCount": 97,
       "clicks7": [
         {
@@ -114,16 +115,16 @@
         },
         {
           "date": "2026-11-25",
-          "clicks": 4,
-          "spend": 68.09,
-          "cpc": 17.0225,
+          "clicks": 11,
+          "spend": 589.28,
+          "cpc": 53.57090909090909,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 130,
-        "spend": 5673.99,
-        "cpc": 43.64607692307692
+        "clicks": 137,
+        "spend": 6195.18,
+        "cpc": 45.22029197080292
       },
       "dailyFrom": "2026-05-26",
       "daily": {
@@ -1142,10 +1143,10 @@
           "goals": 5
         },
         "2026-11-25": {
-          "clicks": 4,
-          "spend": 68.09,
-          "shows": 331,
-          "goals": 2
+          "clicks": 11,
+          "spend": 589.28,
+          "shows": 2617,
+          "goals": 4
         }
       }
     },
@@ -1155,7 +1156,7 @@
       "clientName": "Андрей Мельников",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:10.844Z",
+      "lastSyncAt": "2026-11-25T13:03:10.186Z",
       "balanceTotal": 0,
       "balanceReal": 0,
       "balanceBonus": 0,
@@ -1449,15 +1450,15 @@
       "extId": 15545622,
       "name": "Твои шарики",
       "clientName": "В. Шаров",
-      "status": "ok",
-      "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:14.319Z",
-      "balanceTotal": 645.05,
-      "balanceReal": 644.86,
-      "balanceBonus": 0.19,
-      "spendYesterday": 532.5,
-      "spendDayBefore": 532.5,
-      "spendMonth": 14253.38,
+      "status": "error",
+      "statusNote": "The operation was aborted due to timeout",
+      "lastSyncAt": "2026-11-25T13:03:41.239Z",
+      "balanceTotal": null,
+      "balanceReal": null,
+      "balanceBonus": null,
+      "spendYesterday": null,
+      "spendDayBefore": null,
+      "spendMonth": null,
       "messagesYesterday": 5,
       "messagesMonth": 74,
       "messagesSource": "group",
@@ -1503,1042 +1504,18 @@
         "2026-11-21": 3,
         "2026-11-22": 2,
         "2026-11-23": 4,
-        "2026-11-24": 5
+        "2026-11-24": 5,
+        "2026-11-25": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые шарики Нижний Новгород",
-      "groupMembers": 13809,
-      "campaignsCount": 30,
-      "clicks7": [
-        {
-          "date": "2026-11-19",
-          "clicks": 9,
-          "spend": 522.76,
-          "cpc": 58.08444444444444,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-20",
-          "clicks": 13,
-          "spend": 532.5,
-          "cpc": 40.96153846153846,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-21",
-          "clicks": 4,
-          "spend": 532.5,
-          "cpc": 133.125,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-22",
-          "clicks": 13,
-          "spend": 532.5,
-          "cpc": 40.96153846153846,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-23",
-          "clicks": 22,
-          "spend": 532.5,
-          "cpc": 24.204545454545453,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-24",
-          "clicks": 15,
-          "spend": 532.5,
-          "cpc": 35.5,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-25",
-          "clicks": 3,
-          "spend": 52.07,
-          "cpc": 17.356666666666666,
-          "isToday": true
-        }
-      ],
+      "groupMembers": 13810,
+      "campaignsCount": null,
+      "clicks7": [],
       "clicks7Total": {
-        "clicks": 79,
-        "spend": 3237.33,
-        "cpc": 40.97886075949368
-      },
-      "dailyFrom": "2026-05-26",
-      "daily": {
-        "2026-05-26": {
-          "clicks": 5,
-          "spend": 463.92,
-          "shows": 3391,
-          "goals": 4
-        },
-        "2026-05-27": {
-          "clicks": 9,
-          "spend": 479.06,
-          "shows": 2846,
-          "goals": 7
-        },
-        "2026-05-28": {
-          "clicks": 12,
-          "spend": 476.02,
-          "shows": 2925,
-          "goals": 6
-        },
-        "2026-05-29": {
-          "clicks": 14,
-          "spend": 595.95,
-          "shows": 3178,
-          "goals": 11
-        },
-        "2026-05-30": {
-          "clicks": 14,
-          "spend": 410,
-          "shows": 2614,
-          "goals": 13
-        },
-        "2026-05-31": {
-          "clicks": 17,
-          "spend": 591.06,
-          "shows": 3405,
-          "goals": 17
-        },
-        "2026-06-01": {
-          "clicks": 23,
-          "spend": 598.46,
-          "shows": 4011,
-          "goals": 21
-        },
-        "2026-06-02": {
-          "clicks": 14,
-          "spend": 600,
-          "shows": 4132,
-          "goals": 12
-        },
-        "2026-06-03": {
-          "clicks": 13,
-          "spend": 600,
-          "shows": 3672,
-          "goals": 10
-        },
-        "2026-06-04": {
-          "clicks": 14,
-          "spend": 600,
-          "shows": 3327,
-          "goals": 13
-        },
-        "2026-06-05": {
-          "clicks": 12,
-          "spend": 600,
-          "shows": 3272,
-          "goals": 12
-        },
-        "2026-06-06": {
-          "clicks": 15,
-          "spend": 600,
-          "shows": 3127,
-          "goals": 14
-        },
-        "2026-06-07": {
-          "clicks": 5,
-          "spend": 161.32,
-          "shows": 1533,
-          "goals": 4
-        },
-        "2026-06-08": {
-          "clicks": 10,
-          "spend": 349.93,
-          "shows": 2265,
-          "goals": 8
-        },
-        "2026-06-09": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 2754,
-          "goals": 9
-        },
-        "2026-06-10": {
-          "clicks": 10,
-          "spend": 397.06,
-          "shows": 2656,
-          "goals": 8
-        },
-        "2026-06-11": {
-          "clicks": 2,
-          "spend": 181.18,
-          "shows": 1537,
-          "goals": 1
-        },
-        "2026-06-12": {
-          "clicks": 0,
-          "spend": 2.58,
-          "shows": 30,
-          "goals": 0
-        },
-        "2026-06-14": {
-          "clicks": 10,
-          "spend": 400,
-          "shows": 2127,
-          "goals": 7
-        },
-        "2026-06-15": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 2276,
-          "goals": 8
-        },
-        "2026-06-16": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 2070,
-          "goals": 7
-        },
-        "2026-06-17": {
-          "clicks": 0,
-          "spend": 27.24,
-          "shows": 299,
-          "goals": 0
-        },
-        "2026-06-18": {
-          "clicks": 6,
-          "spend": 236,
-          "shows": 769,
-          "goals": 5
-        },
-        "2026-06-19": {
-          "clicks": 5,
-          "spend": 400,
-          "shows": 1776,
-          "goals": 5
-        },
-        "2026-06-20": {
-          "clicks": 5,
-          "spend": 364.84,
-          "shows": 1638,
-          "goals": 4
-        },
-        "2026-06-21": {
-          "clicks": 0,
-          "spend": 0,
-          "shows": 11,
-          "goals": 0
-        },
-        "2026-06-26": {
-          "clicks": 5,
-          "spend": 355.52,
-          "shows": 1180,
-          "goals": 4
-        },
-        "2026-06-27": {
-          "clicks": 9,
-          "spend": 400,
-          "shows": 1644,
-          "goals": 8
-        },
-        "2026-06-28": {
-          "clicks": 7,
-          "spend": 244.45,
-          "shows": 1497,
-          "goals": 4
-        },
-        "2026-06-29": {
-          "clicks": 0,
-          "spend": 0.03,
-          "shows": 30,
-          "goals": 1
-        },
-        "2026-07-01": {
-          "clicks": 9,
-          "spend": 400,
-          "shows": 2718,
-          "goals": 7
-        },
-        "2026-07-02": {
-          "clicks": 17,
-          "spend": 400,
-          "shows": 2779,
-          "goals": 13
-        },
-        "2026-07-03": {
-          "clicks": 14,
-          "spend": 400,
-          "shows": 2670,
-          "goals": 10
-        },
-        "2026-07-04": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 2580,
-          "goals": 8
-        },
-        "2026-07-05": {
-          "clicks": 12,
-          "spend": 400,
-          "shows": 2649,
-          "goals": 7
-        },
-        "2026-07-06": {
-          "clicks": 9,
-          "spend": 390.89,
-          "shows": 2573,
-          "goals": 7
-        },
-        "2026-07-07": {
-          "clicks": 14,
-          "spend": 398.95,
-          "shows": 2598,
-          "goals": 11
-        },
-        "2026-07-08": {
-          "clicks": 10,
-          "spend": 400,
-          "shows": 2360,
-          "goals": 8
-        },
-        "2026-07-09": {
-          "clicks": 14,
-          "spend": 400,
-          "shows": 1933,
-          "goals": 10
-        },
-        "2026-07-10": {
-          "clicks": 7,
-          "spend": 400,
-          "shows": 1777,
-          "goals": 6
-        },
-        "2026-07-11": {
-          "clicks": 8,
-          "spend": 600,
-          "shows": 1766,
-          "goals": 6
-        },
-        "2026-07-12": {
-          "clicks": 2,
-          "spend": 118.65,
-          "shows": 489,
-          "goals": 2
-        },
-        "2026-07-14": {
-          "clicks": 6,
-          "spend": 594.09,
-          "shows": 2305,
-          "goals": 7
-        },
-        "2026-07-15": {
-          "clicks": 8,
-          "spend": 405.91,
-          "shows": 1855,
-          "goals": 7
-        },
-        "2026-07-19": {
-          "clicks": 3,
-          "spend": 594.86,
-          "shows": 2061,
-          "goals": 4
-        },
-        "2026-07-20": {
-          "clicks": 8,
-          "spend": 405.14,
-          "shows": 1840,
-          "goals": 7
-        },
-        "2026-07-21": {
-          "clicks": 8,
-          "spend": 588.11,
-          "shows": 1370,
-          "goals": 5
-        },
-        "2026-07-22": {
-          "clicks": 10,
-          "spend": 411.89,
-          "shows": 1869,
-          "goals": 7
-        },
-        "2026-07-23": {
-          "clicks": 3,
-          "spend": 554.93,
-          "shows": 1086,
-          "goals": 3
-        },
-        "2026-07-24": {
-          "clicks": 12,
-          "spend": 445.07,
-          "shows": 1973,
-          "goals": 12
-        },
-        "2026-07-29": {
-          "clicks": 16,
-          "spend": 573.05,
-          "shows": 2132,
-          "goals": 8
-        },
-        "2026-07-30": {
-          "clicks": 11,
-          "spend": 592.77,
-          "shows": 2102,
-          "goals": 10
-        },
-        "2026-07-31": {
-          "clicks": 6,
-          "spend": 334.19,
-          "shows": 1392,
-          "goals": 6
-        },
-        "2026-08-01": {
-          "clicks": 12,
-          "spend": 588.99,
-          "shows": 1759,
-          "goals": 9
-        },
-        "2026-08-02": {
-          "clicks": 5,
-          "spend": 447.29,
-          "shows": 1545,
-          "goals": 5
-        },
-        "2026-08-04": {
-          "clicks": 9,
-          "spend": 595.88,
-          "shows": 2099,
-          "goals": 9
-        },
-        "2026-08-05": {
-          "clicks": 18,
-          "spend": 592.33,
-          "shows": 2221,
-          "goals": 14
-        },
-        "2026-08-06": {
-          "clicks": 3,
-          "spend": 600,
-          "shows": 1840,
-          "goals": 2
-        },
-        "2026-08-07": {
-          "clicks": 7,
-          "spend": 598.89,
-          "shows": 1869,
-          "goals": 6
-        },
-        "2026-08-08": {
-          "clicks": 6,
-          "spend": 597.52,
-          "shows": 1544,
-          "goals": 6
-        },
-        "2026-08-09": {
-          "clicks": 9,
-          "spend": 600,
-          "shows": 1693,
-          "goals": 7
-        },
-        "2026-08-10": {
-          "clicks": 13,
-          "spend": 597.95,
-          "shows": 1765,
-          "goals": 11
-        },
-        "2026-08-11": {
-          "clicks": 7,
-          "spend": 507.16,
-          "shows": 1632,
-          "goals": 7
-        },
-        "2026-08-12": {
-          "clicks": 7,
-          "spend": 598.46,
-          "shows": 2088,
-          "goals": 4
-        },
-        "2026-08-13": {
-          "clicks": 6,
-          "spend": 341.89,
-          "shows": 1480,
-          "goals": 5
-        },
-        "2026-08-15": {
-          "clicks": 5,
-          "spend": 509.82,
-          "shows": 1306,
-          "goals": 2
-        },
-        "2026-08-16": {
-          "clicks": 6,
-          "spend": 600,
-          "shows": 2382,
-          "goals": 6
-        },
-        "2026-08-17": {
-          "clicks": 9,
-          "spend": 599.34,
-          "shows": 2530,
-          "goals": 8
-        },
-        "2026-08-18": {
-          "clicks": 12,
-          "spend": 595.14,
-          "shows": 2454,
-          "goals": 9
-        },
-        "2026-08-19": {
-          "clicks": 14,
-          "spend": 443.3,
-          "shows": 1892,
-          "goals": 12
-        },
-        "2026-08-20": {
-          "clicks": 6,
-          "spend": 450,
-          "shows": 2020,
-          "goals": 6
-        },
-        "2026-08-21": {
-          "clicks": 23,
-          "spend": 461.01,
-          "shows": 4924,
-          "goals": 4
-        },
-        "2026-08-22": {
-          "clicks": 22,
-          "spend": 400,
-          "shows": 3225,
-          "goals": 3
-        },
-        "2026-08-23": {
-          "clicks": 13,
-          "spend": 400,
-          "shows": 3151,
-          "goals": 2
-        },
-        "2026-08-24": {
-          "clicks": 2,
-          "spend": 41.4,
-          "shows": 407,
-          "goals": 0
-        },
-        "2026-08-26": {
-          "clicks": 14,
-          "spend": 308.43,
-          "shows": 2573,
-          "goals": 4
-        },
-        "2026-08-27": {
-          "clicks": 19,
-          "spend": 564.81,
-          "shows": 5443,
-          "goals": 2
-        },
-        "2026-08-28": {
-          "clicks": 8,
-          "spend": 126.77,
-          "shows": 1506,
-          "goals": 1
-        },
-        "2026-09-01": {
-          "clicks": 46,
-          "spend": 595.16,
-          "shows": 11875,
-          "goals": 0
-        },
-        "2026-09-02": {
-          "clicks": 32,
-          "spend": 720.81,
-          "shows": 7914,
-          "goals": 9
-        },
-        "2026-09-03": {
-          "clicks": 12,
-          "spend": 499.41,
-          "shows": 1843,
-          "goals": 11
-        },
-        "2026-09-04": {
-          "clicks": 5,
-          "spend": 497.83,
-          "shows": 1839,
-          "goals": 5
-        },
-        "2026-09-05": {
-          "clicks": 7,
-          "spend": 500,
-          "shows": 1764,
-          "goals": 5
-        },
-        "2026-09-06": {
-          "clicks": 8,
-          "spend": 500,
-          "shows": 1837,
-          "goals": 4
-        },
-        "2026-09-07": {
-          "clicks": 14,
-          "spend": 500,
-          "shows": 1963,
-          "goals": 8
-        },
-        "2026-09-08": {
-          "clicks": 4,
-          "spend": 500,
-          "shows": 1714,
-          "goals": 4
-        },
-        "2026-09-09": {
-          "clicks": 10,
-          "spend": 498.07,
-          "shows": 1661,
-          "goals": 10
-        },
-        "2026-09-10": {
-          "clicks": 4,
-          "spend": 493.96,
-          "shows": 1733,
-          "goals": 3
-        },
-        "2026-09-11": {
-          "clicks": 5,
-          "spend": 338.03,
-          "shows": 681,
-          "goals": 5
-        },
-        "2026-09-12": {
-          "clicks": 5,
-          "spend": 500,
-          "shows": 1221,
-          "goals": 4
-        },
-        "2026-09-13": {
-          "clicks": 12,
-          "spend": 500,
-          "shows": 1490,
-          "goals": 7
-        },
-        "2026-09-14": {
-          "clicks": 5,
-          "spend": 500,
-          "shows": 1439,
-          "goals": 3
-        },
-        "2026-09-15": {
-          "clicks": 3,
-          "spend": 285.86,
-          "shows": 997,
-          "goals": 2
-        },
-        "2026-09-16": {
-          "clicks": 6,
-          "spend": 500,
-          "shows": 1344,
-          "goals": 6
-        },
-        "2026-09-17": {
-          "clicks": 9,
-          "spend": 500,
-          "shows": 1289,
-          "goals": 7
-        },
-        "2026-09-18": {
-          "clicks": 7,
-          "spend": 500,
-          "shows": 1168,
-          "goals": 6
-        },
-        "2026-09-19": {
-          "clicks": 12,
-          "spend": 738.14,
-          "shows": 2015,
-          "goals": 5
-        },
-        "2026-09-20": {
-          "clicks": 13,
-          "spend": 686.01,
-          "shows": 2635,
-          "goals": 3
-        },
-        "2026-09-21": {
-          "clicks": 11,
-          "spend": 532.5,
-          "shows": 2456,
-          "goals": 6
-        },
-        "2026-09-22": {
-          "clicks": 17,
-          "spend": 498.54,
-          "shows": 2253,
-          "goals": 4
-        },
-        "2026-09-23": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2291,
-          "goals": 0
-        },
-        "2026-09-24": {
-          "clicks": 15,
-          "spend": 532.49,
-          "shows": 2267,
-          "goals": 3
-        },
-        "2026-09-25": {
-          "clicks": 10,
-          "spend": 529.74,
-          "shows": 2158,
-          "goals": 2
-        },
-        "2026-09-26": {
-          "clicks": 12,
-          "spend": 532.5,
-          "shows": 2188,
-          "goals": 4
-        },
-        "2026-09-27": {
-          "clicks": 15,
-          "spend": 532.5,
-          "shows": 2324,
-          "goals": 6
-        },
-        "2026-09-28": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2403,
-          "goals": 5
-        },
-        "2026-09-29": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2256,
-          "goals": 2
-        },
-        "2026-09-30": {
-          "clicks": 7,
-          "spend": 532.5,
-          "shows": 2183,
-          "goals": 2
-        },
-        "2026-10-01": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2306,
-          "goals": 5
-        },
-        "2026-10-02": {
-          "clicks": 5,
-          "spend": 532.5,
-          "shows": 2298,
-          "goals": 2
-        },
-        "2026-10-03": {
-          "clicks": 15,
-          "spend": 532.5,
-          "shows": 2149,
-          "goals": 5
-        },
-        "2026-10-04": {
-          "clicks": 12,
-          "spend": 532.5,
-          "shows": 2285,
-          "goals": 7
-        },
-        "2026-10-05": {
-          "clicks": 7,
-          "spend": 527.29,
-          "shows": 2274,
-          "goals": 3
-        },
-        "2026-10-06": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2221,
-          "goals": 4
-        },
-        "2026-10-07": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2188,
-          "goals": 4
-        },
-        "2026-10-08": {
-          "clicks": 6,
-          "spend": 532.5,
-          "shows": 2178,
-          "goals": 1
-        },
-        "2026-10-09": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2146,
-          "goals": 4
-        },
-        "2026-10-10": {
-          "clicks": 13,
-          "spend": 532.5,
-          "shows": 2100,
-          "goals": 4
-        },
-        "2026-10-11": {
-          "clicks": 14,
-          "spend": 532.5,
-          "shows": 2305,
-          "goals": 7
-        },
-        "2026-10-12": {
-          "clicks": 11,
-          "spend": 532.5,
-          "shows": 2620,
-          "goals": 6
-        },
-        "2026-10-13": {
-          "clicks": 8,
-          "spend": 532.5,
-          "shows": 2230,
-          "goals": 4
-        },
-        "2026-10-14": {
-          "clicks": 13,
-          "spend": 532.5,
-          "shows": 2215,
-          "goals": 7
-        },
-        "2026-10-15": {
-          "clicks": 5,
-          "spend": 532.5,
-          "shows": 2195,
-          "goals": 3
-        },
-        "2026-10-16": {
-          "clicks": 7,
-          "spend": 532.5,
-          "shows": 1781,
-          "goals": 5
-        },
-        "2026-10-17": {
-          "clicks": 8,
-          "spend": 532.5,
-          "shows": 2014,
-          "goals": 0
-        },
-        "2026-10-18": {
-          "clicks": 14,
-          "spend": 532.5,
-          "shows": 2152,
-          "goals": 6
-        },
-        "2026-10-19": {
-          "clicks": 11,
-          "spend": 532.5,
-          "shows": 2286,
-          "goals": 3
-        },
-        "2026-10-20": {
-          "clicks": 4,
-          "spend": 509.89,
-          "shows": 1764,
-          "goals": 3
-        },
-        "2026-10-21": {
-          "clicks": 8,
-          "spend": 530.6,
-          "shows": 2006,
-          "goals": 4
-        },
-        "2026-10-22": {
-          "clicks": 3,
-          "spend": 532.5,
-          "shows": 2161,
-          "goals": 0
-        },
-        "2026-10-23": {
-          "clicks": 7,
-          "spend": 532.5,
-          "shows": 2077,
-          "goals": 2
-        },
-        "2026-10-24": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2080,
-          "goals": 6
-        },
-        "2026-10-25": {
-          "clicks": 10,
-          "spend": 527.45,
-          "shows": 2020,
-          "goals": 4
-        },
-        "2026-10-26": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2326,
-          "goals": 5
-        },
-        "2026-10-27": {
-          "clicks": 4,
-          "spend": 365.93,
-          "shows": 1530,
-          "goals": 0
-        },
-        "2026-10-30": {
-          "clicks": 4,
-          "spend": 52.19,
-          "shows": 239,
-          "goals": 2
-        },
-        "2026-10-31": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2258,
-          "goals": 3
-        },
-        "2026-11-01": {
-          "clicks": 11,
-          "spend": 532.5,
-          "shows": 2885,
-          "goals": 2
-        },
-        "2026-11-02": {
-          "clicks": 11,
-          "spend": 532.5,
-          "shows": 2781,
-          "goals": 6
-        },
-        "2026-11-03": {
-          "clicks": 5,
-          "spend": 532.5,
-          "shows": 2573,
-          "goals": 1
-        },
-        "2026-11-04": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2047,
-          "goals": 2
-        },
-        "2026-11-05": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 1974,
-          "goals": 2
-        },
-        "2026-11-06": {
-          "clicks": 4,
-          "spend": 532.5,
-          "shows": 2042,
-          "goals": 2
-        },
-        "2026-11-07": {
-          "clicks": 6,
-          "spend": 532.5,
-          "shows": 1961,
-          "goals": 2
-        },
-        "2026-11-08": {
-          "clicks": 12,
-          "spend": 532.5,
-          "shows": 2012,
-          "goals": 1
-        },
-        "2026-11-09": {
-          "clicks": 19,
-          "spend": 532.5,
-          "shows": 2048,
-          "goals": 8
-        },
-        "2026-11-10": {
-          "clicks": 4,
-          "spend": 532.5,
-          "shows": 2018,
-          "goals": 1
-        },
-        "2026-11-11": {
-          "clicks": 16,
-          "spend": 532.5,
-          "shows": 2381,
-          "goals": 5
-        },
-        "2026-11-12": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2500,
-          "goals": 4
-        },
-        "2026-11-13": {
-          "clicks": 10,
-          "spend": 532.5,
-          "shows": 2448,
-          "goals": 5
-        },
-        "2026-11-14": {
-          "clicks": 9,
-          "spend": 532.5,
-          "shows": 2402,
-          "goals": 2
-        },
-        "2026-11-15": {
-          "clicks": 8,
-          "spend": 532.5,
-          "shows": 2536,
-          "goals": 3
-        },
-        "2026-11-16": {
-          "clicks": 12,
-          "spend": 532.5,
-          "shows": 2588,
-          "goals": 6
-        },
-        "2026-11-17": {
-          "clicks": 13,
-          "spend": 532.5,
-          "shows": 2294,
-          "goals": 6
-        },
-        "2026-11-18": {
-          "clicks": 6,
-          "spend": 532.5,
-          "shows": 2357,
-          "goals": 2
-        },
-        "2026-11-19": {
-          "clicks": 9,
-          "spend": 522.76,
-          "shows": 2534,
-          "goals": 5
-        },
-        "2026-11-20": {
-          "clicks": 13,
-          "spend": 532.5,
-          "shows": 2099,
-          "goals": 3
-        },
-        "2026-11-21": {
-          "clicks": 4,
-          "spend": 532.5,
-          "shows": 2068,
-          "goals": 1
-        },
-        "2026-11-22": {
-          "clicks": 13,
-          "spend": 532.5,
-          "shows": 2273,
-          "goals": 4
-        },
-        "2026-11-23": {
-          "clicks": 22,
-          "spend": 532.5,
-          "shows": 2379,
-          "goals": 10
-        },
-        "2026-11-24": {
-          "clicks": 15,
-          "spend": 532.5,
-          "shows": 2413,
-          "goals": 8
-        },
-        "2026-11-25": {
-          "clicks": 3,
-          "spend": 52.07,
-          "shows": 238,
-          "goals": 1
-        }
+        "clicks": 0,
+        "spend": 0,
+        "cpc": null
       }
     },
     {
@@ -2547,7 +1524,7 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:17.397Z",
+      "lastSyncAt": "2026-11-25T13:04:10.540Z",
       "balanceTotal": 1238.97,
       "balanceReal": 1100.23,
       "balanceBonus": 138.74,
@@ -2582,7 +1559,8 @@
         "2026-11-15": 1,
         "2026-11-16": 1,
         "2026-11-22": 1,
-        "2026-11-24": 1
+        "2026-11-24": 1,
+        "2026-11-25": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые и воздушные шары ШарАрт Нижний Новгород",
@@ -3552,15 +2530,15 @@
       "extId": 28571374,
       "name": "Адамович помор",
       "clientName": "Адамович",
-      "status": "ok",
-      "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:20.554Z",
-      "balanceTotal": 1394.54,
-      "balanceReal": 1394.54,
-      "balanceBonus": 0,
-      "spendYesterday": 610,
-      "spendDayBefore": 451.91,
-      "spendMonth": 11686.02,
+      "status": "error",
+      "statusNote": "The operation was aborted due to timeout",
+      "lastSyncAt": "2026-11-25T13:04:40.988Z",
+      "balanceTotal": null,
+      "balanceReal": null,
+      "balanceBonus": null,
+      "spendYesterday": null,
+      "spendDayBefore": null,
+      "spendMonth": null,
       "messagesYesterday": 7,
       "messagesMonth": 184,
       "messagesSource": "group",
@@ -3609,934 +2587,18 @@
         "2026-11-21": 3,
         "2026-11-22": 1,
         "2026-11-23": 11,
-        "2026-11-24": 7
+        "2026-11-24": 7,
+        "2026-11-25": 5
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Воздушные и гелиевые шары Архангельск. Доставка",
-      "groupMembers": 6764,
-      "campaignsCount": 20,
-      "clicks7": [
-        {
-          "date": "2026-11-19",
-          "clicks": 13,
-          "spend": 495.74,
-          "cpc": 38.13384615384616,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-20",
-          "clicks": 17,
-          "spend": 550,
-          "cpc": 32.35294117647059,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-21",
-          "clicks": 24,
-          "spend": 285.54,
-          "cpc": 11.897499999999999,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-22",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-23",
-          "clicks": 12,
-          "spend": 451.91,
-          "cpc": 37.659166666666664,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-24",
-          "clicks": 16,
-          "spend": 610,
-          "cpc": 38.125,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-25",
-          "clicks": 1,
-          "spend": 41.88,
-          "cpc": 41.88,
-          "isToday": true
-        }
-      ],
+      "groupMembers": 6763,
+      "campaignsCount": null,
+      "clicks7": [],
       "clicks7Total": {
-        "clicks": 83,
-        "spend": 2435.07,
-        "cpc": 29.33819277108434
-      },
-      "dailyFrom": "2026-05-26",
-      "daily": {
-        "2026-05-26": {
-          "clicks": 25,
-          "spend": 490.94,
-          "shows": 6182,
-          "goals": 22
-        },
-        "2026-05-27": {
-          "clicks": 17,
-          "spend": 495.57,
-          "shows": 6561,
-          "goals": 17
-        },
-        "2026-05-28": {
-          "clicks": 16,
-          "spend": 500,
-          "shows": 6794,
-          "goals": 13
-        },
-        "2026-05-29": {
-          "clicks": 24,
-          "spend": 500,
-          "shows": 6318,
-          "goals": 18
-        },
-        "2026-05-30": {
-          "clicks": 9,
-          "spend": 240.67,
-          "shows": 3618,
-          "goals": 7
-        },
-        "2026-05-31": {
-          "clicks": 10,
-          "spend": 200.2,
-          "shows": 2221,
-          "goals": 9
-        },
-        "2026-06-01": {
-          "clicks": 28,
-          "spend": 499,
-          "shows": 8017,
-          "goals": 23
-        },
-        "2026-06-02": {
-          "clicks": 33,
-          "spend": 499.63,
-          "shows": 8417,
-          "goals": 29
-        },
-        "2026-06-03": {
-          "clicks": 27,
-          "spend": 500,
-          "shows": 7574,
-          "goals": 21
-        },
-        "2026-06-04": {
-          "clicks": 20,
-          "spend": 493.75,
-          "shows": 6482,
-          "goals": 20
-        },
-        "2026-06-05": {
-          "clicks": 19,
-          "spend": 445.64,
-          "shows": 4605,
-          "goals": 16
-        },
-        "2026-06-06": {
-          "clicks": 14,
-          "spend": 500,
-          "shows": 5937,
-          "goals": 12
-        },
-        "2026-06-07": {
-          "clicks": 28,
-          "spend": 500,
-          "shows": 6479,
-          "goals": 20
-        },
-        "2026-06-08": {
-          "clicks": 19,
-          "spend": 489.28,
-          "shows": 6790,
-          "goals": 17
-        },
-        "2026-06-09": {
-          "clicks": 18,
-          "spend": 500,
-          "shows": 6000,
-          "goals": 17
-        },
-        "2026-06-10": {
-          "clicks": 17,
-          "spend": 369.56,
-          "shows": 4165,
-          "goals": 15
-        },
-        "2026-06-11": {
-          "clicks": 0,
-          "spend": 2.94,
-          "shows": 117,
-          "goals": 2
-        },
-        "2026-06-13": {
-          "clicks": 18,
-          "spend": 434.44,
-          "shows": 4955,
-          "goals": 17
-        },
-        "2026-06-14": {
-          "clicks": 23,
-          "spend": 500,
-          "shows": 7337,
-          "goals": 20
-        },
-        "2026-06-15": {
-          "clicks": 35,
-          "spend": 500,
-          "shows": 6937,
-          "goals": 30
-        },
-        "2026-06-16": {
-          "clicks": 21,
-          "spend": 498.15,
-          "shows": 6727,
-          "goals": 18
-        },
-        "2026-06-17": {
-          "clicks": 13,
-          "spend": 302.74,
-          "shows": 3499,
-          "goals": 12
-        },
-        "2026-06-18": {
-          "clicks": 14,
-          "spend": 259.75,
-          "shows": 3079,
-          "goals": 10
-        },
-        "2026-06-19": {
-          "clicks": 0,
-          "spend": 4.92,
-          "shows": 141,
-          "goals": 0
-        },
-        "2026-06-21": {
-          "clicks": 13,
-          "spend": 496.12,
-          "shows": 6650,
-          "goals": 11
-        },
-        "2026-06-22": {
-          "clicks": 25,
-          "spend": 496.07,
-          "shows": 6381,
-          "goals": 23
-        },
-        "2026-06-23": {
-          "clicks": 24,
-          "spend": 500,
-          "shows": 5747,
-          "goals": 17
-        },
-        "2026-06-24": {
-          "clicks": 10,
-          "spend": 500,
-          "shows": 4503,
-          "goals": 8
-        },
-        "2026-06-25": {
-          "clicks": 25,
-          "spend": 500,
-          "shows": 5107,
-          "goals": 17
-        },
-        "2026-06-26": {
-          "clicks": 0,
-          "spend": 5.52,
-          "shows": 80,
-          "goals": 0
-        },
-        "2026-06-27": {
-          "clicks": 0,
-          "spend": 2.14,
-          "shows": 34,
-          "goals": 0
-        },
-        "2026-06-28": {
-          "clicks": 0,
-          "spend": 0.15,
-          "shows": 5,
-          "goals": 0
-        },
-        "2026-07-08": {
-          "clicks": 46,
-          "spend": 1329.8,
-          "shows": 16446,
-          "goals": 23
-        },
-        "2026-07-09": {
-          "clicks": 47,
-          "spend": 1170.2,
-          "shows": 13401,
-          "goals": 26
-        },
-        "2026-07-11": {
-          "clicks": 31,
-          "spend": 734.11,
-          "shows": 7828,
-          "goals": 11
-        },
-        "2026-07-12": {
-          "clicks": 42,
-          "spend": 881.93,
-          "shows": 14241,
-          "goals": 11
-        },
-        "2026-07-13": {
-          "clicks": 18,
-          "spend": 300,
-          "shows": 5262,
-          "goals": 15
-        },
-        "2026-07-14": {
-          "clicks": 23,
-          "spend": 300,
-          "shows": 4996,
-          "goals": 20
-        },
-        "2026-07-15": {
-          "clicks": 19,
-          "spend": 283.96,
-          "shows": 4284,
-          "goals": 19
-        },
-        "2026-07-18": {
-          "clicks": 24,
-          "spend": 600,
-          "shows": 6634,
-          "goals": 18
-        },
-        "2026-07-19": {
-          "clicks": 32,
-          "spend": 600,
-          "shows": 7889,
-          "goals": 30
-        },
-        "2026-07-20": {
-          "clicks": 23,
-          "spend": 600,
-          "shows": 8127,
-          "goals": 19
-        },
-        "2026-07-21": {
-          "clicks": 27,
-          "spend": 600,
-          "shows": 7549,
-          "goals": 24
-        },
-        "2026-07-22": {
-          "clicks": 3,
-          "spend": 100,
-          "shows": 1227,
-          "goals": 3
-        },
-        "2026-07-23": {
-          "clicks": 23,
-          "spend": 592.26,
-          "shows": 6425,
-          "goals": 20
-        },
-        "2026-07-24": {
-          "clicks": 39,
-          "spend": 600,
-          "shows": 7659,
-          "goals": 30
-        },
-        "2026-07-25": {
-          "clicks": 29,
-          "spend": 600,
-          "shows": 8306,
-          "goals": 28
-        },
-        "2026-07-26": {
-          "clicks": 29,
-          "spend": 600,
-          "shows": 8754,
-          "goals": 24
-        },
-        "2026-07-27": {
-          "clicks": 5,
-          "spend": 107.74,
-          "shows": 1832,
-          "goals": 5
-        },
-        "2026-07-29": {
-          "clicks": 20,
-          "spend": 600,
-          "shows": 7436,
-          "goals": 17
-        },
-        "2026-07-30": {
-          "clicks": 24,
-          "spend": 600,
-          "shows": 8130,
-          "goals": 18
-        },
-        "2026-07-31": {
-          "clicks": 22,
-          "spend": 600,
-          "shows": 8119,
-          "goals": 18
-        },
-        "2026-08-01": {
-          "clicks": 28,
-          "spend": 600,
-          "shows": 9760,
-          "goals": 25
-        },
-        "2026-08-02": {
-          "clicks": 28,
-          "spend": 600,
-          "shows": 10949,
-          "goals": 24
-        },
-        "2026-08-03": {
-          "clicks": 36,
-          "spend": 584.85,
-          "shows": 10082,
-          "goals": 29
-        },
-        "2026-08-04": {
-          "clicks": 40,
-          "spend": 600,
-          "shows": 8853,
-          "goals": 34
-        },
-        "2026-08-05": {
-          "clicks": 36,
-          "spend": 600,
-          "shows": 8375,
-          "goals": 28
-        },
-        "2026-08-06": {
-          "clicks": 7,
-          "spend": 215.15,
-          "shows": 3186,
-          "goals": 7
-        },
-        "2026-08-07": {
-          "clicks": 15,
-          "spend": 567.13,
-          "shows": 4672,
-          "goals": 13
-        },
-        "2026-08-08": {
-          "clicks": 27,
-          "spend": 600,
-          "shows": 7805,
-          "goals": 24
-        },
-        "2026-08-09": {
-          "clicks": 25,
-          "spend": 600,
-          "shows": 9043,
-          "goals": 22
-        },
-        "2026-08-10": {
-          "clicks": 27,
-          "spend": 600,
-          "shows": 9145,
-          "goals": 19
-        },
-        "2026-08-11": {
-          "clicks": 5,
-          "spend": 132.87,
-          "shows": 1832,
-          "goals": 5
-        },
-        "2026-08-13": {
-          "clicks": 15,
-          "spend": 248.65,
-          "shows": 2616,
-          "goals": 8
-        },
-        "2026-08-14": {
-          "clicks": 7,
-          "spend": 87.24,
-          "shows": 962,
-          "goals": 6
-        },
-        "2026-08-15": {
-          "clicks": 10,
-          "spend": 600,
-          "shows": 3944,
-          "goals": 8
-        },
-        "2026-08-16": {
-          "clicks": 31,
-          "spend": 600,
-          "shows": 7196,
-          "goals": 28
-        },
-        "2026-08-17": {
-          "clicks": 32,
-          "spend": 600,
-          "shows": 7252,
-          "goals": 22
-        },
-        "2026-08-18": {
-          "clicks": 15,
-          "spend": 364.12,
-          "shows": 4125,
-          "goals": 14
-        },
-        "2026-08-19": {
-          "clicks": 11,
-          "spend": 431.73,
-          "shows": 4529,
-          "goals": 11
-        },
-        "2026-08-20": {
-          "clicks": 27,
-          "spend": 600,
-          "shows": 6765,
-          "goals": 20
-        },
-        "2026-08-21": {
-          "clicks": 24,
-          "spend": 600,
-          "shows": 6872,
-          "goals": 19
-        },
-        "2026-08-22": {
-          "clicks": 26,
-          "spend": 600,
-          "shows": 6273,
-          "goals": 23
-        },
-        "2026-08-23": {
-          "clicks": 11,
-          "spend": 268.27,
-          "shows": 2816,
-          "goals": 11
-        },
-        "2026-08-25": {
-          "clicks": 22,
-          "spend": 480.21,
-          "shows": 4475,
-          "goals": 18
-        },
-        "2026-08-26": {
-          "clicks": 29,
-          "spend": 600,
-          "shows": 6556,
-          "goals": 23
-        },
-        "2026-08-27": {
-          "clicks": 19,
-          "spend": 600,
-          "shows": 5941,
-          "goals": 16
-        },
-        "2026-08-28": {
-          "clicks": 28,
-          "spend": 600,
-          "shows": 5508,
-          "goals": 19
-        },
-        "2026-08-29": {
-          "clicks": 13,
-          "spend": 219.79,
-          "shows": 1972,
-          "goals": 10
-        },
-        "2026-08-31": {
-          "clicks": 11,
-          "spend": 237.19,
-          "shows": 2825,
-          "goals": 9
-        },
-        "2026-09-01": {
-          "clicks": 32,
-          "spend": 599.82,
-          "shows": 9458,
-          "goals": 30
-        },
-        "2026-09-02": {
-          "clicks": 23,
-          "spend": 594.66,
-          "shows": 8315,
-          "goals": 21
-        },
-        "2026-09-03": {
-          "clicks": 38,
-          "spend": 750.95,
-          "shows": 8807,
-          "goals": 29
-        },
-        "2026-09-04": {
-          "clicks": 11,
-          "spend": 317.38,
-          "shows": 3163,
-          "goals": 7
-        },
-        "2026-09-05": {
-          "clicks": 23,
-          "spend": 653.45,
-          "shows": 6089,
-          "goals": 17
-        },
-        "2026-09-06": {
-          "clicks": 33,
-          "spend": 796.88,
-          "shows": 9548,
-          "goals": 19
-        },
-        "2026-09-07": {
-          "clicks": 19,
-          "spend": 600,
-          "shows": 7802,
-          "goals": 18
-        },
-        "2026-09-08": {
-          "clicks": 19,
-          "spend": 449.67,
-          "shows": 4371,
-          "goals": 8
-        },
-        "2026-09-09": {
-          "clicks": 0,
-          "spend": 0,
-          "shows": 1,
-          "goals": 0
-        },
-        "2026-09-11": {
-          "clicks": 12,
-          "spend": 488.55,
-          "shows": 4042,
-          "goals": 4
-        },
-        "2026-09-12": {
-          "clicks": 22,
-          "spend": 510,
-          "shows": 4560,
-          "goals": 11
-        },
-        "2026-09-13": {
-          "clicks": 19,
-          "spend": 510,
-          "shows": 5236,
-          "goals": 7
-        },
-        "2026-09-14": {
-          "clicks": 7,
-          "spend": 200,
-          "shows": 2833,
-          "goals": 6
-        },
-        "2026-09-15": {
-          "clicks": 12,
-          "spend": 199.18,
-          "shows": 2655,
-          "goals": 10
-        },
-        "2026-09-16": {
-          "clicks": 13,
-          "spend": 295.34,
-          "shows": 2913,
-          "goals": 6
-        },
-        "2026-09-17": {
-          "clicks": 7,
-          "spend": 296.93,
-          "shows": 2281,
-          "goals": 5
-        },
-        "2026-09-23": {
-          "clicks": 22,
-          "spend": 467.15,
-          "shows": 4858,
-          "goals": 20
-        },
-        "2026-09-24": {
-          "clicks": 22,
-          "spend": 560,
-          "shows": 5032,
-          "goals": 11
-        },
-        "2026-09-25": {
-          "clicks": 23,
-          "spend": 555.61,
-          "shows": 4592,
-          "goals": 11
-        },
-        "2026-09-26": {
-          "clicks": 20,
-          "spend": 560,
-          "shows": 4965,
-          "goals": 8
-        },
-        "2026-09-27": {
-          "clicks": 16,
-          "spend": 357.25,
-          "shows": 3366,
-          "goals": 11
-        },
-        "2026-10-01": {
-          "clicks": 6,
-          "spend": 101.75,
-          "shows": 1462,
-          "goals": 6
-        },
-        "2026-10-02": {
-          "clicks": 14,
-          "spend": 250,
-          "shows": 3667,
-          "goals": 12
-        },
-        "2026-10-03": {
-          "clicks": 13,
-          "spend": 250,
-          "shows": 3742,
-          "goals": 13
-        },
-        "2026-10-04": {
-          "clicks": 20,
-          "spend": 250,
-          "shows": 4031,
-          "goals": 14
-        },
-        "2026-10-05": {
-          "clicks": 12,
-          "spend": 250,
-          "shows": 3997,
-          "goals": 13
-        },
-        "2026-10-06": {
-          "clicks": 17,
-          "spend": 248.68,
-          "shows": 4057,
-          "goals": 17
-        },
-        "2026-10-07": {
-          "clicks": 12,
-          "spend": 530.11,
-          "shows": 5144,
-          "goals": 8
-        },
-        "2026-10-08": {
-          "clicks": 25,
-          "spend": 560,
-          "shows": 5964,
-          "goals": 14
-        },
-        "2026-10-09": {
-          "clicks": 4,
-          "spend": 59.45,
-          "shows": 572,
-          "goals": 2
-        },
-        "2026-10-11": {
-          "clicks": 12,
-          "spend": 200.17,
-          "shows": 2563,
-          "goals": 10
-        },
-        "2026-10-12": {
-          "clicks": 29,
-          "spend": 505.72,
-          "shows": 5546,
-          "goals": 22
-        },
-        "2026-10-13": {
-          "clicks": 13,
-          "spend": 560,
-          "shows": 5595,
-          "goals": 6
-        },
-        "2026-10-14": {
-          "clicks": 21,
-          "spend": 560,
-          "shows": 5111,
-          "goals": 10
-        },
-        "2026-10-15": {
-          "clicks": 16,
-          "spend": 560,
-          "shows": 4905,
-          "goals": 8
-        },
-        "2026-10-16": {
-          "clicks": 6,
-          "spend": 114.11,
-          "shows": 1006,
-          "goals": 4
-        },
-        "2026-10-22": {
-          "clicks": 3,
-          "spend": 197.9,
-          "shows": 1670,
-          "goals": 2
-        },
-        "2026-10-23": {
-          "clicks": 18,
-          "spend": 557.99,
-          "shows": 3946,
-          "goals": 8
-        },
-        "2026-10-24": {
-          "clicks": 24,
-          "spend": 560,
-          "shows": 4140,
-          "goals": 15
-        },
-        "2026-10-25": {
-          "clicks": 19,
-          "spend": 560,
-          "shows": 4902,
-          "goals": 7
-        },
-        "2026-10-26": {
-          "clicks": 10,
-          "spend": 250,
-          "shows": 3335,
-          "goals": 8
-        },
-        "2026-10-27": {
-          "clicks": 20,
-          "spend": 374.1,
-          "shows": 3049,
-          "goals": 14
-        },
-        "2026-11-02": {
-          "clicks": 6,
-          "spend": 172.32,
-          "shows": 1862,
-          "goals": 5
-        },
-        "2026-11-03": {
-          "clicks": 49,
-          "spend": 783.6,
-          "shows": 24258,
-          "goals": 9
-        },
-        "2026-11-04": {
-          "clicks": 49,
-          "spend": 860,
-          "shows": 11063,
-          "goals": 16
-        },
-        "2026-11-05": {
-          "clicks": 27,
-          "spend": 684.09,
-          "shows": 7694,
-          "goals": 7
-        },
-        "2026-11-06": {
-          "clicks": 27,
-          "spend": 522.53,
-          "shows": 5005,
-          "goals": 9
-        },
-        "2026-11-07": {
-          "clicks": 41,
-          "spend": 860,
-          "shows": 9411,
-          "goals": 10
-        },
-        "2026-11-08": {
-          "clicks": 25,
-          "spend": 860,
-          "shows": 9772,
-          "goals": 8
-        },
-        "2026-11-09": {
-          "clicks": 20,
-          "spend": 420.45,
-          "shows": 5725,
-          "goals": 12
-        },
-        "2026-11-10": {
-          "clicks": 27,
-          "spend": 550,
-          "shows": 6514,
-          "goals": 12
-        },
-        "2026-11-11": {
-          "clicks": 31,
-          "spend": 550,
-          "shows": 7020,
-          "goals": 13
-        },
-        "2026-11-12": {
-          "clicks": 17,
-          "spend": 431.1,
-          "shows": 4994,
-          "goals": 10
-        },
-        "2026-11-13": {
-          "clicks": 18,
-          "spend": 482.57,
-          "shows": 5273,
-          "goals": 14
-        },
-        "2026-11-14": {
-          "clicks": 13,
-          "spend": 323.34,
-          "shows": 3835,
-          "goals": 2
-        },
-        "2026-11-16": {
-          "clicks": 6,
-          "spend": 166.45,
-          "shows": 2283,
-          "goals": 2
-        },
-        "2026-11-17": {
-          "clicks": 25,
-          "spend": 550,
-          "shows": 7923,
-          "goals": 11
-        },
-        "2026-11-18": {
-          "clicks": 20,
-          "spend": 452.28,
-          "shows": 5433,
-          "goals": 7
-        },
-        "2026-11-19": {
-          "clicks": 13,
-          "spend": 495.74,
-          "shows": 4893,
-          "goals": 5
-        },
-        "2026-11-20": {
-          "clicks": 17,
-          "spend": 550,
-          "shows": 6364,
-          "goals": 7
-        },
-        "2026-11-21": {
-          "clicks": 24,
-          "spend": 285.54,
-          "shows": 3458,
-          "goals": 11
-        },
-        "2026-11-23": {
-          "clicks": 12,
-          "spend": 451.91,
-          "shows": 3610,
-          "goals": 0
-        },
-        "2026-11-24": {
-          "clicks": 16,
-          "spend": 610,
-          "shows": 5275,
-          "goals": 0
-        },
-        "2026-11-25": {
-          "clicks": 1,
-          "spend": 41.88,
-          "shows": 225,
-          "goals": 0
-        }
+        "clicks": 0,
+        "spend": 0,
+        "cpc": null
       }
     },
     {
@@ -4596,7 +2658,8 @@
         "2026-11-20": 2,
         "2026-11-21": 1,
         "2026-11-23": 4,
-        "2026-11-24": 7
+        "2026-11-24": 7,
+        "2026-11-25": 2
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Доставка воздушных и гелиевых шаров Архангельск",
@@ -4670,7 +2733,8 @@
         "2026-11-21": 7,
         "2026-11-22": 3,
         "2026-11-23": 6,
-        "2026-11-24": 8
+        "2026-11-24": 8,
+        "2026-11-25": 5
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Воздух Пермь. Воздушные шары. Доставка",
@@ -4689,10 +2753,10 @@
       "clientName": "Праздник Сказка — Пантюшкина",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:23.416Z",
-      "balanceTotal": 1326.71,
-      "balanceReal": 449.63,
-      "balanceBonus": 877.08,
+      "lastSyncAt": "2026-11-25T13:04:55.168Z",
+      "balanceTotal": 1146.6,
+      "balanceReal": 359.58,
+      "balanceBonus": 787.02,
       "spendYesterday": 394.61,
       "spendDayBefore": 392.82,
       "spendMonth": 10709.5,
@@ -4744,7 +2808,8 @@
         "2026-11-21": 3,
         "2026-11-22": 3,
         "2026-11-23": 2,
-        "2026-11-24": 2
+        "2026-11-24": 2,
+        "2026-11-25": 1
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "«Праздник-сказка». Воздушные шары. Миасс",
@@ -4795,16 +2860,16 @@
         },
         {
           "date": "2026-11-25",
-          "clicks": 1,
-          "spend": 45.42,
-          "cpc": 45.42,
+          "clicks": 5,
+          "spend": 222.69,
+          "cpc": 44.538,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 93,
-        "spend": 2404.84,
-        "cpc": 25.858494623655915
+        "clicks": 97,
+        "spend": 2582.11,
+        "cpc": 26.619690721649487
       },
       "dailyFrom": "2026-05-26",
       "daily": {
@@ -5181,10 +3246,10 @@
           "goals": 9
         },
         "2026-11-25": {
-          "clicks": 1,
-          "spend": 45.42,
-          "shows": 437,
-          "goals": 2
+          "clicks": 5,
+          "spend": 222.69,
+          "shows": 2550,
+          "goals": 5
         }
       }
     },
@@ -5194,9 +3259,9 @@
       "clientName": "Геннадий Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:26.390Z",
-      "balanceTotal": 1412.69,
-      "balanceReal": 1412.69,
+      "lastSyncAt": "2026-11-25T13:05:17.059Z",
+      "balanceTotal": 1163.67,
+      "balanceReal": 1163.67,
       "balanceBonus": 0,
       "spendYesterday": 528.94,
       "spendDayBefore": 186.19,
@@ -5253,7 +3318,7 @@
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Воздушные шары гелиевые Тамбов ПроШары",
-      "groupMembers": 4959,
+      "groupMembers": 4962,
       "campaignsCount": 26,
       "clicks7": [
         {
@@ -5300,16 +3365,16 @@
         },
         {
           "date": "2026-11-25",
-          "clicks": 2,
-          "spend": 58.33,
-          "cpc": 29.165,
+          "clicks": 7,
+          "spend": 306.05,
+          "cpc": 43.721428571428575,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 85,
-        "spend": 2587.27,
-        "cpc": 30.438470588235297
+        "clicks": 90,
+        "spend": 2834.99,
+        "cpc": 31.499888888888897
       },
       "dailyFrom": "2026-05-26",
       "daily": {
@@ -6094,9 +4159,9 @@
           "goals": 0
         },
         "2026-11-25": {
-          "clicks": 2,
-          "spend": 58.33,
-          "shows": 425,
+          "clicks": 7,
+          "spend": 306.05,
+          "shows": 3561,
           "goals": 0
         }
       }
@@ -6105,15 +4170,15 @@
       "extId": 17323149,
       "name": "Марина Владимировна Киров",
       "clientName": "Марина Владимировна — старый кабинет",
-      "status": "ok",
-      "statusNote": null,
-      "lastSyncAt": "2026-11-25T03:03:30.904Z",
-      "balanceTotal": 819,
-      "balanceReal": 819,
-      "balanceBonus": 0,
-      "spendYesterday": 0,
-      "spendDayBefore": 0,
-      "spendMonth": 4354.34,
+      "status": "error",
+      "statusNote": "The operation was aborted due to timeout",
+      "lastSyncAt": "2026-11-25T13:05:48.732Z",
+      "balanceTotal": null,
+      "balanceReal": null,
+      "balanceBonus": null,
+      "spendYesterday": null,
+      "spendDayBefore": null,
+      "spendMonth": null,
       "messagesYesterday": 5,
       "messagesMonth": 156,
       "messagesSource": "group",
@@ -6161,550 +4226,18 @@
         "2026-11-21": 6,
         "2026-11-22": 5,
         "2026-11-23": 6,
-        "2026-11-24": 5
+        "2026-11-24": 5,
+        "2026-11-25": 5
       },
       "msgDailyFrom": "2026-10-11",
       "groupName": "Гелиевые шары Киров",
       "groupMembers": 6267,
-      "campaignsCount": 10,
-      "clicks7": [
-        {
-          "date": "2026-11-19",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-20",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-21",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-22",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-23",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-24",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": false
-        },
-        {
-          "date": "2026-11-25",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
-          "isToday": true
-        }
-      ],
+      "campaignsCount": null,
+      "clicks7": [],
       "clicks7Total": {
         "clicks": 0,
         "spend": 0,
         "cpc": null
-      },
-      "dailyFrom": "2026-05-26",
-      "daily": {
-        "2026-05-26": {
-          "clicks": 12,
-          "spend": 500,
-          "shows": 2461,
-          "goals": 0
-        },
-        "2026-06-03": {
-          "clicks": 2,
-          "spend": 51.92,
-          "shows": 156,
-          "goals": 0
-        },
-        "2026-06-04": {
-          "clicks": 17,
-          "spend": 478.87,
-          "shows": 4070,
-          "goals": 0
-        },
-        "2026-06-05": {
-          "clicks": 12,
-          "spend": 437.66,
-          "shows": 2289,
-          "goals": 0
-        },
-        "2026-06-06": {
-          "clicks": 2,
-          "spend": 31.55,
-          "shows": 226,
-          "goals": 0
-        },
-        "2026-06-15": {
-          "clicks": 4,
-          "spend": 214.6,
-          "shows": 132,
-          "goals": 0
-        },
-        "2026-06-16": {
-          "clicks": 15,
-          "spend": 420.82,
-          "shows": 2249,
-          "goals": 0
-        },
-        "2026-06-17": {
-          "clicks": 11,
-          "spend": 364.58,
-          "shows": 1883,
-          "goals": 0
-        },
-        "2026-06-24": {
-          "clicks": 14,
-          "spend": 472.41,
-          "shows": 2761,
-          "goals": 0
-        },
-        "2026-06-25": {
-          "clicks": 5,
-          "spend": 267.28,
-          "shows": 840,
-          "goals": 0
-        },
-        "2026-06-26": {
-          "clicks": 2,
-          "spend": 79.31,
-          "shows": 26,
-          "goals": 0
-        },
-        "2026-06-30": {
-          "clicks": 2,
-          "spend": 40.62,
-          "shows": 639,
-          "goals": 0
-        },
-        "2026-07-01": {
-          "clicks": 23,
-          "spend": 500,
-          "shows": 4049,
-          "goals": 0
-        },
-        "2026-07-02": {
-          "clicks": 11,
-          "spend": 278.38,
-          "shows": 1693,
-          "goals": 0
-        },
-        "2026-07-08": {
-          "clicks": 0,
-          "spend": 201.01,
-          "shows": 1393,
-          "goals": 0
-        },
-        "2026-07-09": {
-          "clicks": 3,
-          "spend": 378.64,
-          "shows": 2289,
-          "goals": 0
-        },
-        "2026-07-10": {
-          "clicks": 6,
-          "spend": 197.47,
-          "shows": 1366,
-          "goals": 0
-        },
-        "2026-07-11": {
-          "clicks": 0,
-          "spend": 41.88,
-          "shows": 314,
-          "goals": 0
-        },
-        "2026-07-16": {
-          "clicks": 22,
-          "spend": 500,
-          "shows": 2849,
-          "goals": 0
-        },
-        "2026-07-17": {
-          "clicks": 15,
-          "spend": 322,
-          "shows": 1501,
-          "goals": 0
-        },
-        "2026-07-20": {
-          "clicks": 24,
-          "spend": 500,
-          "shows": 4402,
-          "goals": 0
-        },
-        "2026-07-21": {
-          "clicks": 12,
-          "spend": 319,
-          "shows": 1523,
-          "goals": 0
-        },
-        "2026-07-27": {
-          "clicks": 20,
-          "spend": 459.14,
-          "shows": 5101,
-          "goals": 0
-        },
-        "2026-07-28": {
-          "clicks": 10,
-          "spend": 359.86,
-          "shows": 895,
-          "goals": 0
-        },
-        "2026-07-30": {
-          "clicks": 20,
-          "spend": 500,
-          "shows": 2238,
-          "goals": 0
-        },
-        "2026-07-31": {
-          "clicks": 21,
-          "spend": 500,
-          "shows": 2947,
-          "goals": 0
-        },
-        "2026-08-01": {
-          "clicks": 19,
-          "spend": 500,
-          "shows": 2127,
-          "goals": 0
-        },
-        "2026-08-02": {
-          "clicks": 5,
-          "spend": 140,
-          "shows": 1086,
-          "goals": 0
-        },
-        "2026-08-04": {
-          "clicks": 16,
-          "spend": 482.7,
-          "shows": 2702,
-          "goals": 0
-        },
-        "2026-08-05": {
-          "clicks": 12,
-          "spend": 337.3,
-          "shows": 1469,
-          "goals": 0
-        },
-        "2026-08-10": {
-          "clicks": 18,
-          "spend": 400,
-          "shows": 3964,
-          "goals": 0
-        },
-        "2026-08-11": {
-          "clicks": 13,
-          "spend": 399.97,
-          "shows": 2422,
-          "goals": 0
-        },
-        "2026-08-12": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 1631,
-          "goals": 0
-        },
-        "2026-08-13": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 1665,
-          "goals": 0
-        },
-        "2026-08-14": {
-          "clicks": 3,
-          "spend": 372.78,
-          "shows": 718,
-          "goals": 0
-        },
-        "2026-08-15": {
-          "clicks": 12,
-          "spend": 400,
-          "shows": 759,
-          "goals": 0
-        },
-        "2026-08-16": {
-          "clicks": 3,
-          "spend": 87.25,
-          "shows": 830,
-          "goals": 0
-        },
-        "2026-08-18": {
-          "clicks": 9,
-          "spend": 264.77,
-          "shows": 1046,
-          "goals": 0
-        },
-        "2026-08-19": {
-          "clicks": 13,
-          "spend": 400,
-          "shows": 1918,
-          "goals": 0
-        },
-        "2026-08-20": {
-          "clicks": 6,
-          "spend": 154.23,
-          "shows": 733,
-          "goals": 0
-        },
-        "2026-08-25": {
-          "clicks": 1,
-          "spend": 80,
-          "shows": 210,
-          "goals": 0
-        },
-        "2026-08-26": {
-          "clicks": 4,
-          "spend": 400,
-          "shows": 355,
-          "goals": 0
-        },
-        "2026-08-27": {
-          "clicks": 10,
-          "spend": 337.24,
-          "shows": 2743,
-          "goals": 0
-        },
-        "2026-08-28": {
-          "clicks": 2,
-          "spend": 1.76,
-          "shows": 379,
-          "goals": 0
-        },
-        "2026-09-08": {
-          "clicks": 4,
-          "spend": 100.4,
-          "shows": 557,
-          "goals": 0
-        },
-        "2026-09-09": {
-          "clicks": 7,
-          "spend": 112.37,
-          "shows": 570,
-          "goals": 0
-        },
-        "2026-09-10": {
-          "clicks": 13,
-          "spend": 460.42,
-          "shows": 2054,
-          "goals": 0
-        },
-        "2026-09-11": {
-          "clicks": 8,
-          "spend": 145.81,
-          "shows": 1062,
-          "goals": 0
-        },
-        "2026-09-14": {
-          "clicks": 1,
-          "spend": 28.45,
-          "shows": 115,
-          "goals": 0
-        },
-        "2026-09-15": {
-          "clicks": 19,
-          "spend": 696.08,
-          "shows": 4266,
-          "goals": 1
-        },
-        "2026-09-16": {
-          "clicks": 20,
-          "spend": 655.84,
-          "shows": 3678,
-          "goals": 2
-        },
-        "2026-09-17": {
-          "clicks": 5,
-          "spend": 258.64,
-          "shows": 1266,
-          "goals": 0
-        },
-        "2026-09-22": {
-          "clicks": 1,
-          "spend": 36.02,
-          "shows": 389,
-          "goals": 0
-        },
-        "2026-09-23": {
-          "clicks": 17,
-          "spend": 700,
-          "shows": 2981,
-          "goals": 1
-        },
-        "2026-09-24": {
-          "clicks": 1,
-          "spend": 82.98,
-          "shows": 373,
-          "goals": 0
-        },
-        "2026-09-25": {
-          "clicks": 14,
-          "spend": 562.66,
-          "shows": 2034,
-          "goals": 1
-        },
-        "2026-09-26": {
-          "clicks": 6,
-          "spend": 256.34,
-          "shows": 995,
-          "goals": 1
-        },
-        "2026-09-28": {
-          "clicks": 3,
-          "spend": 378.43,
-          "shows": 1125,
-          "goals": 0
-        },
-        "2026-09-29": {
-          "clicks": 5,
-          "spend": 440.57,
-          "shows": 1630,
-          "goals": 0
-        },
-        "2026-10-06": {
-          "clicks": 16,
-          "spend": 600,
-          "shows": 2186,
-          "goals": 1
-        },
-        "2026-10-07": {
-          "clicks": 6,
-          "spend": 219,
-          "shows": 972,
-          "goals": 2
-        },
-        "2026-10-14": {
-          "clicks": 3,
-          "spend": 101.66,
-          "shows": 277,
-          "goals": 0
-        },
-        "2026-10-15": {
-          "clicks": 12,
-          "spend": 600,
-          "shows": 1981,
-          "goals": 0
-        },
-        "2026-10-16": {
-          "clicks": 4,
-          "spend": 600,
-          "shows": 1601,
-          "goals": 0
-        },
-        "2026-10-17": {
-          "clicks": 7,
-          "spend": 337.34,
-          "shows": 940,
-          "goals": 0
-        },
-        "2026-10-21": {
-          "clicks": 0,
-          "spend": 72.29,
-          "shows": 175,
-          "goals": 0
-        },
-        "2026-10-22": {
-          "clicks": 12,
-          "spend": 600,
-          "shows": 2118,
-          "goals": 1
-        },
-        "2026-10-23": {
-          "clicks": 4,
-          "spend": 147.71,
-          "shows": 475,
-          "goals": 0
-        },
-        "2026-10-25": {
-          "clicks": 9,
-          "spend": 559.66,
-          "shows": 1959,
-          "goals": 0
-        },
-        "2026-10-26": {
-          "clicks": 3,
-          "spend": 259.34,
-          "shows": 992,
-          "goals": 1
-        },
-        "2026-10-28": {
-          "clicks": 16,
-          "spend": 600,
-          "shows": 2330,
-          "goals": 3
-        },
-        "2026-10-29": {
-          "clicks": 6,
-          "spend": 219,
-          "shows": 922,
-          "goals": 0
-        },
-        "2026-11-03": {
-          "clicks": 4,
-          "spend": 425.78,
-          "shows": 1447,
-          "goals": 0
-        },
-        "2026-11-04": {
-          "clicks": 4,
-          "spend": 393.22,
-          "shows": 1438,
-          "goals": 0
-        },
-        "2026-11-06": {
-          "clicks": 9,
-          "spend": 419.62,
-          "shows": 1225,
-          "goals": 1
-        },
-        "2026-11-07": {
-          "clicks": 9,
-          "spend": 399.38,
-          "shows": 1261,
-          "goals": 0
-        },
-        "2026-11-10": {
-          "clicks": 14,
-          "spend": 600,
-          "shows": 1840,
-          "goals": 0
-        },
-        "2026-11-11": {
-          "clicks": 7,
-          "spend": 219,
-          "shows": 898,
-          "goals": 2
-        },
-        "2026-11-16": {
-          "clicks": 7,
-          "spend": 586.56,
-          "shows": 2017,
-          "goals": 0
-        },
-        "2026-11-17": {
-          "clicks": 11,
-          "spend": 232.44,
-          "shows": 909,
-          "goals": 1
-        }
       }
     }
   ]
