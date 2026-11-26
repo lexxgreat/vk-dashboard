@@ -68,5 +68,12 @@
     "clientName": "Марина Владимировна — старый кабинет",
     "noTokenStatus": "nokey",
     "noTokenNote": "ждём токен кабинета (ID известен: 17323149)"
+  },
+  {
+    "extId": 28475752,
+    "name": "Рыбины СПб",
+    "clientName": "Рыбины",
+    "noTokenStatus": "ok",
+    "noTokenNote": null
   }
 ]
