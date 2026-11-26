@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-26T04:23:47.636Z",
+ "generatedAt": "2026-11-26T14:48:23.472Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 85.8,
+   "balance": 999.99,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -41,7 +41,7 @@
     "cta": "write",
     "title": "Невероятное оформление шарами в Нижнем",
     "text": "Создаём такую красоту, что хочется фоткать, делиться и выкладывать.\nДобавьте празднику спецэффектов и красоты. Закажите воздушные шары у нас.\nПишите, подберём оформление на Ваш вкус и бюджет.",
-    "basedOnBanners": 20
+    "basedOnBanners": 18
    },
    "limits": {
     "maxActiveBanners": 300,
@@ -51,7 +51,7 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 797.16,
+   "balance": 484.11,
    "userName": "vkads_205397140@vk",
    "plans": [
     {
@@ -98,7 +98,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1292.12,
+   "balance": 1757.23,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -150,14 +150,14 @@
     "basedOnBanners": 10
    },
    "limits": {
-    "maxActiveBanners": 391,
+    "maxActiveBanners": 397,
     "activeBanners": 3
    }
   },
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 921.55,
+   "balance": 716.81,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -267,7 +267,7 @@
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 770.69,
+   "balance": 470.25,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
