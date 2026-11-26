@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T14:47:57.019Z",
+  "generatedAt": "2026-11-26T20:07:35.348Z",
   "today": "2026-11-26",
   "yesterday": "2026-11-25",
   "dayBefore": "2026-11-24",
@@ -10,10 +10,10 @@
       "clientName": "Варвара Бякова",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:32.591Z",
-      "balanceTotal": 1757.23,
-      "balanceReal": 1757.17,
-      "balanceBonus": 0.06,
+      "lastSyncAt": "2026-11-26T20:07:13.610Z",
+      "balanceTotal": 1667.62,
+      "balanceReal": 1667.57,
+      "balanceBonus": 0.05,
       "spendYesterday": 897,
       "spendDayBefore": 991.91,
       "spendMonth": 19414.45,
@@ -64,11 +64,11 @@
         "2026-11-23": 9,
         "2026-11-24": 6,
         "2026-11-25": 4,
-        "2026-11-26": 4
+        "2026-11-26": 7
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "«Веселая Затея» Воздушные шары Ижевск",
-      "groupMembers": 8014,
+      "groupMembers": 8011,
       "campaignsCount": 97,
       "clicks7": [
         {
@@ -115,16 +115,16 @@
         },
         {
           "date": "2026-11-26",
-          "clicks": 6,
-          "spend": 497.43,
-          "cpc": 82.905,
+          "clicks": 9,
+          "spend": 589.19,
+          "cpc": 65.46555555555557,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 131,
-        "spend": 6026,
-        "cpc": 46.00000000000001
+        "clicks": 134,
+        "spend": 6117.76,
+        "cpc": 45.65492537313433
       },
       "dailyFrom": "2026-05-27",
       "daily": {
@@ -1143,10 +1143,10 @@
           "goals": 8
         },
         "2026-11-26": {
-          "clicks": 6,
-          "spend": 497.43,
-          "shows": 1638,
-          "goals": 2
+          "clicks": 9,
+          "spend": 589.19,
+          "shows": 2391,
+          "goals": 3
         }
       }
     },
@@ -1156,7 +1156,7 @@
       "clientName": "Андрей Мельников",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:35.307Z",
+      "lastSyncAt": "2026-11-26T20:07:16.509Z",
       "balanceTotal": 0,
       "balanceReal": 0,
       "balanceBonus": 0,
@@ -1452,9 +1452,9 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:39.134Z",
-      "balanceTotal": 999.99,
-      "balanceReal": 999.99,
+      "lastSyncAt": "2026-11-26T20:07:19.998Z",
+      "balanceTotal": 760.5,
+      "balanceReal": 760.5,
       "balanceBonus": 0,
       "spendYesterday": 532.5,
       "spendDayBefore": 532.5,
@@ -1509,7 +1509,7 @@
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "Гелиевые шарики Нижний Новгород",
-      "groupMembers": 13811,
+      "groupMembers": 13810,
       "campaignsCount": 30,
       "clicks7": [
         {
@@ -1556,16 +1556,16 @@
         },
         {
           "date": "2026-11-26",
-          "clicks": 6,
-          "spend": 164.68,
-          "cpc": 27.44666666666667,
+          "clicks": 14,
+          "spend": 398.77,
+          "cpc": 28.483571428571427,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 90,
-        "spend": 3359.68,
-        "cpc": 37.32977777777778
+        "clicks": 98,
+        "spend": 3593.77,
+        "cpc": 36.67112244897959
       },
       "dailyFrom": "2026-05-27",
       "daily": {
@@ -2536,10 +2536,10 @@
           "goals": 4
         },
         "2026-11-26": {
-          "clicks": 6,
-          "spend": 164.68,
-          "shows": 872,
-          "goals": 4
+          "clicks": 14,
+          "spend": 398.77,
+          "shows": 1557,
+          "goals": 7
         }
       }
     },
@@ -2549,7 +2549,7 @@
       "clientName": "В. Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:42.306Z",
+      "lastSyncAt": "2026-11-26T20:07:23.484Z",
       "balanceTotal": 1238.97,
       "balanceReal": 1100.23,
       "balanceBonus": 138.74,
@@ -3551,9 +3551,9 @@
       "clientName": "Адамович",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:45.440Z",
-      "balanceTotal": 470.25,
-      "balanceReal": 470.25,
+      "lastSyncAt": "2026-11-26T20:07:26.528Z",
+      "balanceTotal": 267.25,
+      "balanceReal": 267.25,
       "balanceBonus": 0,
       "spendYesterday": 589.6,
       "spendDayBefore": 610,
@@ -3607,11 +3607,11 @@
         "2026-11-23": 11,
         "2026-11-24": 7,
         "2026-11-25": 7,
-        "2026-11-26": 4
+        "2026-11-26": 6
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "Воздушные и гелиевые шары Архангельск. Доставка",
-      "groupMembers": 6764,
+      "groupMembers": 6765,
       "campaignsCount": 20,
       "clicks7": [
         {
@@ -3658,16 +3658,16 @@
         },
         {
           "date": "2026-11-26",
-          "clicks": 9,
-          "spend": 375.75,
-          "cpc": 41.75,
+          "clicks": 12,
+          "spend": 577.1,
+          "cpc": 48.09166666666667,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 98,
-        "spend": 2862.8,
-        "cpc": 29.212244897959184
+        "clicks": 101,
+        "spend": 3064.15,
+        "cpc": 30.338118811881188
       },
       "dailyFrom": "2026-05-27",
       "daily": {
@@ -4530,9 +4530,9 @@
           "goals": 0
         },
         "2026-11-26": {
-          "clicks": 9,
-          "spend": 375.75,
-          "shows": 3612,
+          "clicks": 12,
+          "spend": 577.1,
+          "shows": 5945,
           "goals": 0
         }
       }
@@ -4673,7 +4673,7 @@
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "Воздух Пермь. Воздушные шары. Доставка",
-      "groupMembers": 7353,
+      "groupMembers": 7354,
       "campaignsCount": null,
       "clicks7": [],
       "clicks7Total": {
@@ -4688,10 +4688,10 @@
       "clientName": "Праздник Сказка — Пантюшкина",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:48.379Z",
-      "balanceTotal": 716.81,
-      "balanceReal": 144.68,
-      "balanceBonus": 572.13,
+      "lastSyncAt": "2026-11-26T20:07:29.575Z",
+      "balanceTotal": 596.04,
+      "balanceReal": 84.3,
+      "balanceBonus": 511.74,
       "spendYesterday": 390.99,
       "spendDayBefore": 394.61,
       "spendMonth": 11006.43,
@@ -4748,7 +4748,7 @@
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "«Праздник-сказка». Воздушные шары. Миасс",
-      "groupMembers": 7418,
+      "groupMembers": 7419,
       "campaignsCount": 37,
       "clicks7": [
         {
@@ -4795,16 +4795,16 @@
         },
         {
           "date": "2026-11-26",
-          "clicks": 10,
-          "spend": 263.28,
-          "cpc": 26.327999999999996,
+          "clicks": 16,
+          "spend": 383.07,
+          "cpc": 23.941875,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 95,
-        "spend": 2639.96,
-        "cpc": 27.789052631578947
+        "clicks": 101,
+        "spend": 2759.75,
+        "cpc": 27.32425742574258
       },
       "dailyFrom": "2026-05-27",
       "daily": {
@@ -5187,10 +5187,10 @@
           "goals": 13
         },
         "2026-11-26": {
-          "clicks": 10,
-          "spend": 263.28,
-          "shows": 2720,
-          "goals": 10
+          "clicks": 16,
+          "spend": 383.07,
+          "shows": 3936,
+          "goals": 13
         }
       }
     },
@@ -5200,9 +5200,9 @@
       "clientName": "Геннадий Шаров",
       "status": "ok",
       "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:51.524Z",
-      "balanceTotal": 484.11,
-      "balanceReal": 484.11,
+      "lastSyncAt": "2026-11-26T20:07:32.546Z",
+      "balanceTotal": 296.78,
+      "balanceReal": 296.78,
       "balanceBonus": 0,
       "spendYesterday": 598,
       "spendDayBefore": 528.94,
@@ -5259,7 +5259,7 @@
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "Воздушные шары гелиевые Тамбов ПроШары",
-      "groupMembers": 4968,
+      "groupMembers": 4969,
       "campaignsCount": 26,
       "clicks7": [
         {
@@ -5306,16 +5306,16 @@
         },
         {
           "date": "2026-11-26",
-          "clicks": 11,
-          "spend": 387.56,
-          "cpc": 35.232727272727274,
+          "clicks": 16,
+          "spend": 576.24,
+          "cpc": 36.015,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 108,
-        "spend": 3468.18,
-        "cpc": 32.11277777777778
+        "clicks": 113,
+        "spend": 3656.86,
+        "cpc": 32.36159292035398
       },
       "dailyFrom": "2026-05-27",
       "daily": {
@@ -6100,9 +6100,9 @@
           "goals": 0
         },
         "2026-11-26": {
-          "clicks": 11,
-          "spend": 387.56,
-          "shows": 4894,
+          "clicks": 16,
+          "spend": 576.24,
+          "shows": 7525,
           "goals": 0
         }
       }
@@ -6111,15 +6111,15 @@
       "extId": 17323149,
       "name": "Марина Владимировна Киров",
       "clientName": "Марина Владимировна — старый кабинет",
-      "status": "ok",
-      "statusNote": null,
-      "lastSyncAt": "2026-11-26T14:47:57.019Z",
-      "balanceTotal": 0,
-      "balanceReal": 0,
-      "balanceBonus": 0,
-      "spendYesterday": 590.14,
-      "spendDayBefore": 0,
-      "spendMonth": 4685.14,
+      "status": "nokey",
+      "statusNote": "ждём токен кабинета (ID известен: 17323149)",
+      "lastSyncAt": null,
+      "balanceTotal": null,
+      "balanceReal": null,
+      "balanceBonus": null,
+      "spendYesterday": null,
+      "spendDayBefore": null,
+      "spendMonth": null,
       "messagesYesterday": 7,
       "messagesMonth": 158,
       "messagesSource": "group",
@@ -6168,12 +6168,76 @@
         "2026-11-23": 6,
         "2026-11-24": 5,
         "2026-11-25": 7,
-        "2026-11-26": 11
+        "2026-11-26": 13
       },
       "msgDailyFrom": "2026-10-12",
       "groupName": "Гелиевые шары Киров",
       "groupMembers": 6268,
-      "campaignsCount": 10,
+      "campaignsCount": null,
+      "clicks7": [],
+      "clicks7Total": {
+        "clicks": 0,
+        "spend": 0,
+        "cpc": null
+      }
+    },
+    {
+      "extId": 28475752,
+      "name": "Рыбины СПб",
+      "clientName": "Рыбины",
+      "status": "ok",
+      "statusNote": null,
+      "lastSyncAt": "2026-11-26T20:07:35.348Z",
+      "balanceTotal": 53570.22,
+      "balanceReal": 24285.11,
+      "balanceBonus": 29285.11,
+      "spendYesterday": 600,
+      "spendDayBefore": 236.67,
+      "spendMonth": 836.67,
+      "messagesYesterday": 12,
+      "messagesMonth": 232,
+      "messagesSource": "group",
+      "msgDaily": {
+        "2026-11-25": 12,
+        "2026-11-26": 22,
+        "2026-11-22": 11,
+        "2026-11-02": 7,
+        "2026-10-31": 2,
+        "2026-11-13": 6,
+        "2026-11-16": 14,
+        "2026-11-12": 15,
+        "2026-11-04": 21,
+        "2026-11-20": 6,
+        "2026-10-23": 14,
+        "2026-11-14": 9,
+        "2026-11-05": 15,
+        "2026-10-30": 2,
+        "2026-11-18": 4,
+        "2026-11-15": 9,
+        "2026-11-08": 6,
+        "2026-11-24": 17,
+        "2026-11-17": 5,
+        "2026-11-19": 13,
+        "2026-11-23": 14,
+        "2026-10-24": 4,
+        "2026-11-03": 8,
+        "2026-11-09": 9,
+        "2026-11-06": 4,
+        "2026-11-01": 1,
+        "2026-10-25": 2,
+        "2026-11-21": 3,
+        "2026-10-29": 6,
+        "2026-10-26": 7,
+        "2026-11-11": 4,
+        "2026-11-07": 1,
+        "2026-10-28": 5,
+        "2026-11-10": 1,
+        "2026-10-27": 2
+      },
+      "msgDailyFrom": "2026-10-23",
+      "groupName": "Красная рыба и икра. Спб. Доставка от \"Рыбины\"",
+      "groupMembers": 54704,
+      "campaignsCount": 17,
       "clicks7": [
         {
           "date": "2026-11-20",
@@ -6205,518 +6269,50 @@
         },
         {
           "date": "2026-11-24",
-          "clicks": 0,
-          "spend": 0,
-          "cpc": null,
+          "clicks": 14,
+          "spend": 236.67,
+          "cpc": 16.905,
           "isToday": false
         },
         {
           "date": "2026-11-25",
-          "clicks": 15,
-          "spend": 590.14,
-          "cpc": 39.342666666666666,
+          "clicks": 33,
+          "spend": 600,
+          "cpc": 18.181818181818183,
           "isToday": false
         },
         {
           "date": "2026-11-26",
-          "clicks": 9,
-          "spend": 228.86,
-          "cpc": 25.428888888888892,
+          "clicks": 39,
+          "spend": 593.04,
+          "cpc": 15.206153846153844,
           "isToday": true
         }
       ],
       "clicks7Total": {
-        "clicks": 24,
-        "spend": 819,
-        "cpc": 34.125
+        "clicks": 86,
+        "spend": 1429.71,
+        "cpc": 16.62453488372093
       },
       "dailyFrom": "2026-05-27",
       "daily": {
-        "2026-06-03": {
-          "clicks": 2,
-          "spend": 51.92,
-          "shows": 156,
-          "goals": 0
-        },
-        "2026-06-04": {
-          "clicks": 17,
-          "spend": 478.87,
-          "shows": 4070,
-          "goals": 0
-        },
-        "2026-06-05": {
-          "clicks": 12,
-          "spend": 437.66,
-          "shows": 2289,
-          "goals": 0
-        },
-        "2026-06-06": {
-          "clicks": 2,
-          "spend": 31.55,
-          "shows": 226,
-          "goals": 0
-        },
-        "2026-06-15": {
-          "clicks": 4,
-          "spend": 214.6,
-          "shows": 132,
-          "goals": 0
-        },
-        "2026-06-16": {
-          "clicks": 15,
-          "spend": 420.82,
-          "shows": 2249,
-          "goals": 0
-        },
-        "2026-06-17": {
-          "clicks": 11,
-          "spend": 364.58,
-          "shows": 1883,
-          "goals": 0
-        },
-        "2026-06-24": {
+        "2026-11-24": {
           "clicks": 14,
-          "spend": 472.41,
-          "shows": 2761,
+          "spend": 236.67,
+          "shows": 2342,
           "goals": 0
-        },
-        "2026-06-25": {
-          "clicks": 5,
-          "spend": 267.28,
-          "shows": 840,
-          "goals": 0
-        },
-        "2026-06-26": {
-          "clicks": 2,
-          "spend": 79.31,
-          "shows": 26,
-          "goals": 0
-        },
-        "2026-06-30": {
-          "clicks": 2,
-          "spend": 40.62,
-          "shows": 639,
-          "goals": 0
-        },
-        "2026-07-01": {
-          "clicks": 23,
-          "spend": 500,
-          "shows": 4049,
-          "goals": 0
-        },
-        "2026-07-02": {
-          "clicks": 11,
-          "spend": 278.38,
-          "shows": 1693,
-          "goals": 0
-        },
-        "2026-07-08": {
-          "clicks": 0,
-          "spend": 201.01,
-          "shows": 1393,
-          "goals": 0
-        },
-        "2026-07-09": {
-          "clicks": 3,
-          "spend": 378.64,
-          "shows": 2289,
-          "goals": 0
-        },
-        "2026-07-10": {
-          "clicks": 6,
-          "spend": 197.47,
-          "shows": 1366,
-          "goals": 0
-        },
-        "2026-07-11": {
-          "clicks": 0,
-          "spend": 41.88,
-          "shows": 314,
-          "goals": 0
-        },
-        "2026-07-16": {
-          "clicks": 22,
-          "spend": 500,
-          "shows": 2849,
-          "goals": 0
-        },
-        "2026-07-17": {
-          "clicks": 15,
-          "spend": 322,
-          "shows": 1501,
-          "goals": 0
-        },
-        "2026-07-20": {
-          "clicks": 24,
-          "spend": 500,
-          "shows": 4402,
-          "goals": 0
-        },
-        "2026-07-21": {
-          "clicks": 12,
-          "spend": 319,
-          "shows": 1523,
-          "goals": 0
-        },
-        "2026-07-27": {
-          "clicks": 20,
-          "spend": 459.14,
-          "shows": 5101,
-          "goals": 0
-        },
-        "2026-07-28": {
-          "clicks": 10,
-          "spend": 359.86,
-          "shows": 895,
-          "goals": 0
-        },
-        "2026-07-30": {
-          "clicks": 20,
-          "spend": 500,
-          "shows": 2238,
-          "goals": 0
-        },
-        "2026-07-31": {
-          "clicks": 21,
-          "spend": 500,
-          "shows": 2947,
-          "goals": 0
-        },
-        "2026-08-01": {
-          "clicks": 19,
-          "spend": 500,
-          "shows": 2127,
-          "goals": 0
-        },
-        "2026-08-02": {
-          "clicks": 5,
-          "spend": 140,
-          "shows": 1086,
-          "goals": 0
-        },
-        "2026-08-04": {
-          "clicks": 16,
-          "spend": 482.7,
-          "shows": 2702,
-          "goals": 0
-        },
-        "2026-08-05": {
-          "clicks": 12,
-          "spend": 337.3,
-          "shows": 1469,
-          "goals": 0
-        },
-        "2026-08-10": {
-          "clicks": 18,
-          "spend": 400,
-          "shows": 3964,
-          "goals": 0
-        },
-        "2026-08-11": {
-          "clicks": 13,
-          "spend": 399.97,
-          "shows": 2422,
-          "goals": 0
-        },
-        "2026-08-12": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 1631,
-          "goals": 0
-        },
-        "2026-08-13": {
-          "clicks": 11,
-          "spend": 400,
-          "shows": 1665,
-          "goals": 0
-        },
-        "2026-08-14": {
-          "clicks": 3,
-          "spend": 372.78,
-          "shows": 718,
-          "goals": 0
-        },
-        "2026-08-15": {
-          "clicks": 12,
-          "spend": 400,
-          "shows": 759,
-          "goals": 0
-        },
-        "2026-08-16": {
-          "clicks": 3,
-          "spend": 87.25,
-          "shows": 830,
-          "goals": 0
-        },
-        "2026-08-18": {
-          "clicks": 9,
-          "spend": 264.77,
-          "shows": 1046,
-          "goals": 0
-        },
-        "2026-08-19": {
-          "clicks": 13,
-          "spend": 400,
-          "shows": 1918,
-          "goals": 0
-        },
-        "2026-08-20": {
-          "clicks": 6,
-          "spend": 154.23,
-          "shows": 733,
-          "goals": 0
-        },
-        "2026-08-25": {
-          "clicks": 1,
-          "spend": 80,
-          "shows": 210,
-          "goals": 0
-        },
-        "2026-08-26": {
-          "clicks": 4,
-          "spend": 400,
-          "shows": 355,
-          "goals": 0
-        },
-        "2026-08-27": {
-          "clicks": 10,
-          "spend": 337.24,
-          "shows": 2743,
-          "goals": 0
-        },
-        "2026-08-28": {
-          "clicks": 2,
-          "spend": 1.76,
-          "shows": 379,
-          "goals": 0
-        },
-        "2026-09-08": {
-          "clicks": 4,
-          "spend": 100.4,
-          "shows": 557,
-          "goals": 0
-        },
-        "2026-09-09": {
-          "clicks": 7,
-          "spend": 112.37,
-          "shows": 570,
-          "goals": 0
-        },
-        "2026-09-10": {
-          "clicks": 13,
-          "spend": 460.42,
-          "shows": 2054,
-          "goals": 0
-        },
-        "2026-09-11": {
-          "clicks": 8,
-          "spend": 145.81,
-          "shows": 1062,
-          "goals": 0
-        },
-        "2026-09-14": {
-          "clicks": 1,
-          "spend": 28.45,
-          "shows": 115,
-          "goals": 0
-        },
-        "2026-09-15": {
-          "clicks": 19,
-          "spend": 696.08,
-          "shows": 4266,
-          "goals": 1
-        },
-        "2026-09-16": {
-          "clicks": 20,
-          "spend": 655.84,
-          "shows": 3678,
-          "goals": 2
-        },
-        "2026-09-17": {
-          "clicks": 5,
-          "spend": 258.64,
-          "shows": 1266,
-          "goals": 0
-        },
-        "2026-09-22": {
-          "clicks": 1,
-          "spend": 36.02,
-          "shows": 389,
-          "goals": 0
-        },
-        "2026-09-23": {
-          "clicks": 17,
-          "spend": 700,
-          "shows": 2981,
-          "goals": 1
-        },
-        "2026-09-24": {
-          "clicks": 1,
-          "spend": 82.98,
-          "shows": 373,
-          "goals": 0
-        },
-        "2026-09-25": {
-          "clicks": 14,
-          "spend": 562.66,
-          "shows": 2034,
-          "goals": 1
-        },
-        "2026-09-26": {
-          "clicks": 6,
-          "spend": 256.34,
-          "shows": 995,
-          "goals": 1
-        },
-        "2026-09-28": {
-          "clicks": 3,
-          "spend": 378.43,
-          "shows": 1125,
-          "goals": 0
-        },
-        "2026-09-29": {
-          "clicks": 5,
-          "spend": 440.57,
-          "shows": 1630,
-          "goals": 0
-        },
-        "2026-10-06": {
-          "clicks": 16,
-          "spend": 600,
-          "shows": 2186,
-          "goals": 1
-        },
-        "2026-10-07": {
-          "clicks": 6,
-          "spend": 219,
-          "shows": 972,
-          "goals": 2
-        },
-        "2026-10-14": {
-          "clicks": 3,
-          "spend": 101.66,
-          "shows": 277,
-          "goals": 0
-        },
-        "2026-10-15": {
-          "clicks": 12,
-          "spend": 600,
-          "shows": 1981,
-          "goals": 0
-        },
-        "2026-10-16": {
-          "clicks": 4,
-          "spend": 600,
-          "shows": 1601,
-          "goals": 0
-        },
-        "2026-10-17": {
-          "clicks": 7,
-          "spend": 337.34,
-          "shows": 940,
-          "goals": 0
-        },
-        "2026-10-21": {
-          "clicks": 0,
-          "spend": 72.29,
-          "shows": 175,
-          "goals": 0
-        },
-        "2026-10-22": {
-          "clicks": 12,
-          "spend": 600,
-          "shows": 2118,
-          "goals": 1
-        },
-        "2026-10-23": {
-          "clicks": 4,
-          "spend": 147.71,
-          "shows": 475,
-          "goals": 0
-        },
-        "2026-10-25": {
-          "clicks": 9,
-          "spend": 559.66,
-          "shows": 1959,
-          "goals": 0
-        },
-        "2026-10-26": {
-          "clicks": 3,
-          "spend": 259.34,
-          "shows": 992,
-          "goals": 1
-        },
-        "2026-10-28": {
-          "clicks": 16,
-          "spend": 600,
-          "shows": 2330,
-          "goals": 3
-        },
-        "2026-10-29": {
-          "clicks": 6,
-          "spend": 219,
-          "shows": 922,
-          "goals": 0
-        },
-        "2026-11-03": {
-          "clicks": 4,
-          "spend": 425.78,
-          "shows": 1447,
-          "goals": 0
-        },
-        "2026-11-04": {
-          "clicks": 4,
-          "spend": 393.22,
-          "shows": 1438,
-          "goals": 0
-        },
-        "2026-11-06": {
-          "clicks": 9,
-          "spend": 419.62,
-          "shows": 1225,
-          "goals": 1
-        },
-        "2026-11-07": {
-          "clicks": 9,
-          "spend": 399.38,
-          "shows": 1261,
-          "goals": 0
-        },
-        "2026-11-10": {
-          "clicks": 14,
-          "spend": 600,
-          "shows": 1840,
-          "goals": 0
-        },
-        "2026-11-11": {
-          "clicks": 7,
-          "spend": 219,
-          "shows": 898,
-          "goals": 2
-        },
-        "2026-11-16": {
-          "clicks": 7,
-          "spend": 586.56,
-          "shows": 2017,
-          "goals": 0
-        },
-        "2026-11-17": {
-          "clicks": 11,
-          "spend": 232.44,
-          "shows": 909,
-          "goals": 1
         },
         "2026-11-25": {
-          "clicks": 15,
-          "spend": 590.14,
-          "shows": 2452,
-          "goals": 0
+          "clicks": 33,
+          "spend": 600,
+          "shows": 8424,
+          "goals": 4
         },
         "2026-11-26": {
-          "clicks": 9,
-          "spend": 228.86,
-          "shows": 1314,
-          "goals": 1
+          "clicks": 39,
+          "spend": 593.04,
+          "shows": 5463,
+          "goals": 4
         }
       }
     }
