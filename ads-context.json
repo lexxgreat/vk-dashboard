@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-27T06:48:17.032Z",
+ "generatedAt": "2026-11-27T15:43:38.107Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 579.32,
+   "balance": 340.66,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -41,7 +41,7 @@
     "cta": "write",
     "title": "Невероятное оформление шарами в Нижнем",
     "text": "Создаём такую красоту, что хочется фоткать, делиться и выкладывать.\nДобавьте празднику спецэффектов и красоты. Закажите воздушные шары у нас.\nПишите, подберём оформление на Ваш вкус и бюджет.",
-    "basedOnBanners": 18
+    "basedOnBanners": 17
    },
    "limits": {
     "maxActiveBanners": 300,
@@ -51,7 +51,7 @@
   "15957290": {
    "name": "Геннадий Шаров",
    "clientName": "Геннадий Шаров",
-   "balance": 130.54,
+   "balance": 0,
    "userName": "vkads_205397140@vk",
    "plans": [
     {
@@ -98,7 +98,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1414.22,
+   "balance": 1272.33,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -157,7 +157,7 @@
   "23685298": {
    "name": "Праздник Сказка",
    "clientName": "Праздник Сказка — Пантюшкина",
-   "balance": 497.95,
+   "balance": 427.46,
    "userName": "vkads_152777658@vk",
    "plans": [
     {
@@ -267,7 +267,7 @@
   "28475752": {
    "name": "Рыбины СПб",
    "clientName": "Рыбины",
-   "balance": 53410.37,
+   "balance": 52953.07,
    "userName": "vkads_371263571@vk@10150484",
    "plans": [
     {
@@ -308,13 +308,13 @@
    },
    "limits": {
     "maxActiveBanners": 366,
-    "activeBanners": 4
+    "activeBanners": 3
    }
   },
   "28571374": {
    "name": "Адамович помор",
    "clientName": "Адамович",
-   "balance": 112.15,
+   "balance": 0,
    "userName": "c162da0164@agency_client",
    "plans": [
     {
@@ -359,5 +359,7 @@
    }
   }
  },
- "errors": []
+ "errors": [
+  "17323149: ad_plans 17323149: HTTP 401 {\"error\":{\"message\":\"Unknown access token\",\"code\":\"invalid_token\"}}\n"
+ ]
 }
