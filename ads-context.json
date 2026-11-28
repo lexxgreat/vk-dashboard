@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-11-27T15:43:38.107Z",
+ "generatedAt": "2026-11-28T01:32:49.145Z",
  "cabinets": {
   "15545622": {
    "name": "Твои шарики",
    "clientName": "В. Шаров",
-   "balance": 340.66,
+   "balance": 143.19,
    "userName": "vkads_332070874@vk",
    "plans": [
     {
@@ -98,7 +98,7 @@
   "16019221": {
    "name": "Веселая Затея Ижевск",
    "clientName": "Варвара Бякова",
-   "balance": 1272.33,
+   "balance": 1168.2,
    "userName": "vkads_274338778@vk@2849265",
    "plans": [
     {
@@ -267,7 +267,7 @@
   "28475752": {
    "name": "Рыбины СПб",
    "clientName": "Рыбины",
-   "balance": 52953.07,
+   "balance": 52557.39,
    "userName": "vkads_371263571@vk@10150484",
    "plans": [
     {
